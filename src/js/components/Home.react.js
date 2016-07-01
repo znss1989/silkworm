@@ -1,4 +1,9 @@
 var React = require('react');
+
+var HomeHeader = require('./HomeHeader.react');
+var HomeBody = require('./HomeBody.react');
+var HomeFooter = require('./HomeFooter.react');
+
 var HomeActions = require('../actions/HomeActions');
 var HomeStore = require('../stores/HomeStore');
 
@@ -25,6 +30,15 @@ var Home = React.createClass({
     },
     _onChange: function() {
         this.setState(getHomeState());
+    },
+    render: function() {
+        return (
+            <div>
+                <HomeHeader></HomeHeader>
+                <HomeBody></HomeBody>
+                <HomeFooter></HomeFooter>
+            </div>
+        );
     }
 });
 
