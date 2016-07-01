@@ -19757,7 +19757,15 @@ var AppActions = {};
 
 module.exports = AppActions;
 
-},{"../constants/AppConstants":166,"../dispatcher/AppDispatcher":167}],165:[function(require,module,exports){
+},{"../constants/AppConstants":168,"../dispatcher/AppDispatcher":170}],165:[function(require,module,exports){
+var HomeDispatcher = require('../dispatcher/AppDispatcher');
+var HomeConstants = require('../constants/AppConstants');
+
+var HomeActions = {};
+
+module.exports = HomeActions;
+
+},{"../constants/AppConstants":168,"../dispatcher/AppDispatcher":170}],166:[function(require,module,exports){
 var React = require('react');
 var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
@@ -19790,12 +19798,50 @@ var App = React.createClass({displayName: "App",
 
 module.exports = App;
 
-},{"../actions/AppActions":164,"../stores/AppStore":169,"react":163}],166:[function(require,module,exports){
+},{"../actions/AppActions":164,"../stores/AppStore":173,"react":163}],167:[function(require,module,exports){
+var React = require('react');
+var HomeActions = require('../actions/HomeActions');
+var HomeStore = require('../stores/HomeStore');
+
+function getHomeState() {
+    return {};
+};
+
+var Home = React.createClass({displayName: "Home",
+    getInitialState: function() {
+        return getHomeState();
+    },
+    componentDidMount: function() {
+        HomeStore.addChangeListener(this._onChange);
+    },
+    componentWillUnmount: function() {
+        HomeStore.removeChangeListener(this._onChange);
+    },
+    render: function() {
+        return (
+            React.createElement("div", null, 
+                "Here goes the home page."
+            )
+        );
+    },
+    _onChange: function() {
+        this.setState(getHomeState());
+    }
+});
+
+module.exports = Home;
+
+},{"../actions/HomeActions":165,"../stores/HomeStore":174,"react":163}],168:[function(require,module,exports){
 module.exports = {
     
 }
 
-},{}],167:[function(require,module,exports){
+},{}],169:[function(require,module,exports){
+module.exports = {
+    
+}
+
+},{}],170:[function(require,module,exports){
 var Dispatcher = require('flux').Dispatcher;
 var assign = require('object-assign');
 
@@ -19811,18 +19857,41 @@ var AppDispatcher = assign(new Dispatcher(), {
 
 module.exports = AppDispatcher;
 
-},{"flux":3,"object-assign":6}],168:[function(require,module,exports){
-var App = require('./components/App');
+},{"flux":3,"object-assign":6}],171:[function(require,module,exports){
+var Dispatcher = require('flux').Dispatcher;
+var assign = require('object-assign');
+
+var HomeDispatcher = assign(new Dispatcher(), {
+    handleViewAction: function(action) {
+        var payload = {
+            source: 'VIEW_ACTION',
+            action: action
+        };
+        this.dispatch(payload);
+    }
+});
+
+module.exports = HomeDispatcher;
+
+},{"flux":3,"object-assign":6}],172:[function(require,module,exports){
 var React = require('react');
 var ReactDOM = require('react-dom');
 var AppAPI = require('./utils/AppAPI.js');
+
+var App = require('./components/App');
+var Home = require('./components/Home.react');
+
+ReactDOM.render(
+    React.createElement(Home, null),
+    document.getElementById('home')
+);
 
 ReactDOM.render(
     React.createElement(App, null),
     document.getElementById('app')
 );
 
-},{"./components/App":165,"./utils/AppAPI.js":170,"react":163,"react-dom":7}],169:[function(require,module,exports){
+},{"./components/App":166,"./components/Home.react":167,"./utils/AppAPI.js":175,"react":163,"react-dom":7}],173:[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AppConstants = require('../constants/AppConstants');
 var EventEmitter = require('events').EventEmitter;
@@ -19855,6 +19924,39 @@ AppDispatcher.register(function(payload) {
 
 module.exports = AppStore;
 
-},{"../constants/AppConstants":166,"../dispatcher/AppDispatcher":167,"../utils/AppAPI.js":170,"events":1,"object-assign":6}],170:[function(require,module,exports){
+},{"../constants/AppConstants":168,"../dispatcher/AppDispatcher":170,"../utils/AppAPI.js":175,"events":1,"object-assign":6}],174:[function(require,module,exports){
+var HomeDispatcher = require('../dispatcher/HomeDispatcher');
+var AppConstants = require('../constants/HomeConstants');
+var EventEmitter = require('events').EventEmitter;
+var assign = require('object-assign');
+var AppAPI = require('../utils/AppAPI.js');
 
-},{}]},{},[168]);
+var CHANGE_EVENT = 'change';
+
+_items = [];
+
+var HomeStore = assign({}, EventEmitter.prototype, {
+    emitChange: function() {
+        this.emit(CHANGE_EVENT);
+    },
+    addChangeListener: function(callback) {
+        this.on('change', callback);
+    },
+    removeChangeListener: function(callback) {
+        this.removeListener('change', callback);
+    }
+});
+
+HomeDispatcher.register(function(payload) {
+    var action = payload.action;
+    switch(action.actionType) {
+
+    };
+    return true;
+});
+
+module.exports = HomeStore;
+
+},{"../constants/HomeConstants":169,"../dispatcher/HomeDispatcher":171,"../utils/AppAPI.js":175,"events":1,"object-assign":6}],175:[function(require,module,exports){
+
+},{}]},{},[172]);
