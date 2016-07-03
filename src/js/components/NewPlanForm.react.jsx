@@ -22,7 +22,6 @@ var NewPlanForm = React.createClass({
     },
     createNewPlan: function(event) {
         event.preventDefault(); // prevent reloading
-        console.log("Form submitted...");
         var payload = {
             planTitle: this.state.title,
             planDescription: this.state.description

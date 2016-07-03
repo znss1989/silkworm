@@ -34,7 +34,6 @@ var AppStore = assign({}, EventEmitter.prototype, {
         return _plans;
     },
     addNewPlan: function(payload) {
-        console.log(payload);
         var id = guid();
         var title = payload.planTitle;
         var description = payload.planDescription;
@@ -43,7 +42,6 @@ var AppStore = assign({}, EventEmitter.prototype, {
             title: title,
             description: description
         });
-        console.log(_plans);
     },
     emitChange: function() {
         this.emit(CHANGE_EVENT);

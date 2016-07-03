@@ -19911,7 +19911,6 @@ var NewPlanForm = React.createClass({displayName: "NewPlanForm",
     },
     createNewPlan: function(event) {
         event.preventDefault(); // prevent reloading
-        console.log("Form submitted...");
         var payload = {
             planTitle: this.state.title,
             planDescription: this.state.description
@@ -19967,7 +19966,6 @@ var AppStore = require('../stores/AppStore');
 
 var Plans = React.createClass({displayName: "Plans",
     _onSave: function(payload) {
-        console.log("_onSave called.");
         if (payload.planTitle) {
             AppActions.createPlan(payload);
         }
@@ -20085,7 +20083,6 @@ var AppStore = assign({}, EventEmitter.prototype, {
         return _plans;
     },
     addNewPlan: function(payload) {
-        console.log(payload);
         var id = guid();
         var title = payload.planTitle;
         var description = payload.planDescription;
@@ -20094,7 +20091,6 @@ var AppStore = assign({}, EventEmitter.prototype, {
             title: title,
             description: description
         });
-        console.log(_plans);
     },
     emitChange: function() {
         this.emit(CHANGE_EVENT);
