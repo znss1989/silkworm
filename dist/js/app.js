@@ -19753,11 +19753,19 @@ module.exports = require('./lib/React');
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AppConstants = require('../constants/AppConstants');
 
-var AppActions = {};
+var AppActions = {
+    createPlan: function(payload) {
+        var action = {
+            actionType: AppConstants.APP_CREATE_PLAN,
+            payload: payload
+        };
+        AppDispatcher.dispatch(action);
+    }
+};
 
 module.exports = AppActions;
 
-},{"../constants/AppConstants":173,"../dispatcher/AppDispatcher":175}],165:[function(require,module,exports){
+},{"../constants/AppConstants":174,"../dispatcher/AppDispatcher":176}],165:[function(require,module,exports){
 var HomeDispatcher = require('../dispatcher/AppDispatcher');
 var HomeConstants = require('../constants/AppConstants');
 
@@ -19765,7 +19773,7 @@ var HomeActions = {};
 
 module.exports = HomeActions;
 
-},{"../constants/AppConstants":173,"../dispatcher/AppDispatcher":175}],166:[function(require,module,exports){
+},{"../constants/AppConstants":174,"../dispatcher/AppDispatcher":176}],166:[function(require,module,exports){
 var React = require('react');
 var ReactDOM = require('react-dom');
 var AppAPI = require('./utils/AppAPI.js');
@@ -19777,7 +19785,7 @@ ReactDOM.render(
     document.getElementById('app')
 );
 
-},{"./components/App.react.jsx":167,"./utils/AppAPI.js":179,"react":163,"react-dom":7}],167:[function(require,module,exports){
+},{"./components/App.react.jsx":167,"./utils/AppAPI.js":180,"react":163,"react-dom":7}],167:[function(require,module,exports){
 var React = require('react');
 
 var AppHeader = require('./AppHeader.react.jsx');
@@ -19788,7 +19796,9 @@ var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
 
 function getAppState() {
-    return {};
+    return {
+        allPlans: AppStore.getAllPlans(),
+    };
 };
 
 var App = React.createClass({displayName: "App",
@@ -19808,7 +19818,7 @@ var App = React.createClass({displayName: "App",
         return (
             React.createElement("div", null, 
                 React.createElement(AppHeader, null), 
-                React.createElement(AppBody, null), 
+                React.createElement(AppBody, {plans: this.state.allPlans}), 
                 React.createElement(AppFooter, null)
             )
         );
@@ -19817,7 +19827,7 @@ var App = React.createClass({displayName: "App",
 
 module.exports = App;
 
-},{"../actions/AppActions":164,"../stores/AppStore":177,"./AppBody.react.jsx":168,"./AppFooter.react.jsx":169,"./AppHeader.react.jsx":170,"react":163}],168:[function(require,module,exports){
+},{"../actions/AppActions":164,"../stores/AppStore":178,"./AppBody.react.jsx":168,"./AppFooter.react.jsx":169,"./AppHeader.react.jsx":170,"react":163}],168:[function(require,module,exports){
 var React = require('react');
 
 var Plans = require('./Plans.react.jsx');
@@ -19829,7 +19839,7 @@ var AppBody = React.createClass({displayName: "AppBody",
     render: function() {
         return (
             React.createElement("div", null, 
-                React.createElement(Plans, null)
+                React.createElement(Plans, {plans: this.props.plans})
             )
         );
     }
@@ -19837,7 +19847,7 @@ var AppBody = React.createClass({displayName: "AppBody",
 
 module.exports = AppBody;
 
-},{"../actions/AppActions":164,"../stores/AppStore":177,"./Plans.react.jsx":172,"react":163}],169:[function(require,module,exports){
+},{"../actions/AppActions":164,"../stores/AppStore":178,"./Plans.react.jsx":173,"react":163}],169:[function(require,module,exports){
 var React = require('react');
 
 var AppActions = require('../actions/HomeActions');
@@ -19855,7 +19865,7 @@ var HomeFooter = React.createClass({displayName: "HomeFooter",
 
 module.exports = HomeFooter;
 
-},{"../actions/HomeActions":165,"../stores/HomeStore":178,"react":163}],170:[function(require,module,exports){
+},{"../actions/HomeActions":165,"../stores/HomeStore":179,"react":163}],170:[function(require,module,exports){
 var React = require('react');
 
 var AppActions = require('../actions/AppActions');
@@ -19876,7 +19886,60 @@ var AppHeader = React.createClass({displayName: "AppHeader",
 
 module.exports = AppHeader;
 
-},{"../actions/AppActions":164,"../stores/AppStore":177,"react":163}],171:[function(require,module,exports){
+},{"../actions/AppActions":164,"../stores/AppStore":178,"react":163}],171:[function(require,module,exports){
+var React = require('react');
+
+var AppActions = require('../actions/AppActions');
+var AppStore = require('../stores/AppStore');
+
+var NewPlanForm = React.createClass({displayName: "NewPlanForm",
+    getInitialState: function() {
+        return {
+           title: this.props.title || '',
+           description: this.props.description || '' 
+        };
+    },
+    _onTitleChange: function(event) {
+        console.log(this.state.title);
+        this.setState({
+            title: event.target.value
+        });
+    },
+    _onDescriptionChange: function() {
+        console.log(this.state.description);
+        this.setState({
+            description: event.target.value
+        });
+    },
+    createNewPlan: function(event) {
+        event.preventDefault(); // prevent reloading
+        console.log("Form submitted...");
+        var payload = {
+            planTitle: this.state.title,
+            planDescription: this.state.description
+        };
+        this.props.onSave(payload);
+        this.setState({
+            title: '',
+            description: ''
+        });
+    },
+    render: function() {
+        return (
+            React.createElement("form", {id: "new-plan", onsubmit: this.createNewPlan}, 
+                React.createElement("label", {htmlFor: "plan-title"}, "Plan title"), 
+                React.createElement("input", {id: "plan-title", type: "text", placeholder: "What's your plan?", value: this.state.title, onChange: this._onTitleChange}), 
+                React.createElement("label", {htmlFor: "plan-description"}, "Description"), 
+                React.createElement("input", {id: "plan-description", type: "text", placeholder: "A few words about this plan...", value: this.state.description, onChange: this._onDescriptionChange}), 
+                React.createElement("button", {type: "submit", form: "new-plan"}, "Add as a new plan")
+            )
+        );
+    }
+});
+
+module.exports = NewPlanForm;
+
+},{"../actions/AppActions":164,"../stores/AppStore":178,"react":163}],172:[function(require,module,exports){
 var React = require('react');
 
 var AppActions = require('../actions/AppActions');
@@ -19895,29 +19958,31 @@ var PlanItem = React.createClass({displayName: "PlanItem",
 
 module.exports = PlanItem;
 
-},{"../actions/AppActions":164,"../stores/AppStore":177,"react":163}],172:[function(require,module,exports){
+},{"../actions/AppActions":164,"../stores/AppStore":178,"react":163}],173:[function(require,module,exports){
 var React = require('react');
 
+var NewPlanForm = require('./NewPlanForm.react.jsx');
 var PlanItem = require('./PlanItem.react.jsx');
 
 var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
 
 var Plans = React.createClass({displayName: "Plans",
-    getInitialState: function() {
-        return {
-            plans: AppStore.getAllPlans()
-        };
+    _onSave: function(payload) {
+        if (payload.title) {
+            AppActions.createPlan(payload);
+        }
     },
     render: function() {
-        var plans = AppStore.getAllPlans();
+        var plans = this.props.plans;
         var plansHtml = plans.map(function(plan) {
             return (
-                React.createElement(PlanItem, {title: plan.title, description: plan.description})
+                React.createElement(PlanItem, {key: plan.id, title: plan.title, description: plan.description})
             );
         });
         return (
             React.createElement("div", null, 
+                React.createElement(NewPlanForm, {onSave: this._onSave}), 
                 plansHtml
             )
         );
@@ -19926,19 +19991,21 @@ var Plans = React.createClass({displayName: "Plans",
 
 module.exports = Plans;
 
-},{"../actions/AppActions":164,"../stores/AppStore":177,"./PlanItem.react.jsx":171,"react":163}],173:[function(require,module,exports){
+},{"../actions/AppActions":164,"../stores/AppStore":178,"./NewPlanForm.react.jsx":171,"./PlanItem.react.jsx":172,"react":163}],174:[function(require,module,exports){
 module.exports = {
-    
-}
-
-},{}],174:[function(require,module,exports){
-module.exports = {
-    
+    APP_CREATE_PLAN: "APP_CREATE_PLAN",
 }
 
 },{}],175:[function(require,module,exports){
+module.exports = {
+    
+}
+
+},{}],176:[function(require,module,exports){
 var Dispatcher = require('flux').Dispatcher;
 var assign = require('object-assign');
+
+var AppStore = require('../stores/AppStore');
 
 var AppDispatcher = assign(new Dispatcher(), {
     handleViewAction: function(action) {
@@ -19950,9 +20017,22 @@ var AppDispatcher = assign(new Dispatcher(), {
     }
 });
 
+AppDispatcher.register(function(action) {
+    switch(action.actionType) {
+        // Respond to APP_CREATE_PLAN action
+        case AppConstants.APP_CREATE_PLAN:
+            AppStore.addNewPlan(action.payload)
+            break;
+        // Respond to ...
+        default:
+            return true;
+    }
+    AppStore.emitChange();
+});
+
 module.exports = AppDispatcher;
 
-},{"flux":3,"object-assign":6}],176:[function(require,module,exports){
+},{"../stores/AppStore":178,"flux":3,"object-assign":6}],177:[function(require,module,exports){
 var Dispatcher = require('flux').Dispatcher;
 var assign = require('object-assign');
 
@@ -19968,7 +20048,7 @@ var HomeDispatcher = assign(new Dispatcher(), {
 
 module.exports = HomeDispatcher;
 
-},{"flux":3,"object-assign":6}],177:[function(require,module,exports){
+},{"flux":3,"object-assign":6}],178:[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AppConstants = require('../constants/AppConstants');
 var EventEmitter = require('events').EventEmitter;
@@ -19979,20 +20059,40 @@ var CHANGE_EVENT = 'change';
 
 _plans = [
     {
-        id: 0,
+        id: "4170fd4e-9ef2-3653-c827-97395e848e1e",
         title: "Set up a new plan",
         description: "The first step to use Silkworm is to set up a fresh new plan of your own."
     },
     {
-        id: 1,
+        id: "c0ff2cbc-abc8-252f-9899-6a29760a7b45",
         title: "Travel around",
         description: "The world is big, why not take a trip around."
     },    
 ];
 
+// Random long identity generator
+function guid() {
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+    }
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+}
+
 var AppStore = assign({}, EventEmitter.prototype, {
     getAllPlans: function() {
         return _plans;
+    },
+    addNewPlan: function(payload) {
+        var id = guid();
+        var title = payload.PlanTitle;
+        var description = payload.PlanDescription;
+        _plans[id] = {
+            id: id,
+            title: title,
+            description: description
+        };
     },
     emitChange: function() {
         this.emit(CHANGE_EVENT);
@@ -20005,17 +20105,9 @@ var AppStore = assign({}, EventEmitter.prototype, {
     }
 });
 
-AppDispatcher.register(function(payload) {
-    var action = payload.action;
-    switch(action.actionType) {
-
-    };
-    return true;
-});
-
 module.exports = AppStore;
 
-},{"../constants/AppConstants":173,"../dispatcher/AppDispatcher":175,"../utils/AppAPI.js":179,"events":1,"object-assign":6}],178:[function(require,module,exports){
+},{"../constants/AppConstants":174,"../dispatcher/AppDispatcher":176,"../utils/AppAPI.js":180,"events":1,"object-assign":6}],179:[function(require,module,exports){
 var HomeDispatcher = require('../dispatcher/HomeDispatcher');
 var AppConstants = require('../constants/HomeConstants');
 var EventEmitter = require('events').EventEmitter;
@@ -20048,6 +20140,6 @@ HomeDispatcher.register(function(payload) {
 
 module.exports = HomeStore;
 
-},{"../constants/HomeConstants":174,"../dispatcher/HomeDispatcher":176,"../utils/AppAPI.js":179,"events":1,"object-assign":6}],179:[function(require,module,exports){
+},{"../constants/HomeConstants":175,"../dispatcher/HomeDispatcher":177,"../utils/AppAPI.js":180,"events":1,"object-assign":6}],180:[function(require,module,exports){
 
 },{}]},{},[166]);

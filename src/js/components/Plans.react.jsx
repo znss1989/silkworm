@@ -1,25 +1,27 @@
 var React = require('react');
 
+var NewPlanForm = require('./NewPlanForm.react.jsx');
 var PlanItem = require('./PlanItem.react.jsx');
 
 var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
 
 var Plans = React.createClass({
-    getInitialState: function() {
-        return {
-            plans: AppStore.getAllPlans()
-        };
+    _onSave: function(payload) {
+        if (payload.title) {
+            AppActions.createPlan(payload);
+        }
     },
     render: function() {
-        var plans = AppStore.getAllPlans();
+        var plans = this.props.plans;
         var plansHtml = plans.map(function(plan) {
             return (
-                <PlanItem title={plan.title} description={plan.description} />
+                <PlanItem key={plan.id} title={plan.title} description={plan.description} />
             );
         });
         return (
             <div>
+                <NewPlanForm onSave={this._onSave} />
                 {plansHtml}
             </div>
         );

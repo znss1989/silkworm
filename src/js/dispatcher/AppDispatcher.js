@@ -1,6 +1,8 @@
 var Dispatcher = require('flux').Dispatcher;
 var assign = require('object-assign');
 
+var AppStore = require('../stores/AppStore');
+
 var AppDispatcher = assign(new Dispatcher(), {
     handleViewAction: function(action) {
         var payload = {
@@ -9,6 +11,19 @@ var AppDispatcher = assign(new Dispatcher(), {
         };
         this.dispatch(payload);
     }
+});
+
+AppDispatcher.register(function(action) {
+    switch(action.actionType) {
+        // Respond to APP_CREATE_PLAN action
+        case AppConstants.APP_CREATE_PLAN:
+            AppStore.addNewPlan(action.payload)
+            break;
+        // Respond to ...
+        default:
+            return true;
+    }
+    AppStore.emitChange();
 });
 
 module.exports = AppDispatcher;

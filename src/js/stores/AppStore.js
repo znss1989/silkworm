@@ -8,20 +8,40 @@ var CHANGE_EVENT = 'change';
 
 _plans = [
     {
-        id: 0,
+        id: "4170fd4e-9ef2-3653-c827-97395e848e1e",
         title: "Set up a new plan",
         description: "The first step to use Silkworm is to set up a fresh new plan of your own."
     },
     {
-        id: 1,
+        id: "c0ff2cbc-abc8-252f-9899-6a29760a7b45",
         title: "Travel around",
         description: "The world is big, why not take a trip around."
     },    
 ];
 
+// Random long identity generator
+function guid() {
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+    }
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+}
+
 var AppStore = assign({}, EventEmitter.prototype, {
     getAllPlans: function() {
         return _plans;
+    },
+    addNewPlan: function(payload) {
+        var id = guid();
+        var title = payload.PlanTitle;
+        var description = payload.PlanDescription;
+        _plans[id] = {
+            id: id,
+            title: title,
+            description: description
+        };
     },
     emitChange: function() {
         this.emit(CHANGE_EVENT);
@@ -32,14 +52,6 @@ var AppStore = assign({}, EventEmitter.prototype, {
     removeChangeListener: function(callback) {
         this.removeListener('change', callback);
     }
-});
-
-AppDispatcher.register(function(payload) {
-    var action = payload.action;
-    switch(action.actionType) {
-
-    };
-    return true;
 });
 
 module.exports = AppStore;

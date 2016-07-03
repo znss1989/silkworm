@@ -9,7 +9,7 @@ var AppBody = React.createClass({
     render: function() {
         return (
             <div>
-                <Plans />
+                <Plans plans={this.props.plans} />
             </div>
         );
     }

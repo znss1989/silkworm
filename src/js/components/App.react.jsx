@@ -8,7 +8,9 @@ var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
 
 function getAppState() {
-    return {};
+    return {
+        allPlans: AppStore.getAllPlans(),
+    };
 };
 
 var App = React.createClass({
@@ -28,7 +30,7 @@ var App = React.createClass({
         return (
             <div>
                 <AppHeader />
-                <AppBody />
+                <AppBody plans={this.state.allPlans} />
                 <AppFooter /> 
             </div>
         );
