@@ -21,22 +21,15 @@ var Home = React.createClass({
     componentWillUnmount: function() {
         HomeStore.removeChangeListener(this._onChange);
     },
-    render: function() {
-        return (
-            <div>
-                Here goes the home page.
-            </div>
-        );
-    },
     _onChange: function() {
         this.setState(getHomeState());
     },
     render: function() {
         return (
             <div>
-                <HomeHeader></HomeHeader>
-                <HomeBody></HomeBody>
-                <HomeFooter></HomeFooter>
+                <HomeHeader />
+                <HomeBody />
+                <HomeFooter />
             </div>
         );
     }

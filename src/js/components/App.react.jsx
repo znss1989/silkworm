@@ -1,4 +1,9 @@
 var React = require('react');
+
+var AppHeader = require('./AppHeader.react');
+var AppBody = require('./AppBody.react');
+var AppFooter = require('./AppFooter.react');
+
 var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
 
@@ -16,15 +21,17 @@ var App = React.createClass({
     componentWillUnmount: function() {
         AppStore.removeChangeListener(this._onChange);
     },
+    _onChange: function() {
+        this.setState(getAppState());
+    },
     render: function() {
         return (
             <div>
-                My App
+                <AppHeader />
+                <AppBody />
+                <AppFooter /> 
             </div>
         );
-    },
-    _onChange: function() {
-        this.setState(getAppState());
     }
 });
 

@@ -19767,6 +19767,23 @@ module.exports = HomeActions;
 
 },{"../constants/AppConstants":171,"../dispatcher/AppDispatcher":173}],166:[function(require,module,exports){
 var React = require('react');
+var ReactDOM = require('react-dom');
+var AppAPI = require('./utils/AppAPI.js');
+
+var App = require('./components/App.react');
+
+ReactDOM.render(
+    React.createElement(App, null),
+    document.getElementById('app')
+);
+
+},{"./components/App.react":167,"./utils/AppAPI.js":177,"react":163,"react-dom":7}],167:[function(require,module,exports){
+var React = require('react');
+
+var AppHeader = require('./AppHeader.react');
+var AppBody = require('./AppBody.react');
+var AppFooter = require('./AppFooter.react');
+
 var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
 
@@ -19784,91 +19801,45 @@ var App = React.createClass({displayName: "App",
     componentWillUnmount: function() {
         AppStore.removeChangeListener(this._onChange);
     },
+    _onChange: function() {
+        this.setState(getAppState());
+    },
     render: function() {
         return (
             React.createElement("div", null, 
-                "My App"
+                React.createElement(AppHeader, null), 
+                React.createElement(AppBody, null), 
+                React.createElement(AppFooter, null)
             )
         );
-    },
-    _onChange: function() {
-        this.setState(getAppState());
     }
 });
 
 module.exports = App;
 
-},{"../actions/AppActions":164,"../stores/AppStore":176,"react":163}],167:[function(require,module,exports){
+},{"../actions/AppActions":164,"../stores/AppStore":175,"./AppBody.react":168,"./AppFooter.react":169,"./AppHeader.react":170,"react":163}],168:[function(require,module,exports){
 var React = require('react');
 
-var HomeHeader = require('./HomeHeader.react');
-var HomeBody = require('./HomeBody.react');
-var HomeFooter = require('./HomeFooter.react');
+var AppActions = require('../actions/AppActions');
+var AppStore = require('../stores/AppStore');
 
-var HomeActions = require('../actions/HomeActions');
-var HomeStore = require('../stores/HomeStore');
-
-function getHomeState() {
-    return {};
-};
-
-var Home = React.createClass({displayName: "Home",
-    getInitialState: function() {
-        return getHomeState();
-    },
-    componentDidMount: function() {
-        HomeStore.addChangeListener(this._onChange);
-    },
-    componentWillUnmount: function() {
-        HomeStore.removeChangeListener(this._onChange);
-    },
+var AppBody = React.createClass({displayName: "AppBody",
     render: function() {
         return (
             React.createElement("div", null, 
-                "Here goes the home page."
-            )
-        );
-    },
-    _onChange: function() {
-        this.setState(getHomeState());
-    },
-    render: function() {
-        return (
-            React.createElement("div", null, 
-                React.createElement(HomeHeader, null), 
-                React.createElement(HomeBody, null), 
-                React.createElement(HomeFooter, null)
+                "Here goes the app body."
             )
         );
     }
 });
 
-module.exports = Home;
+module.exports = AppBody;
 
-},{"../actions/HomeActions":165,"../stores/HomeStore":177,"./HomeBody.react":168,"./HomeFooter.react":169,"./HomeHeader.react":170,"react":163}],168:[function(require,module,exports){
+},{"../actions/AppActions":164,"../stores/AppStore":175,"react":163}],169:[function(require,module,exports){
 var React = require('react');
 
-var HomeActions = require('../actions/HomeActions');
-var HomeStore = require('../stores/HomeStore');
-
-var HomeBody = React.createClass({displayName: "HomeBody",
-    render: function() {
-        return (
-            React.createElement("div", null, 
-                React.createElement("button", {type: "button"}, "Login your account"), 
-                React.createElement("button", {type: "button"}, "Sign up a new account")
-            )
-        );
-    }
-});
-
-module.exports = HomeBody;
-
-},{"../actions/HomeActions":165,"../stores/HomeStore":177,"react":163}],169:[function(require,module,exports){
-var React = require('react');
-
-var HomeActions = require('../actions/HomeActions');
-var HomeStore = require('../stores/HomeStore');
+var AppActions = require('../actions/HomeActions');
+var AppStore = require('../stores/HomeStore');
 
 var HomeFooter = React.createClass({displayName: "HomeFooter",
     render: function() {
@@ -19882,27 +19853,28 @@ var HomeFooter = React.createClass({displayName: "HomeFooter",
 
 module.exports = HomeFooter;
 
-},{"../actions/HomeActions":165,"../stores/HomeStore":177,"react":163}],170:[function(require,module,exports){
+},{"../actions/HomeActions":165,"../stores/HomeStore":176,"react":163}],170:[function(require,module,exports){
 var React = require('react');
 
-var HomeActions = require('../actions/HomeActions');
-var HomeStore = require('../stores/HomeStore');
+var AppActions = require('../actions/AppActions');
+var AppStore = require('../stores/AppStore');
 
-var HomeHeader = React.createClass({displayName: "HomeHeader",
+var AppHeader = React.createClass({displayName: "AppHeader",
     render: function() {
         return (
             React.createElement("div", null, 
                 React.createElement("img", {src: "#", alt: "logo"}), 
-                React.createElement("h1", null, "Silkworm Plan"), 
-                React.createElement("p", null, "A web-based app for organizing plans/work flows and managing progress updates in life")
+                React.createElement("h5", null, "Silkworm"), 
+                React.createElement("img", {src: "#", alt: "user"}), 
+                React.createElement("p", null, "Log out")
             )
         );
     }
 });
 
-module.exports = HomeHeader;
+module.exports = AppHeader;
 
-},{"../actions/HomeActions":165,"../stores/HomeStore":177,"react":163}],171:[function(require,module,exports){
+},{"../actions/AppActions":164,"../stores/AppStore":175,"react":163}],171:[function(require,module,exports){
 module.exports = {
     
 }
@@ -19945,24 +19917,6 @@ var HomeDispatcher = assign(new Dispatcher(), {
 module.exports = HomeDispatcher;
 
 },{"flux":3,"object-assign":6}],175:[function(require,module,exports){
-var React = require('react');
-var ReactDOM = require('react-dom');
-var AppAPI = require('./utils/AppAPI.js');
-
-var App = require('./components/App.react');
-var Home = require('./components/Home.react');
-
-ReactDOM.render(
-    React.createElement(Home, null),
-    document.getElementById('home')
-);
-
-ReactDOM.render(
-    React.createElement(App, null),
-    document.getElementById('app')
-);
-
-},{"./components/App.react":166,"./components/Home.react":167,"./utils/AppAPI.js":178,"react":163,"react-dom":7}],176:[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AppConstants = require('../constants/AppConstants');
 var EventEmitter = require('events').EventEmitter;
@@ -19995,7 +19949,7 @@ AppDispatcher.register(function(payload) {
 
 module.exports = AppStore;
 
-},{"../constants/AppConstants":171,"../dispatcher/AppDispatcher":173,"../utils/AppAPI.js":178,"events":1,"object-assign":6}],177:[function(require,module,exports){
+},{"../constants/AppConstants":171,"../dispatcher/AppDispatcher":173,"../utils/AppAPI.js":177,"events":1,"object-assign":6}],176:[function(require,module,exports){
 var HomeDispatcher = require('../dispatcher/HomeDispatcher');
 var AppConstants = require('../constants/HomeConstants');
 var EventEmitter = require('events').EventEmitter;
@@ -20028,6 +19982,6 @@ HomeDispatcher.register(function(payload) {
 
 module.exports = HomeStore;
 
-},{"../constants/HomeConstants":172,"../dispatcher/HomeDispatcher":174,"../utils/AppAPI.js":178,"events":1,"object-assign":6}],178:[function(require,module,exports){
+},{"../constants/HomeConstants":172,"../dispatcher/HomeDispatcher":174,"../utils/AppAPI.js":177,"events":1,"object-assign":6}],177:[function(require,module,exports){
 
-},{}]},{},[175]);
+},{}]},{},[166]);
