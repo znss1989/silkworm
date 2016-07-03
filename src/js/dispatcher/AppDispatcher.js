@@ -2,6 +2,7 @@ var Dispatcher = require('flux').Dispatcher;
 var assign = require('object-assign');
 
 var AppStore = require('../stores/AppStore');
+var AppConstants = require('../constants/AppConstants');
 
 var AppDispatcher = assign(new Dispatcher(), {
     handleViewAction: function(action) {

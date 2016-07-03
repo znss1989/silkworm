@@ -8,7 +8,8 @@ var AppStore = require('../stores/AppStore');
 
 var Plans = React.createClass({
     _onSave: function(payload) {
-        if (payload.title) {
+        console.log("_onSave called.");
+        if (payload.planTitle) {
             AppActions.createPlan(payload);
         }
     },

@@ -19869,6 +19869,7 @@ var Dispatcher = require('flux').Dispatcher;
 var assign = require('object-assign');
 
 var AppStore = require('../stores/AppStore');
+var AppConstants = require('../constants/AppConstants');
 
 var AppDispatcher = assign(new Dispatcher(), {
     handleViewAction: function(action) {
@@ -19895,7 +19896,7 @@ AppDispatcher.register(function(action) {
 
 module.exports = AppDispatcher;
 
-},{"../stores/AppStore":174,"flux":3,"object-assign":6}],172:[function(require,module,exports){
+},{"../constants/AppConstants":169,"../stores/AppStore":174,"flux":3,"object-assign":6}],172:[function(require,module,exports){
 var Dispatcher = require('flux').Dispatcher;
 var assign = require('object-assign');
 
@@ -19960,14 +19961,16 @@ var AppStore = assign({}, EventEmitter.prototype, {
         return _plans;
     },
     addNewPlan: function(payload) {
+        console.log(payload);
         var id = guid();
-        var title = payload.PlanTitle;
-        var description = payload.PlanDescription;
-        _plans[id] = {
+        var title = payload.planTitle;
+        var description = payload.planDescription;
+        _plans.push({
             id: id,
             title: title,
             description: description
-        };
+        });
+        console.log(_plans);
     },
     emitChange: function() {
         this.emit(CHANGE_EVENT);

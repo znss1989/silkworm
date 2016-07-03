@@ -11,13 +11,11 @@ var NewPlanForm = React.createClass({
         };
     },
     _onTitleChange: function(event) {
-        console.log(this.state.title);
         this.setState({
             title: event.target.value
         });
     },
-    _onDescriptionChange: function() {
-        console.log(this.state.description);
+    _onDescriptionChange: function(event) {
         this.setState({
             description: event.target.value
         });
@@ -37,7 +35,7 @@ var NewPlanForm = React.createClass({
     },
     render: function() {
         return (
-            <form id="new-plan" onsubmit={this.createNewPlan}>
+            <form id="new-plan" method="post" onSubmit={this.createNewPlan}>
                 <label htmlFor="plan-title">Plan title</label>
                 <input id="plan-title" type="text" placeholder="What's your plan?" value={this.state.title} onChange={this._onTitleChange}  />
                 <label htmlFor="plan-description">Description</label>

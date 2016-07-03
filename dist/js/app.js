@@ -19900,13 +19900,11 @@ var NewPlanForm = React.createClass({displayName: "NewPlanForm",
         };
     },
     _onTitleChange: function(event) {
-        console.log(this.state.title);
         this.setState({
             title: event.target.value
         });
     },
-    _onDescriptionChange: function() {
-        console.log(this.state.description);
+    _onDescriptionChange: function(event) {
         this.setState({
             description: event.target.value
         });
@@ -19926,7 +19924,7 @@ var NewPlanForm = React.createClass({displayName: "NewPlanForm",
     },
     render: function() {
         return (
-            React.createElement("form", {id: "new-plan", onsubmit: this.createNewPlan}, 
+            React.createElement("form", {id: "new-plan", method: "post", onSubmit: this.createNewPlan}, 
                 React.createElement("label", {htmlFor: "plan-title"}, "Plan title"), 
                 React.createElement("input", {id: "plan-title", type: "text", placeholder: "What's your plan?", value: this.state.title, onChange: this._onTitleChange}), 
                 React.createElement("label", {htmlFor: "plan-description"}, "Description"), 
@@ -19969,7 +19967,8 @@ var AppStore = require('../stores/AppStore');
 
 var Plans = React.createClass({displayName: "Plans",
     _onSave: function(payload) {
-        if (payload.title) {
+        console.log("_onSave called.");
+        if (payload.planTitle) {
             AppActions.createPlan(payload);
         }
     },
@@ -20006,6 +20005,7 @@ var Dispatcher = require('flux').Dispatcher;
 var assign = require('object-assign');
 
 var AppStore = require('../stores/AppStore');
+var AppConstants = require('../constants/AppConstants');
 
 var AppDispatcher = assign(new Dispatcher(), {
     handleViewAction: function(action) {
@@ -20032,7 +20032,7 @@ AppDispatcher.register(function(action) {
 
 module.exports = AppDispatcher;
 
-},{"../stores/AppStore":178,"flux":3,"object-assign":6}],177:[function(require,module,exports){
+},{"../constants/AppConstants":174,"../stores/AppStore":178,"flux":3,"object-assign":6}],177:[function(require,module,exports){
 var Dispatcher = require('flux').Dispatcher;
 var assign = require('object-assign');
 
@@ -20085,14 +20085,16 @@ var AppStore = assign({}, EventEmitter.prototype, {
         return _plans;
     },
     addNewPlan: function(payload) {
+        console.log(payload);
         var id = guid();
-        var title = payload.PlanTitle;
-        var description = payload.PlanDescription;
-        _plans[id] = {
+        var title = payload.planTitle;
+        var description = payload.planDescription;
+        _plans.push({
             id: id,
             title: title,
             description: description
-        };
+        });
+        console.log(_plans);
     },
     emitChange: function() {
         this.emit(CHANGE_EVENT);
