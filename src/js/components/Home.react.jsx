@@ -1,8 +1,8 @@
 var React = require('react');
 
-var HomeHeader = require('./HomeHeader.react');
-var HomeBody = require('./HomeBody.react');
-var HomeFooter = require('./HomeFooter.react');
+var HomeHeader = require('./HomeHeader.react.jsx');
+var HomeBody = require('./HomeBody.react.jsx');
+var HomeFooter = require('./HomeFooter.react.jsx');
 
 var HomeActions = require('../actions/HomeActions');
 var HomeStore = require('../stores/HomeStore');

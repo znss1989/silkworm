@@ -7,7 +7,8 @@ var PlanItem = React.createClass({
     render: function() {
         return (
             <div>
-                <p>This is a PlanItem.</p>
+                <h4>{this.props.title}</h4>
+                <p>{this.props.description}</p>
             </div>
         );
     }

@@ -1,6 +1,6 @@
 var React = require('react');
 
-var Plans = require('./Plans.react');
+var Plans = require('./Plans.react.jsx');
 
 var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');

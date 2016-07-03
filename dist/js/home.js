@@ -19760,9 +19760,9 @@ module.exports = HomeActions;
 },{"../constants/AppConstants":169,"../dispatcher/AppDispatcher":171}],165:[function(require,module,exports){
 var React = require('react');
 
-var HomeHeader = require('./HomeHeader.react');
-var HomeBody = require('./HomeBody.react');
-var HomeFooter = require('./HomeFooter.react');
+var HomeHeader = require('./HomeHeader.react.jsx');
+var HomeBody = require('./HomeBody.react.jsx');
+var HomeFooter = require('./HomeFooter.react.jsx');
 
 var HomeActions = require('../actions/HomeActions');
 var HomeStore = require('../stores/HomeStore');
@@ -19797,7 +19797,7 @@ var Home = React.createClass({displayName: "Home",
 
 module.exports = Home;
 
-},{"../actions/HomeActions":164,"../stores/HomeStore":174,"./HomeBody.react":166,"./HomeFooter.react":167,"./HomeHeader.react":168,"react":163}],166:[function(require,module,exports){
+},{"../actions/HomeActions":164,"../stores/HomeStore":174,"./HomeBody.react.jsx":166,"./HomeFooter.react.jsx":167,"./HomeHeader.react.jsx":168,"react":163}],166:[function(require,module,exports){
 var React = require('react');
 
 var HomeActions = require('../actions/HomeActions');
@@ -19901,14 +19901,14 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var AppAPI = require('./utils/AppAPI.js');
 
-var Home = require('./components/Home.react');
+var Home = require('./components/Home.react.jsx');
 
 ReactDOM.render(
     React.createElement(Home, null),
     document.getElementById('home')
 );
 
-},{"./components/Home.react":165,"./utils/AppAPI.js":175,"react":163,"react-dom":7}],174:[function(require,module,exports){
+},{"./components/Home.react.jsx":165,"./utils/AppAPI.js":175,"react":163,"react-dom":7}],174:[function(require,module,exports){
 var HomeDispatcher = require('../dispatcher/HomeDispatcher');
 var AppConstants = require('../constants/HomeConstants');
 var EventEmitter = require('events').EventEmitter;
