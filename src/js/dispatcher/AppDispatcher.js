@@ -24,6 +24,10 @@ AppDispatcher.register(function(action) {
         case AppConstants.APP_DEL_PLAN:
             AppStore.removePlan(action.index);
             break;
+        // Respond to APP_UPDATE_PLAN_TEXT action
+        case AppConstants.APP_UPDATE_PLAN_TEXT:
+            AppStore.updatePlanText(action.payload);
+            break;
         // Respond to ...
         default:
             return true;

@@ -19857,7 +19857,8 @@ module.exports = HomeHeader;
 },{"../actions/HomeActions":164,"../stores/HomeStore":175,"react":163}],169:[function(require,module,exports){
 module.exports = {
     APP_CREATE_PLAN: "APP_CREATE_PLAN",
-    APP_DEL_PLAN: "APP_DEL_PLAN"
+    APP_DEL_PLAN: "APP_DEL_PLAN",
+    APP_UPDATE_PLAN_TEXT: "APP_UPDATE_PLAN_TEXT"
 }
 
 },{}],170:[function(require,module,exports){
@@ -19891,6 +19892,10 @@ AppDispatcher.register(function(action) {
         // Respond to APP_DEL_PLAN action
         case AppConstants.APP_DEL_PLAN:
             AppStore.removePlan(action.index);
+            break;
+        // Respond to APP_UPDATE_PLAN_TEXT action
+        case AppConstants.APP_UPDATE_PLAN_TEXT:
+            AppStore.updatePlanText(action.payload);
             break;
         // Respond to ...
         default:
@@ -19976,6 +19981,20 @@ var AppStore = assign({}, EventEmitter.prototype, {
     },
     removePlan: function(index) {
         delete _plans[index];
+    },
+    updatePlanText: function(payload) {
+        var id = payload.planIndex;
+        var title = payload.planTitle;
+        var description = payload.planDescription;
+        if (title === '') {
+            console.log("Title cannot be empty!");
+            return ;
+        }
+        _plans[id] = {
+            id: id,
+            title: title,
+            description: description
+        };
     },
     emitChange: function() {
         this.emit(CHANGE_EVENT);

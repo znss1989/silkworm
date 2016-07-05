@@ -24,7 +24,7 @@ var Plans = React.createClass({
             );
         });
         return (
-            <div>
+            <div id="plans-list">
                 <NewPlanForm onSave={this._onSave} />
                 {plansHtml}
             </div>
