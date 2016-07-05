@@ -19943,17 +19943,32 @@ var AppAPI = require('../utils/AppAPI.js');
 
 var CHANGE_EVENT = 'change';
 
-var _plans = {};
-_plans["4170fd4e-9ef2-3653-c827-97395e848e1e"] = {
+var _plans = [];
+
+// Initialize with some demo plans and/or nodes
+_plans.push({
         id: "4170fd4e-9ef2-3653-c827-97395e848e1e",
         title: "Set up a new plan",
-        description: "The first step to use Silkworm is to set up a fresh new plan of your own."
-};
-_plans["c0ff2cbc-abc8-252f-9899-6a29760a7b45"] = {
+        description: "The first step to use Silkworm is to set up a fresh new plan of your own.",
+        nodes: []
+});
+_plans.push({
         id: "c0ff2cbc-abc8-252f-9899-6a29760a7b45",
         title: "Travel around",
-        description: "The world is big, why not take a trip around."
-};
+        description: "The world is big, why not take a trip around.",
+        nodes: [
+            {
+                node_id: "7162b3b4-5662-9b04-09c0-786500b907b5",
+                node_title: "Book a plane ticket to Paris",
+                node_detail: {},
+            },
+            {
+                node_id: "80e020a9-88c0-9e0d-6dbe-9832a23ee9e0",
+                node_title: "Departure from airport Chengdu",
+                node_detail: {}
+            }
+        ]
+});
 
 // Random long identity generator
 function guid() {
@@ -19973,14 +19988,23 @@ var AppStore = assign({}, EventEmitter.prototype, {
         var id = guid();
         var title = payload.planTitle;
         var description = payload.planDescription;
-        _plans[id] = {
+        _plans.push({
             id: id,
             title: title,
             description: description
-        };
+        });
     },
     removePlan: function(index) {
-        delete _plans[index];
+        console.log(_plans);
+        console.log("removePlan invoked.");
+        console.log(index);
+        for (var i = 0; i < _plans.length; ++i) {
+            if (_plans[i].id === index) {
+                _plans.splice(i, 1);
+                return ;
+            }
+        }
+        
     },
     updatePlanText: function(payload) {
         var id = payload.planIndex;

@@ -10,9 +10,13 @@ var AppBody = React.createClass({
         return (
             <div>
                 <Plans plans={this.props.plans} />
+
             </div>
         );
     }
 });
 
 module.exports = AppBody;
+
+
+// <Nodes nodes={this.props.nodes} />
