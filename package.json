@@ -10,11 +10,12 @@
   "license": "ISC",
   "devDependencies": {
     "browserify": "*",
+    "classnames": "^2.2.5",
     "flux": "*",
     "gulp": "*",
+    "object-assign": "*",
     "reactify": "*",
-    "vinyl-source-stream": "*",
-    "object-assign": "*"
+    "vinyl-source-stream": "*"
   },
   "dependencies": {
     "react": "^0.14.7",

@@ -19954,6 +19954,18 @@ var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
 
 var PlanItem = React.createClass({displayName: "PlanItem",
+    getInitialState: function() {
+        return {
+            isTitleEditing: false,
+            isDescriptionEditing: false
+        };
+    },
+    _onTitleDoubleClick: function() {
+        this.setState({isTitleEditing: true});
+    },
+    _onDescriptionDoubleClick: function() {
+        this.setState({isDescriptionEditing: true});
+    },
     _onClickRemove: function(event) {
         console.log("_onClickRemove invoked");
         console.log(this.props);
@@ -19962,8 +19974,8 @@ var PlanItem = React.createClass({displayName: "PlanItem",
     render: function() {
         return (
             React.createElement("div", null, 
-                React.createElement("h4", null, this.props.title), 
-                React.createElement("p", null, this.props.description), 
+                React.createElement("h4", {className: classNames({'editable': this.state.isTitleEditing}), onDoubleClick: this._onTitleDoubleClick}, this.props.title), 
+                React.createElement("p", {className: classNames({'editable': this.state.isDescriptionEditing}), onDoubleClick: this._onDescriptionDoubleClick}, this.props.description), 
                 React.createElement("div", {onClick: this._onClickRemove}, "-")
             )
         );
