@@ -6,18 +6,17 @@ var AppAPI = require('../utils/AppAPI.js');
 
 var CHANGE_EVENT = 'change';
 
-_plans = [
-    {
+var _plans = {};
+_plans["4170fd4e-9ef2-3653-c827-97395e848e1e"] = {
         id: "4170fd4e-9ef2-3653-c827-97395e848e1e",
         title: "Set up a new plan",
         description: "The first step to use Silkworm is to set up a fresh new plan of your own."
-    },
-    {
+};
+_plans["c0ff2cbc-abc8-252f-9899-6a29760a7b45"] = {
         id: "c0ff2cbc-abc8-252f-9899-6a29760a7b45",
         title: "Travel around",
         description: "The world is big, why not take a trip around."
-    },    
-];
+};
 
 // Random long identity generator
 function guid() {
@@ -37,11 +36,14 @@ var AppStore = assign({}, EventEmitter.prototype, {
         var id = guid();
         var title = payload.planTitle;
         var description = payload.planDescription;
-        _plans.push({
+        _plans[id] = {
             id: id,
             title: title,
             description: description
-        });
+        };
+    },
+    removePlan: function(index) {
+        delete _plans[index];
     },
     emitChange: function() {
         this.emit(CHANGE_EVENT);

@@ -19760,7 +19760,15 @@ var AppActions = {
             payload: payload
         };
         AppDispatcher.dispatch(action);
-    }
+    },
+    deletePlan: function(index) {
+        console.log("deletePlan invoked with index:" + index);
+        var action = {
+            actionType: AppConstants.APP_DEL_PLAN,
+            index: index
+        };
+        AppDispatcher.dispatch(action);
+    },
 };
 
 module.exports = AppActions;
@@ -19793,6 +19801,7 @@ var AppBody = require('./AppBody.react.jsx');
 var AppFooter = require('./AppFooter.react.jsx');
 
 var AppActions = require('../actions/AppActions');
+var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AppStore = require('../stores/AppStore');
 
 function getAppState() {
@@ -19805,9 +19814,11 @@ var App = React.createClass({displayName: "App",
     getInitialState: function() {
         return getAppState();
     },
+    // Add change listener to stores
     componentDidMount: function() {
         AppStore.addChangeListener(this._onChange);
     },
+    // Remove change listener from stores
     componentWillUnmount: function() {
         AppStore.removeChangeListener(this._onChange);
     },
@@ -19827,7 +19838,7 @@ var App = React.createClass({displayName: "App",
 
 module.exports = App;
 
-},{"../actions/AppActions":164,"../stores/AppStore":178,"./AppBody.react.jsx":168,"./AppFooter.react.jsx":169,"./AppHeader.react.jsx":170,"react":163}],168:[function(require,module,exports){
+},{"../actions/AppActions":164,"../dispatcher/AppDispatcher":176,"../stores/AppStore":178,"./AppBody.react.jsx":168,"./AppFooter.react.jsx":169,"./AppHeader.react.jsx":170,"react":163}],168:[function(require,module,exports){
 var React = require('react');
 
 var Plans = require('./Plans.react.jsx');
@@ -19943,11 +19954,17 @@ var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
 
 var PlanItem = React.createClass({displayName: "PlanItem",
+    _onClickRemove: function(event) {
+        console.log("_onClickRemove invoked");
+        console.log(this.props);
+        AppActions.deletePlan(this.props.index);
+    },
     render: function() {
         return (
             React.createElement("div", null, 
                 React.createElement("h4", null, this.props.title), 
-                React.createElement("p", null, this.props.description)
+                React.createElement("p", null, this.props.description), 
+                React.createElement("div", {onClick: this._onClickRemove}, "-")
             )
         );
     }
@@ -19972,9 +19989,13 @@ var Plans = React.createClass({displayName: "Plans",
     },
     render: function() {
         var plans = this.props.plans;
-        var plansHtml = plans.map(function(plan) {
+        var plansList = [];
+        for (var id in plans) {
+            plansList.push(plans[id]);
+        }
+        var plansHtml = plansList.map(function(plan) {
             return (
-                React.createElement(PlanItem, {key: plan.id, title: plan.title, description: plan.description})
+                React.createElement(PlanItem, {key: plan.id, index: plan.id, title: plan.title, description: plan.description})
             );
         });
         return (
@@ -19991,6 +20012,7 @@ module.exports = Plans;
 },{"../actions/AppActions":164,"../stores/AppStore":178,"./NewPlanForm.react.jsx":171,"./PlanItem.react.jsx":172,"react":163}],174:[function(require,module,exports){
 module.exports = {
     APP_CREATE_PLAN: "APP_CREATE_PLAN",
+    APP_DEL_PLAN: "APP_DEL_PLAN"
 }
 
 },{}],175:[function(require,module,exports){
@@ -20019,7 +20041,11 @@ AppDispatcher.register(function(action) {
     switch(action.actionType) {
         // Respond to APP_CREATE_PLAN action
         case AppConstants.APP_CREATE_PLAN:
-            AppStore.addNewPlan(action.payload)
+            AppStore.addNewPlan(action.payload);
+            break;
+        // Respond to APP_DEL_PLAN action
+        case AppConstants.APP_DEL_PLAN:
+            AppStore.removePlan(action.index);
             break;
         // Respond to ...
         default:
@@ -20055,18 +20081,17 @@ var AppAPI = require('../utils/AppAPI.js');
 
 var CHANGE_EVENT = 'change';
 
-_plans = [
-    {
+var _plans = {};
+_plans["4170fd4e-9ef2-3653-c827-97395e848e1e"] = {
         id: "4170fd4e-9ef2-3653-c827-97395e848e1e",
         title: "Set up a new plan",
         description: "The first step to use Silkworm is to set up a fresh new plan of your own."
-    },
-    {
+};
+_plans["c0ff2cbc-abc8-252f-9899-6a29760a7b45"] = {
         id: "c0ff2cbc-abc8-252f-9899-6a29760a7b45",
         title: "Travel around",
         description: "The world is big, why not take a trip around."
-    },    
-];
+};
 
 // Random long identity generator
 function guid() {
@@ -20086,11 +20111,14 @@ var AppStore = assign({}, EventEmitter.prototype, {
         var id = guid();
         var title = payload.planTitle;
         var description = payload.planDescription;
-        _plans.push({
+        _plans[id] = {
             id: id,
             title: title,
             description: description
-        });
+        };
+    },
+    removePlan: function(index) {
+        delete _plans[index];
     },
     emitChange: function() {
         this.emit(CHANGE_EVENT);
