@@ -28,6 +28,19 @@ AppDispatcher.register(function(action) {
         case AppConstants.APP_UPDATE_PLAN_TEXT:
             AppStore.updatePlanText(action.payload);
             break;
+        // Respond to APP_CREATE_NODE action
+        case AppConstants.APP_CREATE_NODE:
+            AppStore.addNewNode(action.payload);
+            break;
+        // Respond to APP_DEL_NODE action
+        case AppConstants.APP_DEL_NODE:
+            AppStore.removeNode(action.index);
+            break;
+        // Respond to APP_UPDATE_NODE_TEXT action
+        case AppConstants.APP_UPDATE_NODE_TEXT:
+            AppStore.updateNodeText(action.payload);
+            break;
+        
         // Respond to ...
         default:
             return true;

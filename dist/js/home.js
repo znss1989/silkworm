@@ -19858,7 +19858,10 @@ module.exports = HomeHeader;
 module.exports = {
     APP_CREATE_PLAN: "APP_CREATE_PLAN",
     APP_DEL_PLAN: "APP_DEL_PLAN",
-    APP_UPDATE_PLAN_TEXT: "APP_UPDATE_PLAN_TEXT"
+    APP_UPDATE_PLAN_TEXT: "APP_UPDATE_PLAN_TEXT",
+    APP_CREATE_NODE: "APP_CREATE_NODE",
+    APP_DEL_NODE: "APP_DEL_NODE",
+    APP_UPDATE_NODE_TEXT: "APP_UPDATE_NODE_TEXT",
 }
 
 },{}],170:[function(require,module,exports){
@@ -19897,6 +19900,19 @@ AppDispatcher.register(function(action) {
         case AppConstants.APP_UPDATE_PLAN_TEXT:
             AppStore.updatePlanText(action.payload);
             break;
+        // Respond to APP_CREATE_NODE action
+        case AppConstants.APP_CREATE_NODE:
+            AppStore.addNewNode(action.payload);
+            break;
+        // Respond to APP_DEL_NODE action
+        case AppConstants.APP_DEL_NODE:
+            AppStore.removeNode(action.index);
+            break;
+        // Respond to APP_UPDATE_NODE_TEXT action
+        case AppConstants.APP_UPDATE_NODE_TEXT:
+            AppStore.updateNodeText(action.payload);
+            break;
+        
         // Respond to ...
         default:
             return true;
@@ -19959,12 +19975,12 @@ _plans.push({
         nodes: [
             {
                 node_id: "7162b3b4-5662-9b04-09c0-786500b907b5",
-                node_title: "Book a plane ticket to Paris",
+                node_item: "Book a plane ticket to Paris",
                 node_detail: {},
             },
             {
                 node_id: "80e020a9-88c0-9e0d-6dbe-9832a23ee9e0",
-                node_title: "Departure from airport Chengdu",
+                node_item: "Departure from airport Chengdu",
                 node_detail: {}
             }
         ]
@@ -19984,6 +20000,10 @@ var AppStore = assign({}, EventEmitter.prototype, {
     getAllPlans: function() {
         return _plans;
     },
+    getCurrentNodes: function() {
+        var id = _plans.length - 1; // default fetch latest
+        return _plans[id].nodes;
+    },
     addNewPlan: function(payload) {
         var id = guid();
         var title = payload.planTitle;
@@ -19995,9 +20015,6 @@ var AppStore = assign({}, EventEmitter.prototype, {
         });
     },
     removePlan: function(index) {
-        console.log(_plans);
-        console.log("removePlan invoked.");
-        console.log(index);
         for (var i = 0; i < _plans.length; ++i) {
             if (_plans[i].id === index) {
                 _plans.splice(i, 1);
@@ -20018,6 +20035,43 @@ var AppStore = assign({}, EventEmitter.prototype, {
             id: id,
             title: title,
             description: description
+        };
+    },
+    addNewNode: function(payload) {
+        var id = guid();
+        var item = payload.nodeItem;
+        var detail = payload.nodeDetail;
+        var currentNodes = this.getCurrentNodes;
+        currentNodes.push({
+            id: id,
+            item: item,
+            detail: detail
+        });
+    },
+    removeNode: function(index) {
+        console.log("removeNode invoked.");
+        var currentNodes = this.getCurrentNodes();
+        console.log(currentNodes);
+        for (var i = 0; i < currentNodes.length; ++i) {
+            if (currentNodes[i].node_id === index) {
+                currentNodes.splice(i, 1);
+                return ;
+            }
+        }
+        
+    },
+    updateNodeText: function(payload) {
+        var id = payload.nodeIndex;
+        var item = payload.nodeItem;
+        var detai = payload.nodeDetail;
+        if (item === '') {
+            console.log("Item cannot be empty!");
+        }
+        var currentNodes = this.getCurrentNodes;
+        currentNodes[id] = {
+            id: id,
+            item: item,
+            detail: detail
         };
     },
     emitChange: function() {

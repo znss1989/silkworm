@@ -23,6 +23,27 @@ var AppActions = {
         };
         AppDispatcher.dispatch(action);
     },
+    createNode: function(payload) {
+        var action = {
+            actionType: AppConstants.APP_CREATE_NODE,
+            payload: payload
+        };
+        AppDispatcher.dispatch(action);
+    },
+    deleteNode: function(index) {
+        var action = {
+            actionType: AppConstants.APP_DEL_NODE,
+            index:index
+        };
+        AppDispatcher.dispatch(action);
+    },
+    updateNodeText: function(payload) {
+        var action = {
+            actionType: AppConstants.APP_UPDATE_NODE_TEXT,
+            payload: payload
+        };
+        AppDispatcher.dispatch(action);
+    }
 };
 
 module.exports = AppActions;

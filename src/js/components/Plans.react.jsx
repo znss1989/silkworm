@@ -14,11 +14,8 @@ var Plans = React.createClass({
     },
     render: function() {
         var plans = this.props.plans;
-        var plansList = [];
-        for (var id in plans) {
-            plansList.push(plans[id]);
-        }
-        var plansHtml = plansList.map(function(plan) {
+        console.log(plans);
+        var plansHtml = plans.map(function(plan) {
             return (
                 <PlanItem key={plan.id} index={plan.id} title={plan.title} description={plan.description} />
             );

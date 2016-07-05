@@ -11,6 +11,7 @@ var AppStore = require('../stores/AppStore');
 function getAppState() {
     return {
         allPlans: AppStore.getAllPlans(),
+        currentNodes: AppStore.getCurrentNodes(),
     };
 };
 
@@ -33,7 +34,7 @@ var App = React.createClass({
         return (
             <div>
                 <AppHeader />
-                <AppBody plans={this.state.allPlans} />
+                <AppBody plans={this.state.allPlans} nodes={this.state.currentNodes} />
                 <AppFooter /> 
             </div>
         );

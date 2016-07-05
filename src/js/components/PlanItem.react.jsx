@@ -61,9 +61,9 @@ var PlanItem = React.createClass({
         ) : null;
         return (
             <div>
-                <h4 className={classNames({'editing': this.state.isTitleEditing})} onDoubleClick={this._onTitleDoubleClick}>{this.props.title}</h4>
+                <h4 className={classNames({'editing': this.state.isTitleEditing})} onDoubleClick={this._onTitleDoubleClick}>{title}</h4>
                 {titlePrompt}
-                <p className={classNames({'editing': this.state.isDescriptionEditing})} onDoubleClick={this._onDescriptionDoubleClick}>{this.props.description}</p>
+                <p className={classNames({'editing': this.state.isDescriptionEditing})} onDoubleClick={this._onDescriptionDoubleClick}>{description}</p>
                 {descriptionPrompt}
                 <div onClick={this._onClickRemove}>-</div>
             </div>

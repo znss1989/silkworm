@@ -19825,11 +19825,32 @@ var AppActions = {
         };
         AppDispatcher.dispatch(action);
     },
+    createNode: function(payload) {
+        var action = {
+            actionType: AppConstants.APP_CREATE_NODE,
+            payload: payload
+        };
+        AppDispatcher.dispatch(action);
+    },
+    deleteNode: function(index) {
+        var action = {
+            actionType: AppConstants.APP_DEL_NODE,
+            index:index
+        };
+        AppDispatcher.dispatch(action);
+    },
+    updateNodeText: function(payload) {
+        var action = {
+            actionType: AppConstants.APP_UPDATE_NODE_TEXT,
+            payload: payload
+        };
+        AppDispatcher.dispatch(action);
+    }
 };
 
 module.exports = AppActions;
 
-},{"../constants/AppConstants":175,"../dispatcher/AppDispatcher":177}],166:[function(require,module,exports){
+},{"../constants/AppConstants":178,"../dispatcher/AppDispatcher":180}],166:[function(require,module,exports){
 var HomeDispatcher = require('../dispatcher/AppDispatcher');
 var HomeConstants = require('../constants/AppConstants');
 
@@ -19837,7 +19858,7 @@ var HomeActions = {};
 
 module.exports = HomeActions;
 
-},{"../constants/AppConstants":175,"../dispatcher/AppDispatcher":177}],167:[function(require,module,exports){
+},{"../constants/AppConstants":178,"../dispatcher/AppDispatcher":180}],167:[function(require,module,exports){
 var React = require('react');
 var ReactDOM = require('react-dom');
 var AppAPI = require('./utils/AppAPI.js');
@@ -19849,7 +19870,7 @@ ReactDOM.render(
     document.getElementById('app')
 );
 
-},{"./components/App.react.jsx":168,"./utils/AppAPI.js":181,"react":164,"react-dom":8}],168:[function(require,module,exports){
+},{"./components/App.react.jsx":168,"./utils/AppAPI.js":184,"react":164,"react-dom":8}],168:[function(require,module,exports){
 var React = require('react');
 
 var AppHeader = require('./AppHeader.react.jsx');
@@ -19863,6 +19884,7 @@ var AppStore = require('../stores/AppStore');
 function getAppState() {
     return {
         allPlans: AppStore.getAllPlans(),
+        currentNodes: AppStore.getCurrentNodes(),
     };
 };
 
@@ -19885,7 +19907,7 @@ var App = React.createClass({displayName: "App",
         return (
             React.createElement("div", null, 
                 React.createElement(AppHeader, null), 
-                React.createElement(AppBody, {plans: this.state.allPlans}), 
+                React.createElement(AppBody, {plans: this.state.allPlans, nodes: this.state.currentNodes}), 
                 React.createElement(AppFooter, null)
             )
         );
@@ -19894,10 +19916,11 @@ var App = React.createClass({displayName: "App",
 
 module.exports = App;
 
-},{"../actions/AppActions":165,"../dispatcher/AppDispatcher":177,"../stores/AppStore":179,"./AppBody.react.jsx":169,"./AppFooter.react.jsx":170,"./AppHeader.react.jsx":171,"react":164}],169:[function(require,module,exports){
+},{"../actions/AppActions":165,"../dispatcher/AppDispatcher":180,"../stores/AppStore":182,"./AppBody.react.jsx":169,"./AppFooter.react.jsx":170,"./AppHeader.react.jsx":171,"react":164}],169:[function(require,module,exports){
 var React = require('react');
 
 var Plans = require('./Plans.react.jsx');
+var Nodes = require('./Nodes.react.jsx');
 
 var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
@@ -19906,8 +19929,8 @@ var AppBody = React.createClass({displayName: "AppBody",
     render: function() {
         return (
             React.createElement("div", null, 
-                React.createElement(Plans, {plans: this.props.plans})
-
+                React.createElement(Plans, {plans: this.props.plans}), 
+                React.createElement(Nodes, {nodes: this.props.nodes})
             )
         );
     }
@@ -19915,10 +19938,7 @@ var AppBody = React.createClass({displayName: "AppBody",
 
 module.exports = AppBody;
 
-
-// <Nodes nodes={this.props.nodes} />
-
-},{"../actions/AppActions":165,"../stores/AppStore":179,"./Plans.react.jsx":174,"react":164}],170:[function(require,module,exports){
+},{"../actions/AppActions":165,"../stores/AppStore":182,"./Nodes.react.jsx":175,"./Plans.react.jsx":177,"react":164}],170:[function(require,module,exports){
 var React = require('react');
 
 var AppActions = require('../actions/HomeActions');
@@ -19936,7 +19956,7 @@ var HomeFooter = React.createClass({displayName: "HomeFooter",
 
 module.exports = HomeFooter;
 
-},{"../actions/HomeActions":166,"../stores/HomeStore":180,"react":164}],171:[function(require,module,exports){
+},{"../actions/HomeActions":166,"../stores/HomeStore":183,"react":164}],171:[function(require,module,exports){
 var React = require('react');
 
 var AppActions = require('../actions/AppActions');
@@ -19957,7 +19977,57 @@ var AppHeader = React.createClass({displayName: "AppHeader",
 
 module.exports = AppHeader;
 
-},{"../actions/AppActions":165,"../stores/AppStore":179,"react":164}],172:[function(require,module,exports){
+},{"../actions/AppActions":165,"../stores/AppStore":182,"react":164}],172:[function(require,module,exports){
+var React = require('react');
+
+var AppActions = require('../actions/AppActions');
+var AppStore = require('../stores/AppStore');
+
+var NewNodeForm = React.createClass({displayName: "NewNodeForm",
+    getInitialState: function() {
+        return {
+           item: this.props.item || '',
+           detail: this.props.detail || '' 
+        };
+    },
+    _onItemChange: function(event) {
+        this.setState({
+            item: event.target.value
+        });
+    },
+    _onDetailChange: function(event) {
+        this.setState({
+            detail: event.target.value
+        });
+    },
+    createNewNode: function(event) {
+        event.preventDefault(); // prevent reloading
+        var payload = {
+            nodeItem: this.state.item,
+            nodeDetail: this.state.detail
+        };
+        this.props.onSave(payload);
+        this.setState({
+            item: '',
+            detail: ''
+        });
+    },
+    render: function() {
+        return (
+            React.createElement("form", {id: "new-node", method: "post", onSubmit: this.createNewNode}, 
+                React.createElement("label", {htmlFor: "node-item"}, "Node item"), 
+                React.createElement("input", {id: "node-item", type: "text", placeholder: "What's this node?", value: this.state.item, onChange: this._onItemChange}), 
+                React.createElement("label", {htmlFor: "node-detail"}, "Node detail"), 
+                React.createElement("input", {id: "node-detail", type: "text", placeholder: "More information for this node...", value: this.state.detail, onChange: this._onDetailChange}), 
+                React.createElement("button", {type: "submit", form: "new-node"}, "Add as a new node")
+            )
+        );
+    }
+});
+
+module.exports = NewNodeForm;
+
+},{"../actions/AppActions":165,"../stores/AppStore":182,"react":164}],173:[function(require,module,exports){
 var React = require('react');
 
 var AppActions = require('../actions/AppActions');
@@ -20007,7 +20077,118 @@ var NewPlanForm = React.createClass({displayName: "NewPlanForm",
 
 module.exports = NewPlanForm;
 
-},{"../actions/AppActions":165,"../stores/AppStore":179,"react":164}],173:[function(require,module,exports){
+},{"../actions/AppActions":165,"../stores/AppStore":182,"react":164}],174:[function(require,module,exports){
+var React = require('react');
+var classNames = require('classnames');
+
+var AppActions = require('../actions/AppActions');
+var AppStore = require('../stores/AppStore');
+
+var Node = React.createClass({displayName: "Node",
+    getInitialState: function() {
+        return {
+            isItemEditing: false,
+            isDetailEditing: false,
+            item: this.props.item || '',
+            detail: this.props.detail || ''
+        };
+    },
+    _onItemDoubleClick: function() {
+        this.setState({isItemEditing: true});
+    },
+    _onDetailDoubleClick: function() {
+        this.setState({isDetailEditing: true});
+    },
+    _onItemChange: function(event) {
+        this.setState({
+            item: event.target.value
+        });
+    },
+    _onDetailChange: function(event) {
+        this.setState({
+            detail: event.target.value
+        });
+    },
+    _onSave: function() {
+        var payload = {
+            nodeIndex: this.props.index,
+            nodeItem: this.state.item,
+            nodeDetail: this.state.detail
+        };
+        AppActions.updateNodeText(payload);
+        this.setState({
+            isItemEditing: false,
+            isDetailEditing: false
+        });
+    },
+    _onClickRemove: function(event) {
+        console.log("_onClickRemove invoked");
+        AppActions.deleteNode(this.props.index);
+    },
+    render: function() {
+        var item = this.props.item;
+        var itemPrompt = (this.state.isItemEditing) ? (
+            React.createElement("div", {className: "itemPrompt"}, 
+                React.createElement("label", {htmlFor: "node-item-prompt"}, "Node item"), 
+                React.createElement("input", {id: "node-item-prompt", type: "text", placeholder: this.state.item, value: this.state.item, onChange: this._onItemChange, onBlur: this._onSave})
+            )
+        ) : null;
+        // var detailPrompt = (this.state.isDetailEditing) ? (
+        //     <div className="detailPrompt">
+        //         <label htmlFor="node-detail-prompt">Node detail</label>
+        //         <input id="node-detail-prompt" type="text" placeholder={this.state.detail} value={this.state.detail} onChange={this._onDetailChange} onBlur={this._onSave} />
+        //     </div>
+        // ) : null;
+        return (
+            React.createElement("div", null, 
+                React.createElement("h5", {className: classNames({'editing': this.state.isItemEditing}), onDoubleClick: this._onItemDoubleClick}, item), 
+                React.createElement("div", {onClick: this._onClickRemove}, "-")
+            )
+        );
+    }
+});
+
+module.exports = Node;
+
+                // 
+                // <p className={classNames({'editing': this.state.isDetailEditing})} onDoubleClick={this._onDetailDoubleClick}>{this.props.detail}</p>
+                // 
+
+},{"../actions/AppActions":165,"../stores/AppStore":182,"classnames":3,"react":164}],175:[function(require,module,exports){
+var React = require('react');
+
+var NewNodeForm = require('./NewNodeForm.react.jsx');
+var Node = require('./Node.react.jsx');
+
+var AppActions = require('../actions/AppActions');
+var AppStore = require('../stores/AppStore');
+
+var Nodes = React.createClass({displayName: "Nodes",
+    _onSave: function(payload) {
+        if (payload.planTitle) {
+            AppActions.createNode(payload);
+        }
+    },
+    render: function() {
+        var nodes = this.props.nodes;
+        console.log(nodes);
+        var nodesHtml = nodes.map(function(node) {
+            return (
+                React.createElement(Node, {key: node.node_id, index: node.node_id, item: node.node_item, detail: node.node_detail})
+            );
+        });
+        return (
+            React.createElement("div", {id: "nodes-list"}, 
+                React.createElement(NewNodeForm, {onSave: this._onSave}), 
+                nodesHtml
+            )
+        );
+    }
+});
+
+module.exports = Nodes;
+
+},{"../actions/AppActions":165,"../stores/AppStore":182,"./NewNodeForm.react.jsx":172,"./Node.react.jsx":174,"react":164}],176:[function(require,module,exports){
 var React = require('react');
 var classNames = require('classnames');
 
@@ -20071,9 +20252,9 @@ var PlanItem = React.createClass({displayName: "PlanItem",
         ) : null;
         return (
             React.createElement("div", null, 
-                React.createElement("h4", {className: classNames({'editing': this.state.isTitleEditing}), onDoubleClick: this._onTitleDoubleClick}, this.props.title), 
+                React.createElement("h4", {className: classNames({'editing': this.state.isTitleEditing}), onDoubleClick: this._onTitleDoubleClick}, title), 
                 titlePrompt, 
-                React.createElement("p", {className: classNames({'editing': this.state.isDescriptionEditing}), onDoubleClick: this._onDescriptionDoubleClick}, this.props.description), 
+                React.createElement("p", {className: classNames({'editing': this.state.isDescriptionEditing}), onDoubleClick: this._onDescriptionDoubleClick}, description), 
                 descriptionPrompt, 
                 React.createElement("div", {onClick: this._onClickRemove}, "-")
             )
@@ -20083,7 +20264,7 @@ var PlanItem = React.createClass({displayName: "PlanItem",
 
 module.exports = PlanItem;
 
-},{"../actions/AppActions":165,"../stores/AppStore":179,"classnames":3,"react":164}],174:[function(require,module,exports){
+},{"../actions/AppActions":165,"../stores/AppStore":182,"classnames":3,"react":164}],177:[function(require,module,exports){
 var React = require('react');
 
 var NewPlanForm = require('./NewPlanForm.react.jsx');
@@ -20100,11 +20281,8 @@ var Plans = React.createClass({displayName: "Plans",
     },
     render: function() {
         var plans = this.props.plans;
-        var plansList = [];
-        for (var id in plans) {
-            plansList.push(plans[id]);
-        }
-        var plansHtml = plansList.map(function(plan) {
+        console.log(plans);
+        var plansHtml = plans.map(function(plan) {
             return (
                 React.createElement(PlanItem, {key: plan.id, index: plan.id, title: plan.title, description: plan.description})
             );
@@ -20120,19 +20298,22 @@ var Plans = React.createClass({displayName: "Plans",
 
 module.exports = Plans;
 
-},{"../actions/AppActions":165,"../stores/AppStore":179,"./NewPlanForm.react.jsx":172,"./PlanItem.react.jsx":173,"react":164}],175:[function(require,module,exports){
+},{"../actions/AppActions":165,"../stores/AppStore":182,"./NewPlanForm.react.jsx":173,"./PlanItem.react.jsx":176,"react":164}],178:[function(require,module,exports){
 module.exports = {
     APP_CREATE_PLAN: "APP_CREATE_PLAN",
     APP_DEL_PLAN: "APP_DEL_PLAN",
-    APP_UPDATE_PLAN_TEXT: "APP_UPDATE_PLAN_TEXT"
+    APP_UPDATE_PLAN_TEXT: "APP_UPDATE_PLAN_TEXT",
+    APP_CREATE_NODE: "APP_CREATE_NODE",
+    APP_DEL_NODE: "APP_DEL_NODE",
+    APP_UPDATE_NODE_TEXT: "APP_UPDATE_NODE_TEXT",
 }
 
-},{}],176:[function(require,module,exports){
+},{}],179:[function(require,module,exports){
 module.exports = {
     
 }
 
-},{}],177:[function(require,module,exports){
+},{}],180:[function(require,module,exports){
 var Dispatcher = require('flux').Dispatcher;
 var assign = require('object-assign');
 
@@ -20163,6 +20344,19 @@ AppDispatcher.register(function(action) {
         case AppConstants.APP_UPDATE_PLAN_TEXT:
             AppStore.updatePlanText(action.payload);
             break;
+        // Respond to APP_CREATE_NODE action
+        case AppConstants.APP_CREATE_NODE:
+            AppStore.addNewNode(action.payload);
+            break;
+        // Respond to APP_DEL_NODE action
+        case AppConstants.APP_DEL_NODE:
+            AppStore.removeNode(action.index);
+            break;
+        // Respond to APP_UPDATE_NODE_TEXT action
+        case AppConstants.APP_UPDATE_NODE_TEXT:
+            AppStore.updateNodeText(action.payload);
+            break;
+        
         // Respond to ...
         default:
             return true;
@@ -20172,7 +20366,7 @@ AppDispatcher.register(function(action) {
 
 module.exports = AppDispatcher;
 
-},{"../constants/AppConstants":175,"../stores/AppStore":179,"flux":4,"object-assign":7}],178:[function(require,module,exports){
+},{"../constants/AppConstants":178,"../stores/AppStore":182,"flux":4,"object-assign":7}],181:[function(require,module,exports){
 var Dispatcher = require('flux').Dispatcher;
 var assign = require('object-assign');
 
@@ -20188,7 +20382,7 @@ var HomeDispatcher = assign(new Dispatcher(), {
 
 module.exports = HomeDispatcher;
 
-},{"flux":4,"object-assign":7}],179:[function(require,module,exports){
+},{"flux":4,"object-assign":7}],182:[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AppConstants = require('../constants/AppConstants');
 var EventEmitter = require('events').EventEmitter;
@@ -20213,12 +20407,12 @@ _plans.push({
         nodes: [
             {
                 node_id: "7162b3b4-5662-9b04-09c0-786500b907b5",
-                node_title: "Book a plane ticket to Paris",
+                node_item: "Book a plane ticket to Paris",
                 node_detail: {},
             },
             {
                 node_id: "80e020a9-88c0-9e0d-6dbe-9832a23ee9e0",
-                node_title: "Departure from airport Chengdu",
+                node_item: "Departure from airport Chengdu",
                 node_detail: {}
             }
         ]
@@ -20238,6 +20432,10 @@ var AppStore = assign({}, EventEmitter.prototype, {
     getAllPlans: function() {
         return _plans;
     },
+    getCurrentNodes: function() {
+        var id = _plans.length - 1; // default fetch latest
+        return _plans[id].nodes;
+    },
     addNewPlan: function(payload) {
         var id = guid();
         var title = payload.planTitle;
@@ -20249,9 +20447,6 @@ var AppStore = assign({}, EventEmitter.prototype, {
         });
     },
     removePlan: function(index) {
-        console.log(_plans);
-        console.log("removePlan invoked.");
-        console.log(index);
         for (var i = 0; i < _plans.length; ++i) {
             if (_plans[i].id === index) {
                 _plans.splice(i, 1);
@@ -20274,6 +20469,43 @@ var AppStore = assign({}, EventEmitter.prototype, {
             description: description
         };
     },
+    addNewNode: function(payload) {
+        var id = guid();
+        var item = payload.nodeItem;
+        var detail = payload.nodeDetail;
+        var currentNodes = this.getCurrentNodes;
+        currentNodes.push({
+            id: id,
+            item: item,
+            detail: detail
+        });
+    },
+    removeNode: function(index) {
+        console.log("removeNode invoked.");
+        var currentNodes = this.getCurrentNodes();
+        console.log(currentNodes);
+        for (var i = 0; i < currentNodes.length; ++i) {
+            if (currentNodes[i].node_id === index) {
+                currentNodes.splice(i, 1);
+                return ;
+            }
+        }
+        
+    },
+    updateNodeText: function(payload) {
+        var id = payload.nodeIndex;
+        var item = payload.nodeItem;
+        var detai = payload.nodeDetail;
+        if (item === '') {
+            console.log("Item cannot be empty!");
+        }
+        var currentNodes = this.getCurrentNodes;
+        currentNodes[id] = {
+            id: id,
+            item: item,
+            detail: detail
+        };
+    },
     emitChange: function() {
         this.emit(CHANGE_EVENT);
     },
@@ -20287,7 +20519,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
 
 module.exports = AppStore;
 
-},{"../constants/AppConstants":175,"../dispatcher/AppDispatcher":177,"../utils/AppAPI.js":181,"events":1,"object-assign":7}],180:[function(require,module,exports){
+},{"../constants/AppConstants":178,"../dispatcher/AppDispatcher":180,"../utils/AppAPI.js":184,"events":1,"object-assign":7}],183:[function(require,module,exports){
 var HomeDispatcher = require('../dispatcher/HomeDispatcher');
 var AppConstants = require('../constants/HomeConstants');
 var EventEmitter = require('events').EventEmitter;
@@ -20320,6 +20552,6 @@ HomeDispatcher.register(function(payload) {
 
 module.exports = HomeStore;
 
-},{"../constants/HomeConstants":176,"../dispatcher/HomeDispatcher":178,"../utils/AppAPI.js":181,"events":1,"object-assign":7}],181:[function(require,module,exports){
+},{"../constants/HomeConstants":179,"../dispatcher/HomeDispatcher":181,"../utils/AppAPI.js":184,"events":1,"object-assign":7}],184:[function(require,module,exports){
 
 },{}]},{},[167]);
