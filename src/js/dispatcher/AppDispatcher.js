@@ -28,6 +28,10 @@ AppDispatcher.register(function(action) {
         case AppConstants.APP_UPDATE_PLAN_TEXT:
             AppStore.updatePlanText(action.payload);
             break;
+        // Respond to APP_SELECT_PLAN action
+        case AppConstants.APP_SELECT_PLAN:
+            AppStore.changeSelectIndex(action.index);
+            break;
         // Respond to APP_CREATE_NODE action
         case AppConstants.APP_CREATE_NODE:
             AppStore.addNewNode(action.payload);

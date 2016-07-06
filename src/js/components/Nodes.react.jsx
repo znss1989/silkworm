@@ -14,7 +14,6 @@ var Nodes = React.createClass({
     },
     render: function() {
         var nodes = this.props.nodes;
-        console.log(nodes);
         var nodesHtml = nodes.map(function(node) {
             return (
                 <Node key={node.node_id} index={node.node_id} item={node.node_item} detail={node.node_detail} />

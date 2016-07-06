@@ -19859,6 +19859,7 @@ module.exports = {
     APP_CREATE_PLAN: "APP_CREATE_PLAN",
     APP_DEL_PLAN: "APP_DEL_PLAN",
     APP_UPDATE_PLAN_TEXT: "APP_UPDATE_PLAN_TEXT",
+    APP_SELECT_PLAN: "APP_SELECT_PLAN",
     APP_CREATE_NODE: "APP_CREATE_NODE",
     APP_DEL_NODE: "APP_DEL_NODE",
     APP_UPDATE_NODE_TEXT: "APP_UPDATE_NODE_TEXT",
@@ -19899,6 +19900,10 @@ AppDispatcher.register(function(action) {
         // Respond to APP_UPDATE_PLAN_TEXT action
         case AppConstants.APP_UPDATE_PLAN_TEXT:
             AppStore.updatePlanText(action.payload);
+            break;
+        // Respond to APP_SELECT_PLAN action
+        case AppConstants.APP_SELECT_PLAN:
+            AppStore.changeSelectIndex(action.index);
             break;
         // Respond to APP_CREATE_NODE action
         case AppConstants.APP_CREATE_NODE:
@@ -19986,6 +19991,8 @@ _plans.push({
         ]
 });
 
+var _selectIndex = _plans.length - 1;
+
 // Random long identity generator
 function guid() {
     function s4() {
@@ -20000,9 +20007,12 @@ var AppStore = assign({}, EventEmitter.prototype, {
     getAllPlans: function() {
         return _plans;
     },
-    getCurrentNodes: function() {
-        var id = _plans.length - 1; // default fetch latest
-        return _plans[id].nodes;
+    getSelectIndex: function() {
+        return _selectIndex;
+    },
+    getCurrentNodes: function(id) {
+        var selectIndex = _selectIndex;
+        return _plans[selectIndex].nodes;
     },
     addNewPlan: function(payload) {
         var id = guid();
@@ -20037,8 +20047,17 @@ var AppStore = assign({}, EventEmitter.prototype, {
             description: description
         };
     },
+    changeSelectIndex: function(id) {
+        var selectIndex = _selectIndex;
+        for (var i = 0; i < _plans.length; ++i) {
+            if (_plans[i].id === id) {
+                selectIndex = i;
+                _selectIndex = selectIndex;
+                return ;
+            }
+        }
+    },
     addNewNode: function(payload) {
-        console.log("addNewNode invoked.");
         var id = guid();
         var item = payload.nodeItem;
         var currentNodes = this.getCurrentNodes();

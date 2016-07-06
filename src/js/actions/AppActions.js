@@ -23,6 +23,13 @@ var AppActions = {
         };
         AppDispatcher.dispatch(action);
     },
+    selectCurrentPlan: function(index) {
+        var action = {
+            actionType: AppConstants.APP_SELECT_PLAN,
+            index: index
+        };
+        AppDispatcher.dispatch(action);
+    },
     createNode: function(payload) {
         var action = {
             actionType: AppConstants.APP_CREATE_NODE,

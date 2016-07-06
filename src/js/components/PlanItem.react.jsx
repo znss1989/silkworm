@@ -24,6 +24,10 @@ var PlanItem = React.createClass({
             title: event.target.value
         });
     },
+    _onSelect: function(event) {
+        var planIndex = this.props.index;
+        AppActions.selectCurrentPlan(planIndex);
+    },
     _onDescriptionChange: function(event) {
         this.setState({
             description: event.target.value
@@ -64,6 +68,7 @@ var PlanItem = React.createClass({
             <div>
                 <h4 className={classNames({'editing': this.state.isTitleEditing})} onDoubleClick={this._onTitleDoubleClick}>{title}</h4>
                 {titlePrompt}
+                <span onClick={this._onSelect}>Select</span>
                 <p className={classNames({'editing': this.state.isDescriptionEditing})} onDoubleClick={this._onDescriptionDoubleClick}>{description}</p>
                 {descriptionPrompt}
                 <div onClick={this._onClickRemove}>-</div>
