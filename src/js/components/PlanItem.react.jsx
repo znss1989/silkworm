@@ -47,6 +47,7 @@ var PlanItem = React.createClass({
     render: function() {
         var title = this.props.title;
         var description = this.props.description;
+        // Show prompt and hide orignal content when editing
         var titlePrompt = (this.state.isTitleEditing) ? (
             <div className="titlePrompt">
                 <label htmlFor="plan-title-prompt">Plan title</label>

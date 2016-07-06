@@ -1,3 +1,7 @@
 #plans-list .editing {
     display: none;
 }
+
+#nodes-list .editing {
+    display: none;
+}

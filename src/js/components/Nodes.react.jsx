@@ -8,7 +8,7 @@ var AppStore = require('../stores/AppStore');
 
 var Nodes = React.createClass({
     _onSave: function(payload) {
-        if (payload.planTitle) {
+        if (payload.nodeItem) {
             AppActions.createNode(payload);
         }
     },

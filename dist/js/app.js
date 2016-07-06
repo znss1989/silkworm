@@ -19987,7 +19987,6 @@ var NewNodeForm = React.createClass({displayName: "NewNodeForm",
     getInitialState: function() {
         return {
            item: this.props.item || '',
-           detail: this.props.detail || '' 
         };
     },
     _onItemChange: function(event) {
@@ -19995,21 +19994,14 @@ var NewNodeForm = React.createClass({displayName: "NewNodeForm",
             item: event.target.value
         });
     },
-    _onDetailChange: function(event) {
-        this.setState({
-            detail: event.target.value
-        });
-    },
     createNewNode: function(event) {
         event.preventDefault(); // prevent reloading
         var payload = {
             nodeItem: this.state.item,
-            nodeDetail: this.state.detail
         };
         this.props.onSave(payload);
         this.setState({
             item: '',
-            detail: ''
         });
     },
     render: function() {
@@ -20017,8 +20009,6 @@ var NewNodeForm = React.createClass({displayName: "NewNodeForm",
             React.createElement("form", {id: "new-node", method: "post", onSubmit: this.createNewNode}, 
                 React.createElement("label", {htmlFor: "node-item"}, "Node item"), 
                 React.createElement("input", {id: "node-item", type: "text", placeholder: "What's this node?", value: this.state.item, onChange: this._onItemChange}), 
-                React.createElement("label", {htmlFor: "node-detail"}, "Node detail"), 
-                React.createElement("input", {id: "node-detail", type: "text", placeholder: "More information for this node...", value: this.state.detail, onChange: this._onDetailChange}), 
                 React.createElement("button", {type: "submit", form: "new-node"}, "Add as a new node")
             )
         );
@@ -20088,60 +20078,43 @@ var Node = React.createClass({displayName: "Node",
     getInitialState: function() {
         return {
             isItemEditing: false,
-            isDetailEditing: false,
             item: this.props.item || '',
-            detail: this.props.detail || ''
         };
     },
     _onItemDoubleClick: function() {
         this.setState({isItemEditing: true});
-    },
-    _onDetailDoubleClick: function() {
-        this.setState({isDetailEditing: true});
     },
     _onItemChange: function(event) {
         this.setState({
             item: event.target.value
         });
     },
-    _onDetailChange: function(event) {
-        this.setState({
-            detail: event.target.value
-        });
-    },
     _onSave: function() {
         var payload = {
             nodeIndex: this.props.index,
             nodeItem: this.state.item,
-            nodeDetail: this.state.detail
         };
         AppActions.updateNodeText(payload);
         this.setState({
             isItemEditing: false,
-            isDetailEditing: false
         });
     },
     _onClickRemove: function(event) {
-        console.log("_onClickRemove invoked");
         AppActions.deleteNode(this.props.index);
     },
     render: function() {
         var item = this.props.item;
+        // Show prompt and hide orignal content when editing
         var itemPrompt = (this.state.isItemEditing) ? (
             React.createElement("div", {className: "itemPrompt"}, 
                 React.createElement("label", {htmlFor: "node-item-prompt"}, "Node item"), 
                 React.createElement("input", {id: "node-item-prompt", type: "text", placeholder: this.state.item, value: this.state.item, onChange: this._onItemChange, onBlur: this._onSave})
             )
         ) : null;
-        // var detailPrompt = (this.state.isDetailEditing) ? (
-        //     <div className="detailPrompt">
-        //         <label htmlFor="node-detail-prompt">Node detail</label>
-        //         <input id="node-detail-prompt" type="text" placeholder={this.state.detail} value={this.state.detail} onChange={this._onDetailChange} onBlur={this._onSave} />
-        //     </div>
-        // ) : null;
         return (
             React.createElement("div", null, 
                 React.createElement("h5", {className: classNames({'editing': this.state.isItemEditing}), onDoubleClick: this._onItemDoubleClick}, item), 
+                itemPrompt, 
                 React.createElement("div", {onClick: this._onClickRemove}, "-")
             )
         );
@@ -20149,10 +20122,6 @@ var Node = React.createClass({displayName: "Node",
 });
 
 module.exports = Node;
-
-                // 
-                // <p className={classNames({'editing': this.state.isDetailEditing})} onDoubleClick={this._onDetailDoubleClick}>{this.props.detail}</p>
-                // 
 
 },{"../actions/AppActions":165,"../stores/AppStore":182,"classnames":3,"react":164}],175:[function(require,module,exports){
 var React = require('react');
@@ -20165,7 +20134,7 @@ var AppStore = require('../stores/AppStore');
 
 var Nodes = React.createClass({displayName: "Nodes",
     _onSave: function(payload) {
-        if (payload.planTitle) {
+        if (payload.nodeItem) {
             AppActions.createNode(payload);
         }
     },
@@ -20238,6 +20207,7 @@ var PlanItem = React.createClass({displayName: "PlanItem",
     render: function() {
         var title = this.props.title;
         var description = this.props.description;
+        // Show prompt and hide orignal content when editing
         var titlePrompt = (this.state.isTitleEditing) ? (
             React.createElement("div", {className: "titlePrompt"}, 
                 React.createElement("label", {htmlFor: "plan-title-prompt"}, "Plan title"), 
@@ -20281,7 +20251,6 @@ var Plans = React.createClass({displayName: "Plans",
     },
     render: function() {
         var plans = this.props.plans;
-        console.log(plans);
         var plansHtml = plans.map(function(plan) {
             return (
                 React.createElement(PlanItem, {key: plan.id, index: plan.id, title: plan.title, description: plan.description})
@@ -20470,41 +20439,39 @@ var AppStore = assign({}, EventEmitter.prototype, {
         };
     },
     addNewNode: function(payload) {
+        console.log("addNewNode invoked.");
         var id = guid();
         var item = payload.nodeItem;
-        var detail = payload.nodeDetail;
-        var currentNodes = this.getCurrentNodes;
+        var currentNodes = this.getCurrentNodes();
         currentNodes.push({
-            id: id,
-            item: item,
-            detail: detail
+            node_id: id,
+            node_item: item,
+            node_detail: {}
         });
+        console.log(_plans[1]);
     },
     removeNode: function(index) {
-        console.log("removeNode invoked.");
         var currentNodes = this.getCurrentNodes();
-        console.log(currentNodes);
         for (var i = 0; i < currentNodes.length; ++i) {
             if (currentNodes[i].node_id === index) {
                 currentNodes.splice(i, 1);
                 return ;
             }
         }
-        
     },
     updateNodeText: function(payload) {
-        var id = payload.nodeIndex;
+        var index = payload.nodeIndex;
         var item = payload.nodeItem;
-        var detai = payload.nodeDetail;
         if (item === '') {
             console.log("Item cannot be empty!");
+            return ;
         }
-        var currentNodes = this.getCurrentNodes;
-        currentNodes[id] = {
-            id: id,
-            item: item,
-            detail: detail
-        };
+        var currentNodes = this.getCurrentNodes();
+        for (var i = 0; i < currentNodes.length; ++i) {
+            if (currentNodes[i].node_id === index) {
+                currentNodes[i].node_item = item;
+            }
+        }
     },
     emitChange: function() {
         this.emit(CHANGE_EVENT);

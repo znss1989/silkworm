@@ -85,41 +85,39 @@ var AppStore = assign({}, EventEmitter.prototype, {
         };
     },
     addNewNode: function(payload) {
+        console.log("addNewNode invoked.");
         var id = guid();
         var item = payload.nodeItem;
-        var detail = payload.nodeDetail;
-        var currentNodes = this.getCurrentNodes;
+        var currentNodes = this.getCurrentNodes();
         currentNodes.push({
-            id: id,
-            item: item,
-            detail: detail
+            node_id: id,
+            node_item: item,
+            node_detail: {}
         });
+        console.log(_plans[1]);
     },
     removeNode: function(index) {
-        console.log("removeNode invoked.");
         var currentNodes = this.getCurrentNodes();
-        console.log(currentNodes);
         for (var i = 0; i < currentNodes.length; ++i) {
             if (currentNodes[i].node_id === index) {
                 currentNodes.splice(i, 1);
                 return ;
             }
         }
-        
     },
     updateNodeText: function(payload) {
-        var id = payload.nodeIndex;
+        var index = payload.nodeIndex;
         var item = payload.nodeItem;
-        var detai = payload.nodeDetail;
         if (item === '') {
             console.log("Item cannot be empty!");
+            return ;
         }
-        var currentNodes = this.getCurrentNodes;
-        currentNodes[id] = {
-            id: id,
-            item: item,
-            detail: detail
-        };
+        var currentNodes = this.getCurrentNodes();
+        for (var i = 0; i < currentNodes.length; ++i) {
+            if (currentNodes[i].node_id === index) {
+                currentNodes[i].node_item = item;
+            }
+        }
     },
     emitChange: function() {
         this.emit(CHANGE_EVENT);
