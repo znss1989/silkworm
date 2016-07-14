@@ -20052,11 +20052,38 @@ var NewNodeForm = React.createClass({displayName: "NewNodeForm",
     },
     render: function() {
         return (
-            React.createElement("form", {id: "new-node", method: "post", onSubmit: this.createNewNode}, 
-                React.createElement("label", {htmlFor: "node-item"}, "Node item"), 
-                React.createElement("input", {id: "node-item", type: "text", placeholder: "What's this node?", value: this.state.item, onChange: this._onItemChange}), 
-                React.createElement("button", {className: "btn btn-primary-outline", type: "submit", form: "new-node"}, "Add as a new node")
-            )  
+            React.createElement("div", null, 
+                React.createElement("button", {type: "button", className: "btn btn-primary", "data-toggle": "modal", "data-target": "#new-node-form"}, 
+                    "Add a node"
+                ), 
+
+                React.createElement("div", {className: "modal fade", id: "new-node-form", role: "dialog", "aria-labelledby": "myModalLabel", "aria-hidden": "true"}, 
+                    React.createElement("div", {className: "modal-dialog", role: "document"}, 
+                        React.createElement("div", {className: "modal-content"}, 
+                            React.createElement("div", {className: "modal-header"}, 
+                                React.createElement("button", {type: "button", className: "close", "data-dismiss": "modal", "aria-label": "Close"}, 
+                                    React.createElement("span", {"aria-hidden": "true"}, "×")
+                                ), 
+                            React.createElement("h4", {className: "modal-title", id: "myModalLabel"}, "Add a new node for this plan...")
+                            ), 
+                            React.createElement("div", {className: "modal-body"}, 
+                                React.createElement("form", {id: "new-node", method: "post", onSubmit: this.createNewNode}, 
+                                    React.createElement("div", {className: "form-group"}, 
+                                        React.createElement("label", {htmlFor: "node-item"}, "Node item"), 
+                                        React.createElement("input", {className: "form-control", id: "node-item", type: "text", placeholder: "What's this node?", value: this.state.item, onChange: this._onItemChange})
+                                    )
+                                )
+                            ), 
+                            React.createElement("div", {className: "modal-footer"}, 
+                                React.createElement("button", {className: "btn btn-info", type: "submit", form: "new-node"}, "Save"), 
+                                React.createElement("button", {type: "button", className: "btn btn-secondary", "data-dismiss": "modal"}, "Close")
+                            )
+                        )
+                    )
+                )
+            )
+
+ 
         );
     }
 });
