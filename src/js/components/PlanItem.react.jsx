@@ -14,6 +14,7 @@ var PlanItem = React.createClass({
         };
     },
     _onTitleDoubleClick: function() {
+        console.log(this.state.title);
         this.setState({isTitleEditing: true});
     },
     _onDescriptionDoubleClick: function() {
@@ -23,15 +24,16 @@ var PlanItem = React.createClass({
         this.setState({
             title: event.target.value
         });
-    },
-    _onSelect: function(event) {
-        var planIndex = this.props.index;
-        AppActions.selectCurrentPlan(planIndex);
+        console.log(this.state.title);
     },
     _onDescriptionChange: function(event) {
         this.setState({
             description: event.target.value
         });
+    },
+    _onSelect: function(event) {
+        var planIndex = this.props.index;
+        AppActions.selectCurrentPlan(planIndex);
     },
     _onSave: function() {
         var payload = {
@@ -39,6 +41,8 @@ var PlanItem = React.createClass({
             planTitle: this.state.title,
             planDescription: this.state.description
         };
+        console.log("_onSave payload is: ");
+        console.log(payload);
         AppActions.updatePlanText(payload);
         this.setState({
             isTitleEditing: false,
@@ -48,9 +52,19 @@ var PlanItem = React.createClass({
     _onClickRemove: function(event) {
         AppActions.deletePlan(this.props.index);
     },
+    // savePlanChange: function(event) {
+    //     event.preventDefault(); // prevent reloading
+    //     var payload = {
+    //         planTitle: this.state.title,
+    //         planDescription: this.state.description
+    //     };
+    //     AppActions.updatePlanText(payload);
+    // },
     render: function() {
+        console.log(this.props.title + " rendered!!!");
         var title = this.props.title;
         var description = this.props.description;
+
         // Show prompt and hide orignal content when editing
         var titlePrompt = (this.state.isTitleEditing) ? (
             <div className="titlePrompt">
@@ -66,7 +80,9 @@ var PlanItem = React.createClass({
         ) : null;
         return (
             <div className="card card-block m-y-1 p-y-1">
-                <h4 className={classNames('card-title', {'editing': this.state.isTitleEditing})} onDoubleClick={this._onTitleDoubleClick}>{title}</h4>
+                <h4 className={classNames('card-title', {'editing': this.state.isTitleEditing})} onDoubleClick={this._onTitleDoubleClick}>
+                    {title}
+                </h4>
                 {titlePrompt}
                 <p className={classNames('card-text', {'editing': this.state.isDescriptionEditing})} onDoubleClick={this._onDescriptionDoubleClick}>{description}</p>
                 {descriptionPrompt}
@@ -81,8 +97,35 @@ var PlanItem = React.createClass({
 
 module.exports = PlanItem;
 
-                // <div className="card card-block">
-                //     <h4 className="card-title">Special title treatment</h4>
-                //     <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                //     <a href="#" className="btn btn-primary">Go somewhere</a>
-                // </div>  
+                    // <span className="label label-primary pull-xs-right" data-toggle="modal" data-target="#plan-edit-modal">
+                    //     Edit
+                    // </span>
+
+                    // <div className="modal fade" id="plan-edit-modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    //     <div className="modal-dialog" role="document">
+                    //         <div className="modal-content">
+                    //             <div className="modal-header">
+                    //                 <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    //                     <span aria-hidden="true">&times;</span>
+                    //                 </button>
+                    //                 <h4 className="modal-title" id="myModalLabel">Editing a plan...</h4>
+                    //             </div>
+                    //             <div className="modal-body">
+                    //                 <form id="plan-edit" method="post" onSubmit={this.savePlanChange}>
+                    //                     <div className="form-group">
+                    //                         <label htmlFor="plan-title-prompt">Plan title</label>
+                    //                         <input className="form-control" id="plan-title-prompt" type="text" placeholder={this.state.title} value={this.state.title} onChange={this._onTitleChange}  />
+                    //                     </div>
+                    //                     <div className="form-group">
+                    //                         <label htmlFor="plan-description-prompt">Description</label>
+                    //                         <textarea className="form-control" id="plan-description-prompt" type="text" placeholder={this.state.description} value={this.state.description} onChange={this._onDescriptionChange} ></textarea>
+                    //                     </div>                  
+                    //                 </form>                                      
+                    //             </div>
+                    //             <div className="modal-footer">
+                    //                 <button className="btn btn-primary" type="submit" form="plan-edit">Save changes</button>
+                    //                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                    //             </div>
+                    //         </div>
+                    //     </div>
+                    // </div>

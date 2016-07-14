@@ -38,7 +38,7 @@ var NewNodeForm = React.createClass({
                                 <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
-                            <h4 className="modal-title" id="myModalLabel">Add a new node for this plan...</h4>
+                            <h4 className="modal-title" id="myModalLabel">Adding a new node for this plan...</h4>
                             </div>
                             <div className="modal-body">
                                 <form id="new-node" method="post" onSubmit={this.createNewNode}>

@@ -6,8 +6,8 @@ var AppStore = require('../stores/AppStore');
 var NewPlanForm = React.createClass({
     getInitialState: function() {
         return {
-           title: this.props.title || '',
-           description: this.props.description || '' 
+            title: this.props.title || '',
+            description: this.props.description || '' 
         };
     },
     _onTitleChange: function(event) {
@@ -31,22 +31,23 @@ var NewPlanForm = React.createClass({
             title: '',
             description: ''
         });
+        $('#new-plan-modal').modal('hide');
     },
     render: function() {
         return (
             <div>
-                <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#new-plan-form">
+                <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#new-plan-modal">
                     Add a new plan
                 </button>
 
-                <div className="modal fade" id="new-plan-form" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div className="modal fade" id="new-plan-modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div className="modal-dialog" role="document">
                         <div className="modal-content">
                             <div className="modal-header">
                                 <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
-                            <h4 className="modal-title" id="myModalLabel">Add a new plan...</h4>
+                            <h4 className="modal-title" id="myModalLabel">Adding a new plan...</h4>
                             </div>
                             <div className="modal-body">
                                 <form id="new-plan" method="post" onSubmit={this.createNewPlan}>

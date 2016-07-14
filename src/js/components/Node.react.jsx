@@ -34,6 +34,7 @@ var Node = React.createClass({
     },
     render: function() {
         var item = this.props.item;
+        console.log(item + " rendered!");
         // Show prompt and hide orignal content when editing
         var itemPrompt = (this.state.isItemEditing) ? (
             <div className="itemPrompt">

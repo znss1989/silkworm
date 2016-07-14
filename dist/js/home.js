@@ -20048,6 +20048,8 @@ var AppStore = assign({}, EventEmitter.prototype, {
             title: title,
             description: description
         };
+        console.log("The resulting plan: ");
+        console.log(_plans[id]);
     },
     changeSelectIndex: function(id) {
         var selectIndex = _selectIndex;
@@ -20094,6 +20096,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
         }
     },
     emitChange: function() {
+        console.log("Changes emiting.");
         this.emit(CHANGE_EVENT);
     },
     addChangeListener: function(callback) {
