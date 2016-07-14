@@ -55,26 +55,34 @@ var PlanItem = React.createClass({
         var titlePrompt = (this.state.isTitleEditing) ? (
             <div className="titlePrompt">
                 <label htmlFor="plan-title-prompt">Plan title</label>
-                <input id="plan-title-prompt" type="text" placeholder={this.state.title} value={this.state.title} onChange={this._onTitleChange} onBlur={this._onSave} />
+                <input className="card-title" id="plan-title-prompt" type="text" placeholder={this.state.title} value={this.state.title} onChange={this._onTitleChange} onBlur={this._onSave} />
             </div>
         ) : null;
         var descriptionPrompt = (this.state.isDescriptionEditing) ? (
-            <div className="titlePrompt">
+            <div className="descriptionPrompt">
                 <label htmlFor="plan-description-prompt">Description</label>
-                <input id="plan-description-prompt" type="text" placeholder={this.state.description} value={this.state.description} onChange={this._onDescriptionChange} onBlur={this._onSave} />
+                <input className="card-text" id="plan-description-prompt" type="text" placeholder={this.state.description} value={this.state.description} onChange={this._onDescriptionChange} onBlur={this._onSave} />
             </div>
         ) : null;
         return (
-            <div>
-                <h4 className={classNames({'editing': this.state.isTitleEditing})} onDoubleClick={this._onTitleDoubleClick}>{title}</h4>
+            <div className="card card-block m-y-1 p-y-1">
+                <h4 className={classNames('card-title', {'editing': this.state.isTitleEditing})} onDoubleClick={this._onTitleDoubleClick}>{title}</h4>
                 {titlePrompt}
-                <span onClick={this._onSelect}>Select</span>
-                <p className={classNames({'editing': this.state.isDescriptionEditing})} onDoubleClick={this._onDescriptionDoubleClick}>{description}</p>
+                <p className={classNames('card-text', {'editing': this.state.isDescriptionEditing})} onDoubleClick={this._onDescriptionDoubleClick}>{description}</p>
                 {descriptionPrompt}
-                <div onClick={this._onClickRemove}>-</div>
+                <div className="btn-group">
+                    <button className="btn btn-info" onClick={this._onSelect}>Select</button>
+                    <button className="btn btn-warning" onClick={this._onClickRemove}>Delete</button>
+                </div>
             </div>
         );
     }
 });
 
 module.exports = PlanItem;
+
+                // <div className="card card-block">
+                //     <h4 className="card-title">Special title treatment</h4>
+                //     <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                //     <a href="#" className="btn btn-primary">Go somewhere</a>
+                // </div>  

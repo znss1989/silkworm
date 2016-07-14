@@ -29,8 +29,8 @@ var NewNodeForm = React.createClass({
             <form id="new-node" method="post" onSubmit={this.createNewNode}>
                 <label htmlFor="node-item">Node item</label>
                 <input id="node-item" type="text" placeholder="What's this node?" value={this.state.item} onChange={this._onItemChange}  />
-                <button type="submit" form="new-node">Add as a new node</button>
-            </form>
+                <button className="btn btn-primary-outline" type="submit" form="new-node">Add as a new node</button>
+            </form>  
         );
     }
 });

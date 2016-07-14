@@ -19806,9 +19806,12 @@ var HomeStore = require('../stores/HomeStore');
 var HomeBody = React.createClass({displayName: "HomeBody",
     render: function() {
         return (
-            React.createElement("div", null, 
-                React.createElement("button", {type: "button"}, "Login your account"), 
-                React.createElement("button", {type: "button"}, "Sign up a new account")
+            React.createElement("div", {className: "container"}, 
+                React.createElement("div", {className: "row"}, 
+                    React.createElement("form", {method: "post", action: "app.html"}, 
+                        React.createElement("button", {type: "submit", className: "btn btn-primary col-xs-8 col-xs-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4"}, "Enter App")
+                    )
+                )
             )
         );
     }
@@ -19825,8 +19828,8 @@ var HomeStore = require('../stores/HomeStore');
 var HomeFooter = React.createClass({displayName: "HomeFooter",
     render: function() {
         return (
-            React.createElement("div", null, 
-                React.createElement("p", null, "© 2016 Silkworms Plan. All rights reserved.")
+            React.createElement("div", {className: "footer navbar-fixed-bottom container text-xs-center"}, 
+                React.createElement("p", {className: "home-footer-p m-x-auto"}, "© 2016 Silkworms Plan. All rights reserved.")
             )
         );
     }
@@ -19843,10 +19846,9 @@ var HomeStore = require('../stores/HomeStore');
 var HomeHeader = React.createClass({displayName: "HomeHeader",
     render: function() {
         return (
-            React.createElement("div", null, 
-                React.createElement("img", {src: "#", alt: "logo"}), 
-                React.createElement("h1", null, "Silkworm Plan"), 
-                React.createElement("p", null, "A web-based app for organizing plans/work flows and managing progress updates in life")
+            React.createElement("div", {className: "container text-xs-center"}, 
+                React.createElement("h1", {className: "display-4 m-t-3 p-t-3"}, "Silkworm Plan"), 
+                React.createElement("p", {className: "lead m-b-3 p-t-2 p-b-3"}, "Organize & manage plans/flows in work & life")
             )
         );
     }

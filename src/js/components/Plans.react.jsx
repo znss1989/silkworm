@@ -20,7 +20,9 @@ var Plans = React.createClass({
             );
         });
         return (
-            <div id="plans-list">
+            <div className="m-t-3" id="plans-list">
+                <h3 className="display-5 text-info text-xs-center m-y-1">All My Plans</h3>
+                <hr className="hr-divider" />
                 <NewPlanForm onSave={this._onSave} />
                 {plansHtml}
             </div>

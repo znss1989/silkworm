@@ -19935,9 +19935,15 @@ var AppStore = require('../stores/AppStore');
 var AppBody = React.createClass({displayName: "AppBody",
     render: function() {
         return (
-            React.createElement("div", null, 
-                React.createElement(Plans, {plans: this.props.plans}), 
-                React.createElement(Nodes, {nodes: this.props.nodes})
+            React.createElement("div", {className: "app-body container p-t-3 p-b-3"}, 
+                React.createElement("div", {className: "row"}, 
+                    React.createElement("div", {className: "col-md-6"}, 
+                        React.createElement(Plans, {plans: this.props.plans})
+                    ), 
+                    React.createElement("div", {className: "col-md-6"}, 
+                        React.createElement(Nodes, {nodes: this.props.nodes})
+                    )
+                )
             )
         );
     }
@@ -19951,17 +19957,17 @@ var React = require('react');
 var AppActions = require('../actions/HomeActions');
 var AppStore = require('../stores/HomeStore');
 
-var HomeFooter = React.createClass({displayName: "HomeFooter",
+var AppFooter = React.createClass({displayName: "AppFooter",
     render: function() {
         return (
-            React.createElement("div", null, 
-                React.createElement("p", null, "© 2016 Silkworms Plan. All rights reserved.")
+            React.createElement("div", {className: "footer container text-xs-center"}, 
+                React.createElement("p", {className: "app-footer-p"}, "© 2016 Silkworms Plan. All rights reserved.")
             )
         );
     }
 });
 
-module.exports = HomeFooter;
+module.exports = AppFooter;
 
 },{"../actions/HomeActions":166,"../stores/HomeStore":183,"react":164}],171:[function(require,module,exports){
 var React = require('react');
@@ -19972,17 +19978,50 @@ var AppStore = require('../stores/AppStore');
 var AppHeader = React.createClass({displayName: "AppHeader",
     render: function() {
         return (
-            React.createElement("div", null, 
-                React.createElement("img", {src: "#", alt: "logo"}), 
-                React.createElement("h5", null, "Silkworm"), 
-                React.createElement("img", {src: "#", alt: "user"}), 
-                React.createElement("p", null, "Log out")
+            React.createElement("nav", {className: "navbar navbar-fixed-top navbar-dark bg-info"}, 
+                React.createElement("div", {className: "container"}, 
+                    React.createElement("ul", {className: "nav navbar-nav"}, 
+                        React.createElement("li", {className: "nav-item active"}, 
+                            React.createElement("a", {className: "navbar-brand", href: "#"}, "Silkworm ", React.createElement("span", {className: "sr-only"}, "(current)"))
+                        ), 
+                        React.createElement("li", {className: "nav-item"}, 
+                            React.createElement("a", {className: "nav-link", href: "./index.html"}, "Home")
+                        ), 
+                        React.createElement("li", {className: "nav-item"}, 
+                            React.createElement("a", {className: "nav-link", href: "#plans"}, "Plans")
+                        ), 
+                        React.createElement("li", {className: "nav-item"}, 
+                            React.createElement("a", {className: "nav-link", href: "#nodes"}, "Current")
+                        ), 
+                        React.createElement("li", {className: "nav-item pull-sm-right m-r-0 hidden-xs-down"}, 
+                            React.createElement("a", {className: "nav-link", href: "#about"}, "About")
+                        )
+                    )
+                )
             )
         );
     }
 });
 
 module.exports = AppHeader;
+
+            // <nav className="container-fluid navbar navbar-dark bg-inverse">
+            //     <div className="container">
+            //         <a className="navbar-brand" href="#">
+            //             <img className="nav-item" src="#" alt="logo" />
+            //         </a>
+            //         <a className="navbar-brand" href="#">Silkworm Plan</a>
+            //         <a className="nav-item nav-link" href="#">Home</a>
+            //         <a className="nav-item nav-link" href="#">Application</a>
+            //         <a className="nav-item nav-link" href="#">About</a>
+            //         <div className="nav-item nav-link pull-xs-right">
+            //             <a href="#">
+            //                 <img src="#" alt="user"/>
+            //             </a>
+            //             <a href="#">Log out</a>
+            //         </div>
+            //     </div>
+            // </nav>
 
 },{"../actions/AppActions":165,"../stores/AppStore":182,"react":164}],172:[function(require,module,exports){
 var React = require('react');
@@ -20016,8 +20055,8 @@ var NewNodeForm = React.createClass({displayName: "NewNodeForm",
             React.createElement("form", {id: "new-node", method: "post", onSubmit: this.createNewNode}, 
                 React.createElement("label", {htmlFor: "node-item"}, "Node item"), 
                 React.createElement("input", {id: "node-item", type: "text", placeholder: "What's this node?", value: this.state.item, onChange: this._onItemChange}), 
-                React.createElement("button", {type: "submit", form: "new-node"}, "Add as a new node")
-            )
+                React.createElement("button", {className: "btn btn-primary-outline", type: "submit", form: "new-node"}, "Add as a new node")
+            )  
         );
     }
 });
@@ -20061,13 +20100,41 @@ var NewPlanForm = React.createClass({displayName: "NewPlanForm",
     },
     render: function() {
         return (
-            React.createElement("form", {id: "new-plan", method: "post", onSubmit: this.createNewPlan}, 
-                React.createElement("label", {htmlFor: "plan-title"}, "Plan title"), 
-                React.createElement("input", {id: "plan-title", type: "text", placeholder: "What's your plan?", value: this.state.title, onChange: this._onTitleChange}), 
-                React.createElement("label", {htmlFor: "plan-description"}, "Description"), 
-                React.createElement("input", {id: "plan-description", type: "text", placeholder: "A few words about this plan...", value: this.state.description, onChange: this._onDescriptionChange}), 
-                React.createElement("button", {type: "submit", form: "new-plan"}, "Add as a new plan")
+            React.createElement("div", null, 
+                React.createElement("button", {type: "button", className: "btn btn-primary", "data-toggle": "modal", "data-target": "#new-plan-form"}, 
+                    "Add a new plan"
+                ), 
+
+                React.createElement("div", {className: "modal fade", id: "new-plan-form", role: "dialog", "aria-labelledby": "myModalLabel", "aria-hidden": "true"}, 
+                    React.createElement("div", {className: "modal-dialog", role: "document"}, 
+                        React.createElement("div", {className: "modal-content"}, 
+                            React.createElement("div", {className: "modal-header"}, 
+                                React.createElement("button", {type: "button", className: "close", "data-dismiss": "modal", "aria-label": "Close"}, 
+                                    React.createElement("span", {"aria-hidden": "true"}, "×")
+                                ), 
+                            React.createElement("h4", {className: "modal-title", id: "myModalLabel"}, "Add a new plan...")
+                            ), 
+                            React.createElement("div", {className: "modal-body"}, 
+                                React.createElement("form", {id: "new-plan", method: "post", onSubmit: this.createNewPlan}, 
+                                    React.createElement("div", {className: "form-group"}, 
+                                        React.createElement("label", {htmlFor: "plan-title"}, "Plan title"), 
+                                        React.createElement("input", {className: "form-control", id: "plan-title", type: "text", placeholder: "What's your plan?", value: this.state.title, onChange: this._onTitleChange})
+                                    ), 
+                                    React.createElement("div", {className: "form-group"}, 
+                                        React.createElement("label", {htmlFor: "plan-description"}, "Description"), 
+                                        React.createElement("textarea", {className: "form-control", id: "plan-description", type: "text", placeholder: "A few words about this plan...", value: this.state.description, onChange: this._onDescriptionChange})
+                                    )
+                                )
+                            ), 
+                            React.createElement("div", {className: "modal-footer"}, 
+                                React.createElement("button", {className: "btn btn-info", type: "submit", form: "new-plan"}, "Save"), 
+                                React.createElement("button", {type: "button", className: "btn btn-secondary", "data-dismiss": "modal"}, "Close")
+                            )
+                        )
+                    )
+                )
             )
+
         );
     }
 });
@@ -20153,7 +20220,9 @@ var Nodes = React.createClass({displayName: "Nodes",
             );
         });
         return (
-            React.createElement("div", {id: "nodes-list"}, 
+            React.createElement("div", {className: "m-t-3", id: "nodes-list"}, 
+                React.createElement("h3", {className: "display-5 text-info text-xs-center m-y-1"}, "Current Plan Infomation"), 
+                React.createElement("hr", {className: "hr-divider"}), 
                 React.createElement(NewNodeForm, {onSave: this._onSave}), 
                 nodesHtml
             )
@@ -20221,29 +20290,37 @@ var PlanItem = React.createClass({displayName: "PlanItem",
         var titlePrompt = (this.state.isTitleEditing) ? (
             React.createElement("div", {className: "titlePrompt"}, 
                 React.createElement("label", {htmlFor: "plan-title-prompt"}, "Plan title"), 
-                React.createElement("input", {id: "plan-title-prompt", type: "text", placeholder: this.state.title, value: this.state.title, onChange: this._onTitleChange, onBlur: this._onSave})
+                React.createElement("input", {className: "card-title", id: "plan-title-prompt", type: "text", placeholder: this.state.title, value: this.state.title, onChange: this._onTitleChange, onBlur: this._onSave})
             )
         ) : null;
         var descriptionPrompt = (this.state.isDescriptionEditing) ? (
-            React.createElement("div", {className: "titlePrompt"}, 
+            React.createElement("div", {className: "descriptionPrompt"}, 
                 React.createElement("label", {htmlFor: "plan-description-prompt"}, "Description"), 
-                React.createElement("input", {id: "plan-description-prompt", type: "text", placeholder: this.state.description, value: this.state.description, onChange: this._onDescriptionChange, onBlur: this._onSave})
+                React.createElement("input", {className: "card-text", id: "plan-description-prompt", type: "text", placeholder: this.state.description, value: this.state.description, onChange: this._onDescriptionChange, onBlur: this._onSave})
             )
         ) : null;
         return (
-            React.createElement("div", null, 
-                React.createElement("h4", {className: classNames({'editing': this.state.isTitleEditing}), onDoubleClick: this._onTitleDoubleClick}, title), 
+            React.createElement("div", {className: "card card-block m-y-1 p-y-1"}, 
+                React.createElement("h4", {className: classNames('card-title', {'editing': this.state.isTitleEditing}), onDoubleClick: this._onTitleDoubleClick}, title), 
                 titlePrompt, 
-                React.createElement("span", {onClick: this._onSelect}, "Select"), 
-                React.createElement("p", {className: classNames({'editing': this.state.isDescriptionEditing}), onDoubleClick: this._onDescriptionDoubleClick}, description), 
+                React.createElement("p", {className: classNames('card-text', {'editing': this.state.isDescriptionEditing}), onDoubleClick: this._onDescriptionDoubleClick}, description), 
                 descriptionPrompt, 
-                React.createElement("div", {onClick: this._onClickRemove}, "-")
+                React.createElement("div", {className: "btn-group"}, 
+                    React.createElement("button", {className: "btn btn-info", onClick: this._onSelect}, "Select"), 
+                    React.createElement("button", {className: "btn btn-warning", onClick: this._onClickRemove}, "Delete")
+                )
             )
         );
     }
 });
 
 module.exports = PlanItem;
+
+                // <div className="card card-block">
+                //     <h4 className="card-title">Special title treatment</h4>
+                //     <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                //     <a href="#" className="btn btn-primary">Go somewhere</a>
+                // </div>  
 
 },{"../actions/AppActions":165,"../stores/AppStore":182,"classnames":3,"react":164}],177:[function(require,module,exports){
 var React = require('react');
@@ -20268,7 +20345,9 @@ var Plans = React.createClass({displayName: "Plans",
             );
         });
         return (
-            React.createElement("div", {id: "plans-list"}, 
+            React.createElement("div", {className: "m-t-3", id: "plans-list"}, 
+                React.createElement("h3", {className: "display-5 text-info text-xs-center m-y-1"}, "All My Plans"), 
+                React.createElement("hr", {className: "hr-divider"}), 
                 React.createElement(NewPlanForm, {onSave: this._onSave}), 
                 plansHtml
             )
