@@ -22,7 +22,7 @@ AppDispatcher.register(function(action) {
             break;
         // Respond to APP_DEL_PLAN action
         case AppConstants.APP_DEL_PLAN:
-            AppStore.removePlan(action.index);
+            AppStore.removePlan(action.id);
             break;
         // Respond to APP_UPDATE_PLAN_TEXT action
         case AppConstants.APP_UPDATE_PLAN_TEXT:
@@ -30,7 +30,7 @@ AppDispatcher.register(function(action) {
             break;
         // Respond to APP_SELECT_PLAN action
         case AppConstants.APP_SELECT_PLAN:
-            AppStore.changeSelectIndex(action.index);
+            AppStore.changeSelectIndex(action.id);
             break;
         // Respond to APP_CREATE_NODE action
         case AppConstants.APP_CREATE_NODE:

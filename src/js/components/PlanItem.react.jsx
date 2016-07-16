@@ -14,7 +14,6 @@ var PlanItem = React.createClass({
         };
     },
     _onTitleDoubleClick: function() {
-        console.log(this.state.title);
         this.setState({isTitleEditing: true});
     },
     _onDescriptionDoubleClick: function() {
@@ -24,7 +23,6 @@ var PlanItem = React.createClass({
         this.setState({
             title: event.target.value
         });
-        console.log(this.state.title);
     },
     _onDescriptionChange: function(event) {
         this.setState({
@@ -32,25 +30,23 @@ var PlanItem = React.createClass({
         });
     },
     _onSelect: function(event) {
-        var planIndex = this.props.index;
-        AppActions.selectCurrentPlan(planIndex);
+        var plan_id = this.props.plan_id;
+        AppActions.selectCurrentPlan(plan_id);
     },
     _onSave: function() {
         var payload = {
-            planIndex: this.props.index,
+            planId: this.props.plan_id,
             planTitle: this.state.title,
             planDescription: this.state.description
         };
-        console.log("_onSave payload is: ");
-        console.log(payload);
         AppActions.updatePlanText(payload);
         this.setState({
             isTitleEditing: false,
             isDescriptionEditing: false
         });
     },
-    _onClickRemove: function(event) {
-        AppActions.deletePlan(this.props.index);
+    _onRemove: function(event) {
+        AppActions.deletePlan(this.props.plan_id);
     },
     // savePlanChange: function(event) {
     //     event.preventDefault(); // prevent reloading
@@ -61,7 +57,6 @@ var PlanItem = React.createClass({
     //     AppActions.updatePlanText(payload);
     // },
     render: function() {
-        console.log(this.props.title + " rendered!!!");
         var title = this.props.title;
         var description = this.props.description;
 
@@ -72,12 +67,14 @@ var PlanItem = React.createClass({
                 <input className="card-title" id="plan-title-prompt" type="text" placeholder={this.state.title} value={this.state.title} onChange={this._onTitleChange} onBlur={this._onSave} />
             </div>
         ) : null;
+
         var descriptionPrompt = (this.state.isDescriptionEditing) ? (
             <div className="descriptionPrompt">
                 <label htmlFor="plan-description-prompt">Description</label>
                 <input className="card-text" id="plan-description-prompt" type="text" placeholder={this.state.description} value={this.state.description} onChange={this._onDescriptionChange} onBlur={this._onSave} />
             </div>
         ) : null;
+        
         return (
             <div className="card card-block m-y-1 p-y-1">
                 <h4 className={classNames('card-title', {'editing': this.state.isTitleEditing})} onDoubleClick={this._onTitleDoubleClick}>
@@ -88,7 +85,7 @@ var PlanItem = React.createClass({
                 {descriptionPrompt}
                 <div className="btn-group">
                     <button className="btn btn-info" onClick={this._onSelect}>Select</button>
-                    <button className="btn btn-warning" onClick={this._onClickRemove}>Delete</button>
+                    <button className="btn btn-warning" onClick={this._onRemove}>Delete</button>
                 </div>
             </div>
         );

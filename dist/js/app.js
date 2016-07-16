@@ -19811,10 +19811,10 @@ var AppActions = {
         };
         AppDispatcher.dispatch(action);
     },
-    deletePlan: function(index) {
+    deletePlan: function(id) {
         var action = {
             actionType: AppConstants.APP_DEL_PLAN,
-            index: index
+            id: id
         };
         AppDispatcher.dispatch(action);
     },
@@ -19825,10 +19825,10 @@ var AppActions = {
         };
         AppDispatcher.dispatch(action);
     },
-    selectCurrentPlan: function(index) {
+    selectCurrentPlan: function(id) {
         var action = {
             actionType: AppConstants.APP_SELECT_PLAN,
-            index: index
+            id: id
         };
         AppDispatcher.dispatch(action);
     },
@@ -20124,7 +20124,6 @@ var NewPlanForm = React.createClass({displayName: "NewPlanForm",
             title: '',
             description: ''
         });
-        $('#new-plan-modal').modal('hide');
     },
     render: function() {
         return (
@@ -20206,7 +20205,7 @@ var Node = React.createClass({displayName: "Node",
     },
     render: function() {
         var item = this.props.item;
-        console.log(item + " rendered!");
+
         // Show prompt and hide orignal content when editing
         var itemPrompt = (this.state.isItemEditing) ? (
             React.createElement("div", {className: "itemPrompt"}, 
@@ -20214,6 +20213,7 @@ var Node = React.createClass({displayName: "Node",
                 React.createElement("input", {id: "node-item-prompt", type: "text", placeholder: this.state.item, value: this.state.item, onChange: this._onItemChange, onBlur: this._onSave})
             )
         ) : null;
+        
         return (
             React.createElement("div", null, 
                 React.createElement("h5", {className: classNames({'editing': this.state.isItemEditing}), onDoubleClick: this._onItemDoubleClick}, item), 
@@ -20278,7 +20278,6 @@ var PlanItem = React.createClass({displayName: "PlanItem",
         };
     },
     _onTitleDoubleClick: function() {
-        console.log(this.state.title);
         this.setState({isTitleEditing: true});
     },
     _onDescriptionDoubleClick: function() {
@@ -20288,7 +20287,6 @@ var PlanItem = React.createClass({displayName: "PlanItem",
         this.setState({
             title: event.target.value
         });
-        console.log(this.state.title);
     },
     _onDescriptionChange: function(event) {
         this.setState({
@@ -20296,25 +20294,23 @@ var PlanItem = React.createClass({displayName: "PlanItem",
         });
     },
     _onSelect: function(event) {
-        var planIndex = this.props.index;
-        AppActions.selectCurrentPlan(planIndex);
+        var plan_id = this.props.plan_id;
+        AppActions.selectCurrentPlan(plan_id);
     },
     _onSave: function() {
         var payload = {
-            planIndex: this.props.index,
+            planId: this.props.plan_id,
             planTitle: this.state.title,
             planDescription: this.state.description
         };
-        console.log("_onSave payload is: ");
-        console.log(payload);
         AppActions.updatePlanText(payload);
         this.setState({
             isTitleEditing: false,
             isDescriptionEditing: false
         });
     },
-    _onClickRemove: function(event) {
-        AppActions.deletePlan(this.props.index);
+    _onRemove: function(event) {
+        AppActions.deletePlan(this.props.plan_id);
     },
     // savePlanChange: function(event) {
     //     event.preventDefault(); // prevent reloading
@@ -20325,7 +20321,6 @@ var PlanItem = React.createClass({displayName: "PlanItem",
     //     AppActions.updatePlanText(payload);
     // },
     render: function() {
-        console.log(this.props.title + " rendered!!!");
         var title = this.props.title;
         var description = this.props.description;
 
@@ -20336,12 +20331,14 @@ var PlanItem = React.createClass({displayName: "PlanItem",
                 React.createElement("input", {className: "card-title", id: "plan-title-prompt", type: "text", placeholder: this.state.title, value: this.state.title, onChange: this._onTitleChange, onBlur: this._onSave})
             )
         ) : null;
+
         var descriptionPrompt = (this.state.isDescriptionEditing) ? (
             React.createElement("div", {className: "descriptionPrompt"}, 
                 React.createElement("label", {htmlFor: "plan-description-prompt"}, "Description"), 
                 React.createElement("input", {className: "card-text", id: "plan-description-prompt", type: "text", placeholder: this.state.description, value: this.state.description, onChange: this._onDescriptionChange, onBlur: this._onSave})
             )
         ) : null;
+        
         return (
             React.createElement("div", {className: "card card-block m-y-1 p-y-1"}, 
                 React.createElement("h4", {className: classNames('card-title', {'editing': this.state.isTitleEditing}), onDoubleClick: this._onTitleDoubleClick}, 
@@ -20352,7 +20349,7 @@ var PlanItem = React.createClass({displayName: "PlanItem",
                 descriptionPrompt, 
                 React.createElement("div", {className: "btn-group"}, 
                     React.createElement("button", {className: "btn btn-info", onClick: this._onSelect}, "Select"), 
-                    React.createElement("button", {className: "btn btn-warning", onClick: this._onClickRemove}, "Delete")
+                    React.createElement("button", {className: "btn btn-warning", onClick: this._onRemove}, "Delete")
                 )
             )
         );
@@ -20409,14 +20406,15 @@ var Plans = React.createClass({displayName: "Plans",
             AppActions.createPlan(payload);
         }
     },
+
     render: function() {
         var plans = this.props.plans;
-        console.log(plans);
         var plansHtml = plans.map(function(plan) {
             return (
-                React.createElement(PlanItem, {key: plan.id, index: plan.id, title: plan.title, description: plan.description})
+                React.createElement(PlanItem, {key: plan.plan_id, plan_id: plan.plan_id, title: plan.title, description: plan.description})
             );
         });
+
         return (
             React.createElement("div", {className: "m-t-3", id: "plans-list"}, 
                 React.createElement("h3", {className: "display-5 text-info text-xs-center m-y-1"}, "All My Plans"), 
@@ -20471,7 +20469,7 @@ AppDispatcher.register(function(action) {
             break;
         // Respond to APP_DEL_PLAN action
         case AppConstants.APP_DEL_PLAN:
-            AppStore.removePlan(action.index);
+            AppStore.removePlan(action.id);
             break;
         // Respond to APP_UPDATE_PLAN_TEXT action
         case AppConstants.APP_UPDATE_PLAN_TEXT:
@@ -20479,7 +20477,7 @@ AppDispatcher.register(function(action) {
             break;
         // Respond to APP_SELECT_PLAN action
         case AppConstants.APP_SELECT_PLAN:
-            AppStore.changeSelectIndex(action.index);
+            AppStore.changeSelectIndex(action.id);
             break;
         // Respond to APP_CREATE_NODE action
         case AppConstants.APP_CREATE_NODE:
@@ -20532,13 +20530,13 @@ var _plans = [];
 
 // Initialize with some demo plans and/or nodes
 _plans.push({
-        id: "4170fd4e-9ef2-3653-c827-97395e848e1e",
+        plan_id: "4170fd4e-9ef2-3653-c827-97395e848e1e",
         title: "Set up a new plan",
         description: "The first step to use Silkworm is to set up a fresh new plan of your own.",
         nodes: []
 });
 _plans.push({
-        id: "c0ff2cbc-abc8-252f-9899-6a29760a7b45",
+        plan_id: "c0ff2cbc-abc8-252f-9899-6a29760a7b45",
         title: "Travel around",
         description: "The world is big, why not take a trip around.",
         nodes: [
@@ -20574,49 +20572,64 @@ var AppStore = assign({}, EventEmitter.prototype, {
     getSelectIndex: function() {
         return _selectIndex;
     },
-    getCurrentNodes: function(id) {
+    getCurrentNodes: function() {
         var selectIndex = _selectIndex;
         return _plans[selectIndex].nodes;
     },
     addNewPlan: function(payload) {
-        var id = guid();
+        var plan_id = guid();
         var title = payload.planTitle;
         var description = payload.planDescription;
         _plans.push({
-            id: id,
+            plan_id: plan_id,
             title: title,
-            description: description
+            description: description,
+            nodes: []
         });
+        $('#new-plan-modal').modal('hide');
     },
-    removePlan: function(index) {
+    removePlan: function(id) {
+        var selectIndex = _selectIndex;
         for (var i = 0; i < _plans.length; ++i) {
-            if (_plans[i].id === index) {
+            if (_plans[i].plan_id === id) {
                 _plans.splice(i, 1);
+
+                // Update _selectIndex
+                if (selectIndex === i) {
+                    selectIndex = _plans.length - 1;
+                }
+                if (selectIndex > i) {
+                    selectIndex -= 1;
+                }
+                _selectIndex = selectIndex;
                 return ;
             }
         }
-        
     },
     updatePlanText: function(payload) {
-        var id = payload.planIndex;
+        var id = payload.planId;
+        var index;
+        for (var i = 0; i < _plans.length; ++i) {
+            if (_plans[i].plan_id === id) {
+                index = i;
+            }
+        }
         var title = payload.planTitle;
         var description = payload.planDescription;
         if (title === '') {
             console.log("Title cannot be empty!");
             return ;
         }
-        _plans[id] = {
-            id: id,
+        _plans[index] = {
+            plan_id: id,
             title: title,
             description: description
         };
-        console.log("The resulting plan: ");
-        console.log(_plans[id]);
     },
     changeSelectIndex: function(id) {
         var selectIndex = _selectIndex;
         for (var i = 0; i < _plans.length; ++i) {
-            if (_plans[i].id === id) {
+            if (_plans[i].plan_id === id) {
                 selectIndex = i;
                 _selectIndex = selectIndex;
                 return ;
@@ -20632,7 +20645,6 @@ var AppStore = assign({}, EventEmitter.prototype, {
             node_item: item,
             node_detail: {}
         });
-        console.log(_plans[1]);
     },
     removeNode: function(index) {
         var currentNodes = this.getCurrentNodes();
@@ -20658,7 +20670,6 @@ var AppStore = assign({}, EventEmitter.prototype, {
         }
     },
     emitChange: function() {
-        console.log("Changes emiting.");
         this.emit(CHANGE_EVENT);
     },
     addChangeListener: function(callback) {

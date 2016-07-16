@@ -31,7 +31,6 @@ var NewPlanForm = React.createClass({
             title: '',
             description: ''
         });
-        $('#new-plan-modal').modal('hide');
     },
     render: function() {
         return (

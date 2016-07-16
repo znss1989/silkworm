@@ -34,7 +34,7 @@ var Node = React.createClass({
     },
     render: function() {
         var item = this.props.item;
-        console.log(item + " rendered!");
+
         // Show prompt and hide orignal content when editing
         var itemPrompt = (this.state.isItemEditing) ? (
             <div className="itemPrompt">
@@ -42,6 +42,7 @@ var Node = React.createClass({
                 <input id="node-item-prompt" type="text" placeholder={this.state.item} value={this.state.item} onChange={this._onItemChange} onBlur={this._onSave} />
             </div>
         ) : null;
+        
         return (
             <div>
                 <h5 className={classNames({'editing': this.state.isItemEditing})} onDoubleClick={this._onItemDoubleClick}>{item}</h5>

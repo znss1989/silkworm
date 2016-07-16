@@ -10,13 +10,13 @@ var _plans = [];
 
 // Initialize with some demo plans and/or nodes
 _plans.push({
-        id: "4170fd4e-9ef2-3653-c827-97395e848e1e",
+        plan_id: "4170fd4e-9ef2-3653-c827-97395e848e1e",
         title: "Set up a new plan",
         description: "The first step to use Silkworm is to set up a fresh new plan of your own.",
         nodes: []
 });
 _plans.push({
-        id: "c0ff2cbc-abc8-252f-9899-6a29760a7b45",
+        plan_id: "c0ff2cbc-abc8-252f-9899-6a29760a7b45",
         title: "Travel around",
         description: "The world is big, why not take a trip around.",
         nodes: [
@@ -52,49 +52,64 @@ var AppStore = assign({}, EventEmitter.prototype, {
     getSelectIndex: function() {
         return _selectIndex;
     },
-    getCurrentNodes: function(id) {
+    getCurrentNodes: function() {
         var selectIndex = _selectIndex;
         return _plans[selectIndex].nodes;
     },
     addNewPlan: function(payload) {
-        var id = guid();
+        var plan_id = guid();
         var title = payload.planTitle;
         var description = payload.planDescription;
         _plans.push({
-            id: id,
+            plan_id: plan_id,
             title: title,
-            description: description
+            description: description,
+            nodes: []
         });
+        $('#new-plan-modal').modal('hide');
     },
-    removePlan: function(index) {
+    removePlan: function(id) {
+        var selectIndex = _selectIndex;
         for (var i = 0; i < _plans.length; ++i) {
-            if (_plans[i].id === index) {
+            if (_plans[i].plan_id === id) {
                 _plans.splice(i, 1);
+
+                // Update _selectIndex
+                if (selectIndex === i) {
+                    selectIndex = _plans.length - 1;
+                }
+                if (selectIndex > i) {
+                    selectIndex -= 1;
+                }
+                _selectIndex = selectIndex;
                 return ;
             }
         }
-        
     },
     updatePlanText: function(payload) {
-        var id = payload.planIndex;
+        var id = payload.planId;
+        var index;
+        for (var i = 0; i < _plans.length; ++i) {
+            if (_plans[i].plan_id === id) {
+                index = i;
+            }
+        }
         var title = payload.planTitle;
         var description = payload.planDescription;
         if (title === '') {
             console.log("Title cannot be empty!");
             return ;
         }
-        _plans[id] = {
-            id: id,
+        _plans[index] = {
+            plan_id: id,
             title: title,
             description: description
         };
-        console.log("The resulting plan: ");
-        console.log(_plans[id]);
     },
     changeSelectIndex: function(id) {
         var selectIndex = _selectIndex;
         for (var i = 0; i < _plans.length; ++i) {
-            if (_plans[i].id === id) {
+            if (_plans[i].plan_id === id) {
                 selectIndex = i;
                 _selectIndex = selectIndex;
                 return ;
@@ -110,7 +125,6 @@ var AppStore = assign({}, EventEmitter.prototype, {
             node_item: item,
             node_detail: {}
         });
-        console.log(_plans[1]);
     },
     removeNode: function(index) {
         var currentNodes = this.getCurrentNodes();
@@ -136,7 +150,6 @@ var AppStore = assign({}, EventEmitter.prototype, {
         }
     },
     emitChange: function() {
-        console.log("Changes emiting.");
         this.emit(CHANGE_EVENT);
     },
     addChangeListener: function(callback) {

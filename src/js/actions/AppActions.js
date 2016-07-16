@@ -9,10 +9,10 @@ var AppActions = {
         };
         AppDispatcher.dispatch(action);
     },
-    deletePlan: function(index) {
+    deletePlan: function(id) {
         var action = {
             actionType: AppConstants.APP_DEL_PLAN,
-            index: index
+            id: id
         };
         AppDispatcher.dispatch(action);
     },
@@ -23,10 +23,10 @@ var AppActions = {
         };
         AppDispatcher.dispatch(action);
     },
-    selectCurrentPlan: function(index) {
+    selectCurrentPlan: function(id) {
         var action = {
             actionType: AppConstants.APP_SELECT_PLAN,
-            index: index
+            id: id
         };
         AppDispatcher.dispatch(action);
     },
