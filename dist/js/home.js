@@ -20065,6 +20065,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
             title: title,
             description: description
         };
+        $("#plan-edit-modal").modal('hide');
     },
     changeSelectIndex: function(id) {
         var selectIndex = _selectIndex;
