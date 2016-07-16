@@ -36,8 +36,9 @@ var NewPlanForm = React.createClass({
         return (
             <div>
                 <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#new-plan-modal">
+                    <i className="material-icons md-18 p-r-1">note_add</i>
                     Add a new plan
-                </button>
+                </button>             
 
                 <div className="modal fade" id="new-plan-modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div className="modal-dialog" role="document">

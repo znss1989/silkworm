@@ -11,10 +11,10 @@ var AppBody = React.createClass({
         return (
             <div className="app-body container p-t-3 p-b-3">
                 <div className="row">
-                    <div className="col-md-6">
+                    <div className="col-md-4">
                         <Plans plans={this.props.plans} />
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-md-8">
                         <Nodes nodes={this.props.nodes} />
                     </div>
                 </div>

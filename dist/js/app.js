@@ -19937,10 +19937,10 @@ var AppBody = React.createClass({displayName: "AppBody",
         return (
             React.createElement("div", {className: "app-body container p-t-3 p-b-3"}, 
                 React.createElement("div", {className: "row"}, 
-                    React.createElement("div", {className: "col-md-6"}, 
+                    React.createElement("div", {className: "col-md-4"}, 
                         React.createElement(Plans, {plans: this.props.plans})
                     ), 
-                    React.createElement("div", {className: "col-md-6"}, 
+                    React.createElement("div", {className: "col-md-8"}, 
                         React.createElement(Nodes, {nodes: this.props.nodes})
                     )
                 )
@@ -20054,9 +20054,12 @@ var NewNodeForm = React.createClass({displayName: "NewNodeForm",
         return (
             React.createElement("div", null, 
                 React.createElement("button", {type: "button", className: "btn btn-primary", "data-toggle": "modal", "data-target": "#new-node-form"}, 
+                    React.createElement("i", {className: "material-icons md-18 p-r-1"}, "add_box"), 
                     "Add a node"
                 ), 
 
+                
+                
                 React.createElement("div", {className: "modal fade", id: "new-node-form", role: "dialog", "aria-labelledby": "myModalLabel", "aria-hidden": "true"}, 
                     React.createElement("div", {className: "modal-dialog", role: "document"}, 
                         React.createElement("div", {className: "modal-content"}, 
@@ -20129,6 +20132,7 @@ var NewPlanForm = React.createClass({displayName: "NewPlanForm",
         return (
             React.createElement("div", null, 
                 React.createElement("button", {type: "button", className: "btn btn-primary", "data-toggle": "modal", "data-target": "#new-plan-modal"}, 
+                    React.createElement("i", {className: "material-icons md-18 p-r-1"}, "note_add"), 
                     "Add a new plan"
                 ), 
 
@@ -20205,6 +20209,7 @@ var Node = React.createClass({displayName: "Node",
     },
     render: function() {
         var item = this.props.item;
+        var detail = this.props.detail;
 
         // Show prompt and hide orignal content when editing
         var itemPrompt = (this.state.isItemEditing) ? (
@@ -20215,10 +20220,15 @@ var Node = React.createClass({displayName: "Node",
         ) : null;
         
         return (
-            React.createElement("div", null, 
-                React.createElement("h5", {className: classNames({'editing': this.state.isItemEditing}), onDoubleClick: this._onItemDoubleClick}, item), 
-                itemPrompt, 
-                React.createElement("div", {onClick: this._onClickRemove}, "-")
+            React.createElement("div", {className: "timeline-node"}, 
+                React.createElement("div", {className: "timeline-token"}), 
+                React.createElement("div", {className: "timeline-node-content"}, 
+                    React.createElement("h4", {className: classNames({'editing': this.state.isItemEditing}), onDoubleClick: this._onItemDoubleClick}, item), 
+                    itemPrompt, 
+                    React.createElement("span", null, "Time / Location"), 
+                    React.createElement("p", null, detail.note), 
+                    React.createElement("div", {onClick: this._onClickRemove}, "-")
+                )
             )
         );
     }
@@ -20252,8 +20262,10 @@ var Nodes = React.createClass({displayName: "Nodes",
             React.createElement("div", {className: "m-t-3", id: "nodes-list"}, 
                 React.createElement("h3", {className: "display-5 text-info text-xs-center m-y-1"}, "Current Plan Infomation"), 
                 React.createElement("hr", {className: "hr-divider"}), 
-                React.createElement(NewNodeForm, {onSave: this._onSave}), 
-                nodesHtml
+                React.createElement("div", {className: "nodes-container"}, 
+                    React.createElement(NewNodeForm, {onSave: this._onSave}), 
+                    nodesHtml
+                )
             )
         );
     }
@@ -20543,18 +20555,50 @@ _plans.push({
 });
 _plans.push({
         plan_id: "c0ff2cbc-abc8-252f-9899-6a29760a7b45",
-        title: "Travel around",
+        title: "Travel around Paris",
         description: "The world is big, why not take a trip around.",
         nodes: [
             {
                 node_id: "7162b3b4-5662-9b04-09c0-786500b907b5",
-                node_item: "Book a plane ticket to Paris",
-                node_detail: {},
+                node_item: "Book a flight from Chengdu to Paris",
+                node_detail: {
+                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate."
+                }
             },
             {
                 node_id: "80e020a9-88c0-9e0d-6dbe-9832a23ee9e0",
-                node_item: "Departure from airport Chengdu",
-                node_detail: {}
+                node_item: "Departure from airport CTU, Chengdu, land at airport CDG, Paris",
+                node_detail: {
+                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate."
+                }
+            },
+            {
+                node_id: "6fa89feb-b650-429c-454e-73dbc836ebef",
+                node_item: "Board a train at station Gare de Lyon to Versailles",
+                node_detail: {
+                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate."
+                }
+            },
+            {
+                node_id: "4a08c85f-47a1-44d5-d4cb-736ff0b23744",
+                node_item: "Vist Hall of Mirrors & buy some postcards",
+                node_detail: {
+                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate."
+                }
+            },
+            {
+                node_id: "116e7986-6744-52a9-e54b-b6d12fe3fad1",
+                node_item: "Take train back town, and subway to Louvre Museum",
+                node_detail: {
+                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate."
+                }
+            },
+            {
+                node_id: "f0f0f3f2-8694-cafc-e9af-cb87909b5ad3",
+                node_item: "Get back to hotel",
+                node_detail: {
+                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate."
+                }
             }
         ]
 });

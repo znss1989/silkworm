@@ -34,6 +34,7 @@ var Node = React.createClass({
     },
     render: function() {
         var item = this.props.item;
+        var detail = this.props.detail;
 
         // Show prompt and hide orignal content when editing
         var itemPrompt = (this.state.isItemEditing) ? (
@@ -44,10 +45,15 @@ var Node = React.createClass({
         ) : null;
         
         return (
-            <div>
-                <h5 className={classNames({'editing': this.state.isItemEditing})} onDoubleClick={this._onItemDoubleClick}>{item}</h5>
-                {itemPrompt}
-                <div onClick={this._onClickRemove}>-</div>
+            <div className="timeline-node">
+                <div className="timeline-token"></div>
+                <div className="timeline-node-content">
+                    <h4 className={classNames({'editing': this.state.isItemEditing})} onDoubleClick={this._onItemDoubleClick}>{item}</h4>
+                    {itemPrompt}
+                    <span>Time / Location</span>
+                    <p>{detail.note}</p>
+                    <div onClick={this._onClickRemove}>-</div>
+                </div>
             </div>
         );
     }
