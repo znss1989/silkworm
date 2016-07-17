@@ -35,7 +35,7 @@ var NodeEditModal = React.createClass({
     render: function() {
         return (
             <div className="node-span">
-                <span className="node-datetime">Time / Location</span>
+                <span className="node-datetime pull-xs-left">Time / Location</span>
 
                 <span className="label label-primary col-xs-2 pull-xs-right" data-toggle="modal" data-target={"#node-edit-modal" + this.props.node_id}>
                     Edit

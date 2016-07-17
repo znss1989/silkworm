@@ -75,14 +75,9 @@ hr.hr-divider {
     direction: rtl;
 }
 
-/*.timeline-node-right {
-    float: right;
+.nodes-container .timeline-node:nth-child(odd) p {
+    direction: ltr;
 }
-
-.timeline-node-left {
-    float: left;
-    direction: rtl;
-}*/
 
 .timeline-token {
    width: 16px;
@@ -117,6 +112,7 @@ hr.hr-divider {
     line-height: 1.5em;
     word-spacing: 1px;
     color: #888;
+    clear: both;
 }
 
 .material-icons.md-18 { 

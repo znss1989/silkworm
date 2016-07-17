@@ -22,7 +22,7 @@ var Node = React.createClass({
 
                     <NodeEditModal node_id={this.props.node_id} item={this.props.item} note={this.props.detail.note} />
 
-                    <p>{detail.note}</p>
+                    <p className="p-t-1">{detail.note}</p>
                     <div onClick={this._onClickRemove}>-</div>
                 </div>
             </div>

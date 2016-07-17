@@ -20197,7 +20197,7 @@ var Node = React.createClass({displayName: "Node",
 
                     React.createElement(NodeEditModal, {node_id: this.props.node_id, item: this.props.item, note: this.props.detail.note}), 
 
-                    React.createElement("p", null, detail.note), 
+                    React.createElement("p", {className: "p-t-1"}, detail.note), 
                     React.createElement("div", {onClick: this._onClickRemove}, "-")
                 )
             )
@@ -20245,7 +20245,7 @@ var NodeEditModal = React.createClass({displayName: "NodeEditModal",
     render: function() {
         return (
             React.createElement("div", {className: "node-span"}, 
-                React.createElement("span", {className: "node-datetime"}, "Time / Location"), 
+                React.createElement("span", {className: "node-datetime pull-xs-left"}, "Time / Location"), 
 
                 React.createElement("span", {className: "label label-primary col-xs-2 pull-xs-right", "data-toggle": "modal", "data-target": "#node-edit-modal" + this.props.node_id}, 
                     "Edit"
