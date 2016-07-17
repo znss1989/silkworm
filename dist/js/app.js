@@ -19857,7 +19857,7 @@ var AppActions = {
 
 module.exports = AppActions;
 
-},{"../constants/AppConstants":179,"../dispatcher/AppDispatcher":181}],166:[function(require,module,exports){
+},{"../constants/AppConstants":180,"../dispatcher/AppDispatcher":182}],166:[function(require,module,exports){
 var HomeDispatcher = require('../dispatcher/AppDispatcher');
 var HomeConstants = require('../constants/AppConstants');
 
@@ -19865,7 +19865,7 @@ var HomeActions = {};
 
 module.exports = HomeActions;
 
-},{"../constants/AppConstants":179,"../dispatcher/AppDispatcher":181}],167:[function(require,module,exports){
+},{"../constants/AppConstants":180,"../dispatcher/AppDispatcher":182}],167:[function(require,module,exports){
 var React = require('react');
 var ReactDOM = require('react-dom');
 var AppAPI = require('./utils/AppAPI.js');
@@ -19877,7 +19877,7 @@ ReactDOM.render(
     document.getElementById('app')
 );
 
-},{"./components/App.react.jsx":168,"./utils/AppAPI.js":185,"react":164,"react-dom":8}],168:[function(require,module,exports){
+},{"./components/App.react.jsx":168,"./utils/AppAPI.js":186,"react":164,"react-dom":8}],168:[function(require,module,exports){
 var React = require('react');
 
 var AppHeader = require('./AppHeader.react.jsx');
@@ -19923,7 +19923,7 @@ var App = React.createClass({displayName: "App",
 
 module.exports = App;
 
-},{"../actions/AppActions":165,"../dispatcher/AppDispatcher":181,"../stores/AppStore":183,"./AppBody.react.jsx":169,"./AppFooter.react.jsx":170,"./AppHeader.react.jsx":171,"react":164}],169:[function(require,module,exports){
+},{"../actions/AppActions":165,"../dispatcher/AppDispatcher":182,"../stores/AppStore":184,"./AppBody.react.jsx":169,"./AppFooter.react.jsx":170,"./AppHeader.react.jsx":171,"react":164}],169:[function(require,module,exports){
 var React = require('react');
 
 var Plans = require('./Plans.react.jsx');
@@ -19951,7 +19951,7 @@ var AppBody = React.createClass({displayName: "AppBody",
 
 module.exports = AppBody;
 
-},{"../actions/AppActions":165,"../stores/AppStore":183,"./Nodes.react.jsx":175,"./Plans.react.jsx":178,"react":164}],170:[function(require,module,exports){
+},{"../actions/AppActions":165,"../stores/AppStore":184,"./Nodes.react.jsx":176,"./Plans.react.jsx":179,"react":164}],170:[function(require,module,exports){
 var React = require('react');
 
 var AppActions = require('../actions/HomeActions');
@@ -19969,7 +19969,7 @@ var AppFooter = React.createClass({displayName: "AppFooter",
 
 module.exports = AppFooter;
 
-},{"../actions/HomeActions":166,"../stores/HomeStore":184,"react":164}],171:[function(require,module,exports){
+},{"../actions/HomeActions":166,"../stores/HomeStore":185,"react":164}],171:[function(require,module,exports){
 var React = require('react');
 
 var AppActions = require('../actions/AppActions');
@@ -20023,7 +20023,7 @@ module.exports = AppHeader;
             //     </div>
             // </nav>
 
-},{"../actions/AppActions":165,"../stores/AppStore":183,"react":164}],172:[function(require,module,exports){
+},{"../actions/AppActions":165,"../stores/AppStore":184,"react":164}],172:[function(require,module,exports){
 var React = require('react');
 
 var AppActions = require('../actions/AppActions');
@@ -20093,7 +20093,7 @@ var NewNodeForm = React.createClass({displayName: "NewNodeForm",
 
 module.exports = NewNodeForm;
 
-},{"../actions/AppActions":165,"../stores/AppStore":183,"react":164}],173:[function(require,module,exports){
+},{"../actions/AppActions":165,"../stores/AppStore":184,"react":164}],173:[function(require,module,exports){
 var React = require('react');
 
 var AppActions = require('../actions/AppActions');
@@ -20172,23 +20172,53 @@ var NewPlanForm = React.createClass({displayName: "NewPlanForm",
 
 module.exports = NewPlanForm;
 
-},{"../actions/AppActions":165,"../stores/AppStore":183,"react":164}],174:[function(require,module,exports){
+},{"../actions/AppActions":165,"../stores/AppStore":184,"react":164}],174:[function(require,module,exports){
 var React = require('react');
 var classNames = require('classnames');
+
+var NodeEditModal = require('./NodeEditModal.react.jsx');
 
 var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
 
 var Node = React.createClass({displayName: "Node",
+    _onClickRemove: function(event) {
+        AppActions.deleteNode(this.props.index);
+    },
+    render: function() {
+        var item = this.props.item;
+        var detail = this.props.detail;
+        
+        return (
+            React.createElement("div", {className: "timeline-node"}, 
+                React.createElement("div", {className: "timeline-token"}), 
+                React.createElement("div", {className: "timeline-node-content"}, 
+                    React.createElement("h4", null, item), 
+
+                    React.createElement(NodeEditModal, {node_id: this.props.node_id, item: this.props.item, note: this.props.detail.note}), 
+
+                    React.createElement("p", null, detail.note), 
+                    React.createElement("div", {onClick: this._onClickRemove}, "-")
+                )
+            )
+        );
+    }
+});
+
+module.exports = Node;
+
+},{"../actions/AppActions":165,"../stores/AppStore":184,"./NodeEditModal.react.jsx":175,"classnames":3,"react":164}],175:[function(require,module,exports){
+var React = require('react');
+
+var AppActions = require('../actions/AppActions');
+var AppStore = require('../stores/AppStore');
+
+var NodeEditModal = React.createClass({displayName: "NodeEditModal",
     getInitialState: function() {
         return {
-            isItemEditing: false,
             item: this.props.item || '',
-            note: this.props.detail.note,
+            note: this.props.note || '',
         };
-    },
-    _onItemDoubleClick: function() {
-        this.setState({isItemEditing: true});
     },
     _onItemChange: function(event) {
         this.setState({
@@ -20212,77 +20242,53 @@ var Node = React.createClass({displayName: "Node",
             isItemEditing: false,
         });
     },
-    _onClickRemove: function(event) {
-        AppActions.deleteNode(this.props.index);
-    },
     render: function() {
-        var item = this.props.item;
-        var detail = this.props.detail;
-
-        // Show prompt and hide orignal content when editing
-        var itemPrompt = (this.state.isItemEditing) ? (
-            React.createElement("div", {className: "itemPrompt"}, 
-                React.createElement("label", {htmlFor: "node-item-prompt"}, "Node item"), 
-                React.createElement("input", {id: "node-item-prompt", type: "text", placeholder: this.state.item, value: this.state.item, onChange: this._onItemChange, onBlur: this._onSave})
-            )
-        ) : null;
-        
         return (
-            React.createElement("div", {className: "timeline-node"}, 
-                React.createElement("div", {className: "timeline-token"}), 
-                React.createElement("div", {className: "timeline-node-content"}, 
-                    React.createElement("h4", {className: classNames({'editing': this.state.isItemEditing}), onDoubleClick: this._onItemDoubleClick}, item), 
-                    itemPrompt, 
-                    React.createElement("div", {className: "node-span"}, 
-                        React.createElement("span", {className: "node-datetime"}, "Time / Location"), 
+            React.createElement("div", {className: "node-span"}, 
+                React.createElement("span", {className: "node-datetime"}, "Time / Location"), 
 
-                        React.createElement("span", {className: "label label-primary col-xs-2 pull-xs-right", "data-toggle": "modal", "data-target": "#node-edit-modal"}, 
-                            "Edit"
-                        ), 
+                React.createElement("span", {className: "label label-primary col-xs-2 pull-xs-right", "data-toggle": "modal", "data-target": "#node-edit-modal" + this.props.node_id}, 
+                    "Edit"
+                ), 
 
-                        React.createElement("div", {className: "modal fade", id: "node-edit-modal", role: "dialog", "aria-labelledby": "myModalLabel", "aria-hidden": "true"}, 
-                            React.createElement("div", {className: "modal-dialog", role: "document"}, 
-                                React.createElement("div", {className: "modal-content"}, 
-                                    React.createElement("div", {className: "modal-header"}, 
-                                        React.createElement("button", {type: "button", className: "close", "data-dismiss": "modal", "aria-label": "Close"}, 
-                                            React.createElement("span", {"aria-hidden": "true"}, "×")
-                                        ), 
-                                        React.createElement("h4", {className: "modal-title", id: "myModalLabel"}, "Editing a node...")
+                React.createElement("div", {className: "modal fade", id: "node-edit-modal" + this.props.node_id, role: "dialog", "aria-labelledby": "myModalLabel", "aria-hidden": "true"}, 
+                    React.createElement("div", {className: "modal-dialog", role: "document"}, 
+                        React.createElement("div", {className: "modal-content"}, 
+                            React.createElement("div", {className: "modal-header"}, 
+                                React.createElement("button", {type: "button", className: "close", "data-dismiss": "modal", "aria-label": "Close"}, 
+                                    React.createElement("span", {"aria-hidden": "true"}, "×")
+                                ), 
+                                React.createElement("h4", {className: "modal-title", id: "myModalLabel"}, "Editing a node...")
+                            ), 
+                            React.createElement("div", {className: "modal-body"}, 
+
+                                React.createElement("form", {id: "node-edit" + this.props.node_id, method: "post", onSubmit: this._onSave}, 
+                                    React.createElement("div", {className: "form-group"}, 
+                                        React.createElement("label", {htmlFor: "node-item-prompt"}, "Node item"), 
+                                        React.createElement("input", {className: "form-control", id: "node-item-prompt", type: "text", placeholder: this.state.item, value: this.state.item, onChange: this._onItemChange})
                                     ), 
-                                    React.createElement("div", {className: "modal-body"}, 
-
-                                        React.createElement("form", {id: "node-edit", method: "post", onSubmit: this._onSave}, 
-                                            React.createElement("div", {className: "form-group"}, 
-                                                React.createElement("label", {htmlFor: "node-item-prompt"}, "Node item"), 
-                                                React.createElement("input", {className: "form-control", id: "node-item-prompt", type: "text", placeholder: this.state.item, value: this.state.item, onChange: this._onItemChange})
-                                            ), 
-                                            React.createElement("div", {className: "form-group"}, 
-                                                React.createElement("label", {htmlFor: "node-note-prompt"}, "Notes related"), 
-                                                React.createElement("textarea", {className: "form-control", id: "node-note-prompt", type: "text", placeholder: this.state.note, value: this.state.note, onChange: this._onNoteChange})
-                                            )
-                                        )
-                                                                          
-                                    ), 
-                                    React.createElement("div", {className: "modal-footer"}, 
-                                        React.createElement("button", {className: "btn btn-primary", type: "submit", form: "node-edit"}, "Save changes"), 
-                                        React.createElement("button", {type: "button", className: "btn btn-secondary", "data-dismiss": "modal"}, "Close")
+                                    React.createElement("div", {className: "form-group"}, 
+                                        React.createElement("label", {htmlFor: "node-note-prompt"}, "Notes related"), 
+                                        React.createElement("textarea", {className: "form-control", id: "node-note-prompt", type: "text", placeholder: this.state.note, value: this.state.note, onChange: this._onNoteChange})
                                     )
                                 )
+                                                                  
+                            ), 
+                            React.createElement("div", {className: "modal-footer"}, 
+                                React.createElement("button", {className: "btn btn-primary", type: "submit", form: "node-edit" + this.props.node_id}, "Save changes"), 
+                                React.createElement("button", {type: "button", className: "btn btn-secondary", "data-dismiss": "modal"}, "Close")
                             )
                         )
-                    ), 
-
-                    React.createElement("p", null, detail.note), 
-                    React.createElement("div", {onClick: this._onClickRemove}, "-")
+                    )
                 )
-            )
+            )            
         );
     }
 });
 
-module.exports = Node;
+module.exports = NodeEditModal;
 
-},{"../actions/AppActions":165,"../stores/AppStore":183,"classnames":3,"react":164}],175:[function(require,module,exports){
+},{"../actions/AppActions":165,"../stores/AppStore":184,"react":164}],176:[function(require,module,exports){
 var React = require('react');
 
 var NewNodeForm = require('./NewNodeForm.react.jsx');
@@ -20324,7 +20330,7 @@ var Nodes = React.createClass({displayName: "Nodes",
 
 module.exports = Nodes;
 
-},{"../actions/AppActions":165,"../stores/AppStore":183,"./NewNodeForm.react.jsx":172,"./Node.react.jsx":174,"react":164}],176:[function(require,module,exports){
+},{"../actions/AppActions":165,"../stores/AppStore":184,"./NewNodeForm.react.jsx":172,"./Node.react.jsx":174,"react":164}],177:[function(require,module,exports){
 var React = require('react');
 
 var AppActions = require('../actions/AppActions');
@@ -20404,9 +20410,7 @@ var PlanEditModal = React.createClass({displayName: "PlanEditModal",
 
 module.exports = PlanEditModal;
 
-// plan_id={this.props.plan_id} title={this.props.title} description={this.props.description}
-
-},{"../actions/AppActions":165,"../stores/AppStore":183,"react":164}],177:[function(require,module,exports){
+},{"../actions/AppActions":165,"../stores/AppStore":184,"react":164}],178:[function(require,module,exports){
 var React = require('react');
 var classNames = require('classnames');
 
@@ -20455,7 +20459,7 @@ var PlanItem = React.createClass({displayName: "PlanItem",
 });
 
 module.exports = PlanItem;
-},{"../actions/AppActions":165,"../stores/AppStore":183,"./PlanEditModal.react.jsx":176,"classnames":3,"react":164}],178:[function(require,module,exports){
+},{"../actions/AppActions":165,"../stores/AppStore":184,"./PlanEditModal.react.jsx":177,"classnames":3,"react":164}],179:[function(require,module,exports){
 var React = require('react');
 
 var NewPlanForm = require('./NewPlanForm.react.jsx');
@@ -20492,7 +20496,7 @@ var Plans = React.createClass({displayName: "Plans",
 
 module.exports = Plans;
 
-},{"../actions/AppActions":165,"../stores/AppStore":183,"./NewPlanForm.react.jsx":173,"./PlanItem.react.jsx":177,"react":164}],179:[function(require,module,exports){
+},{"../actions/AppActions":165,"../stores/AppStore":184,"./NewPlanForm.react.jsx":173,"./PlanItem.react.jsx":178,"react":164}],180:[function(require,module,exports){
 module.exports = {
     APP_CREATE_PLAN: "APP_CREATE_PLAN",
     APP_DEL_PLAN: "APP_DEL_PLAN",
@@ -20503,12 +20507,12 @@ module.exports = {
     APP_UPDATE_NODE_CONTENT: "APP_UPDATE_NODE_CONTENT",
 }
 
-},{}],180:[function(require,module,exports){
+},{}],181:[function(require,module,exports){
 module.exports = {
     
 }
 
-},{}],181:[function(require,module,exports){
+},{}],182:[function(require,module,exports){
 var Dispatcher = require('flux').Dispatcher;
 var assign = require('object-assign');
 
@@ -20565,7 +20569,7 @@ AppDispatcher.register(function(action) {
 
 module.exports = AppDispatcher;
 
-},{"../constants/AppConstants":179,"../stores/AppStore":183,"flux":4,"object-assign":7}],182:[function(require,module,exports){
+},{"../constants/AppConstants":180,"../stores/AppStore":184,"flux":4,"object-assign":7}],183:[function(require,module,exports){
 var Dispatcher = require('flux').Dispatcher;
 var assign = require('object-assign');
 
@@ -20581,7 +20585,7 @@ var HomeDispatcher = assign(new Dispatcher(), {
 
 module.exports = HomeDispatcher;
 
-},{"flux":4,"object-assign":7}],183:[function(require,module,exports){
+},{"flux":4,"object-assign":7}],184:[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AppConstants = require('../constants/AppConstants');
 var EventEmitter = require('events').EventEmitter;
@@ -20779,7 +20783,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
 
 module.exports = AppStore;
 
-},{"../constants/AppConstants":179,"../dispatcher/AppDispatcher":181,"../utils/AppAPI.js":185,"events":1,"object-assign":7}],184:[function(require,module,exports){
+},{"../constants/AppConstants":180,"../dispatcher/AppDispatcher":182,"../utils/AppAPI.js":186,"events":1,"object-assign":7}],185:[function(require,module,exports){
 var HomeDispatcher = require('../dispatcher/HomeDispatcher');
 var AppConstants = require('../constants/HomeConstants');
 var EventEmitter = require('events').EventEmitter;
@@ -20812,6 +20816,6 @@ HomeDispatcher.register(function(payload) {
 
 module.exports = HomeStore;
 
-},{"../constants/HomeConstants":180,"../dispatcher/HomeDispatcher":182,"../utils/AppAPI.js":185,"events":1,"object-assign":7}],185:[function(require,module,exports){
+},{"../constants/HomeConstants":181,"../dispatcher/HomeDispatcher":183,"../utils/AppAPI.js":186,"events":1,"object-assign":7}],186:[function(require,module,exports){
 
 },{}]},{},[167]);

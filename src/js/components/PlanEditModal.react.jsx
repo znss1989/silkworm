@@ -76,5 +76,3 @@ var PlanEditModal = React.createClass({
 });
 
 module.exports = PlanEditModal;
-
-// plan_id={this.props.plan_id} title={this.props.title} description={this.props.description}
