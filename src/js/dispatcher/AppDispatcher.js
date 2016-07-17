@@ -41,8 +41,8 @@ AppDispatcher.register(function(action) {
             AppStore.removeNode(action.index);
             break;
         // Respond to APP_UPDATE_NODE_TEXT action
-        case AppConstants.APP_UPDATE_NODE_TEXT:
-            AppStore.updateNodeText(action.payload);
+        case AppConstants.APP_UPDATE_NODE_CONTENT:
+            AppStore.updateNodeContent(action.payload);
             break;
         
         // Respond to ...

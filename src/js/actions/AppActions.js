@@ -44,9 +44,9 @@ var AppActions = {
         };
         AppDispatcher.dispatch(action);
     },
-    updateNodeText: function(payload) {
+    updateNodeContent: function(payload) {
         var action = {
-            actionType: AppConstants.APP_UPDATE_NODE_TEXT,
+            actionType: AppConstants.APP_UPDATE_NODE_CONTENT,
             payload: payload
         };
         AppDispatcher.dispatch(action);

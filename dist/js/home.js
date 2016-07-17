@@ -19864,7 +19864,7 @@ module.exports = {
     APP_SELECT_PLAN: "APP_SELECT_PLAN",
     APP_CREATE_NODE: "APP_CREATE_NODE",
     APP_DEL_NODE: "APP_DEL_NODE",
-    APP_UPDATE_NODE_TEXT: "APP_UPDATE_NODE_TEXT",
+    APP_UPDATE_NODE_CONTENT: "APP_UPDATE_NODE_CONTENT",
 }
 
 },{}],170:[function(require,module,exports){
@@ -19916,8 +19916,8 @@ AppDispatcher.register(function(action) {
             AppStore.removeNode(action.index);
             break;
         // Respond to APP_UPDATE_NODE_TEXT action
-        case AppConstants.APP_UPDATE_NODE_TEXT:
-            AppStore.updateNodeText(action.payload);
+        case AppConstants.APP_UPDATE_NODE_CONTENT:
+            AppStore.updateNodeContent(action.payload);
             break;
         
         // Respond to ...
@@ -20092,12 +20092,9 @@ var AppStore = assign({}, EventEmitter.prototype, {
             console.log("Title cannot be empty!");
             return ;
         }
-        _plans[index] = {
-            plan_id: id,
-            title: title,
-            description: description
-        };
-        $("#plan-edit-modal").modal('hide');
+        _plans[index].title = title;
+        _plans[index].description = description;
+        $("#plan-edit-modal" + id).modal('hide');
     },
     changeSelectIndex: function(id) {
         var selectIndex = _selectIndex;
@@ -20128,19 +20125,22 @@ var AppStore = assign({}, EventEmitter.prototype, {
             }
         }
     },
-    updateNodeText: function(payload) {
-        var index = payload.nodeIndex;
+    updateNodeContent: function(payload) {
+        var id = payload.nodeId;
         var item = payload.nodeItem;
+        var note = payload.nodeNote;
         if (item === '') {
             console.log("Item cannot be empty!");
             return ;
         }
         var currentNodes = this.getCurrentNodes();
         for (var i = 0; i < currentNodes.length; ++i) {
-            if (currentNodes[i].node_id === index) {
+            if (currentNodes[i].node_id === id) {
                 currentNodes[i].node_item = item;
+                currentNodes[i].node_detail.note = note;
             }
         }
+        $("#node-edit-modal").modal('hide');
     },
     emitChange: function() {
         this.emit(CHANGE_EVENT);

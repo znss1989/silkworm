@@ -107,7 +107,7 @@ hr.hr-divider {
     font-weight: 500;
 }
 
-.timeline-node-content span {
+.timeline-node-content .node-datetime {
     font-size: 0.6rem;
     color: #a4a4a4;
 }

@@ -7,6 +7,11 @@ var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
 
 var Nodes = React.createClass({
+    getDefaultProps: function() {
+        return {
+          nodes: []
+        };
+    },
     _onSave: function(payload) {
         if (payload.nodeItem) {
             AppActions.createNode(payload);
@@ -16,7 +21,7 @@ var Nodes = React.createClass({
         var nodes = this.props.nodes;
         var nodesHtml = nodes.map(function(node) {
             return (
-                <Node key={node.node_id} index={node.node_id} item={node.node_item} detail={node.node_detail} />
+                <Node key={node.node_id} node_id={node.node_id} item={node.node_item} detail={node.node_detail} />
             );
         });
         return (

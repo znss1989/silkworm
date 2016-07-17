@@ -9,6 +9,7 @@ var Node = React.createClass({
         return {
             isItemEditing: false,
             item: this.props.item || '',
+            note: this.props.detail.note,
         };
     },
     _onItemDoubleClick: function() {
@@ -19,12 +20,19 @@ var Node = React.createClass({
             item: event.target.value
         });
     },
-    _onSave: function() {
+    _onNoteChange: function(event) {
+        this.setState({
+            note: event.target.value
+        });
+    },
+    _onSave: function(event) {
+        event.preventDefault(); // prevent reloading
         var payload = {
-            nodeIndex: this.props.index,
+            nodeId: this.props.node_id,
             nodeItem: this.state.item,
+            nodeNote: this.state.note
         };
-        AppActions.updateNodeText(payload);
+        AppActions.updateNodeContent(payload);
         this.setState({
             isItemEditing: false,
         });
@@ -50,7 +58,45 @@ var Node = React.createClass({
                 <div className="timeline-node-content">
                     <h4 className={classNames({'editing': this.state.isItemEditing})} onDoubleClick={this._onItemDoubleClick}>{item}</h4>
                     {itemPrompt}
-                    <span>Time / Location</span>
+                    <div className="node-span">
+                        <span className="node-datetime">Time / Location</span>
+
+                        <span className="label label-primary col-xs-2 pull-xs-right" data-toggle="modal" data-target="#node-edit-modal">
+                            Edit
+                        </span>
+
+                        <div className="modal fade" id="node-edit-modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div className="modal-dialog" role="document">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <h4 className="modal-title" id="myModalLabel">Editing a node...</h4>
+                                    </div>
+                                    <div className="modal-body">
+
+                                        <form id="node-edit" method="post" onSubmit={this._onSave}>
+                                            <div className="form-group">
+                                                <label htmlFor="node-item-prompt">Node item</label>
+                                                <input className="form-control" id="node-item-prompt" type="text" placeholder={this.state.item} value={this.state.item} onChange={this._onItemChange}  />
+                                            </div>
+                                            <div className="form-group">
+                                                <label htmlFor="node-note-prompt">Notes related</label>
+                                                <textarea className="form-control" id="node-note-prompt" type="text" placeholder={this.state.note} value={this.state.note} onChange={this._onNoteChange} ></textarea>
+                                            </div>                  
+                                        </form>    
+                                                                          
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button className="btn btn-primary" type="submit" form="node-edit">Save changes</button>
+                                        <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <p>{detail.note}</p>
                     <div onClick={this._onClickRemove}>-</div>
                 </div>
