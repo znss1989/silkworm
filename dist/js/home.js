@@ -19808,7 +19808,7 @@ var HomeBody = React.createClass({displayName: "HomeBody",
         return (
             React.createElement("div", {className: "container"}, 
                 React.createElement("div", {className: "row"}, 
-                    React.createElement("form", {method: "post", action: "app.html"}, 
+                    React.createElement("form", {method: "post", action: "./app.html"}, 
                         React.createElement("button", {type: "submit", className: "btn btn-primary col-xs-8 col-xs-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4"}, "Enter App")
                     )
                 )
