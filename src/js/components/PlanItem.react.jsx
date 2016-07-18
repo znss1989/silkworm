@@ -2,6 +2,7 @@ var React = require('react');
 var classNames = require('classnames');
 
 var PlanEditModal = require('./PlanEditModal.react.jsx');
+var PlanDeleteModal = require('./PlanDeleteModal.react.jsx');
 
 var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
@@ -16,9 +17,6 @@ var PlanItem = React.createClass({
     _onSelect: function(event) {
         var plan_id = this.props.plan_id;
         AppActions.selectCurrentPlan(plan_id);
-    },
-    _onRemove: function(event) {
-        AppActions.deletePlan(this.props.plan_id);
     },
     render: function() {
         var title = this.props.title;
@@ -38,7 +36,9 @@ var PlanItem = React.createClass({
                 <p className="card-text">{description}</p>
                 <div className="btn-group">
                     <button className="btn btn-info" onClick={this._onSelect}>Select</button>
-                    <button className="btn btn-warning" onClick={this._onRemove}>Delete</button>
+                    <button className="btn btn-warning" data-toggle="modal" data-target={"#plan-delete-modal" + this.props.plan_id}>Delete</button>
+
+                    <PlanDeleteModal plan_id={this.props.plan_id} />
                 </div>
             </div>
         );
