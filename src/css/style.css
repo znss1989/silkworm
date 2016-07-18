@@ -119,6 +119,10 @@ hr.hr-divider {
     font-size: 18px; 
 }
 
+.material-icons.warning-orange { 
+    color: #ffd699; 
+}
+
 @media screen and (max-width: 1024px) {
     .nodes-container:before {
         left: 8px;

@@ -21,7 +21,7 @@ var PlanDeleteModal = React.createClass({
                             </h4>
                         </div>
                         <div className="modal-footer">
-                            <button className="btn btn-primary" type="button" onClick={this._onRemove}>Delete</button>
+                            <button className="btn btn-warning" type="button" onClick={this._onRemove}>Delete</button>
                             <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
                         </div>
                     </div>

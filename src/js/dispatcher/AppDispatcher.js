@@ -38,7 +38,7 @@ AppDispatcher.register(function(action) {
             break;
         // Respond to APP_DEL_NODE action
         case AppConstants.APP_DEL_NODE:
-            AppStore.removeNode(action.index);
+            AppStore.removeNode(action.id);
             break;
         // Respond to APP_UPDATE_NODE_TEXT action
         case AppConstants.APP_UPDATE_NODE_CONTENT:

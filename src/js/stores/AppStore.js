@@ -156,14 +156,15 @@ var AppStore = assign({}, EventEmitter.prototype, {
             node_detail: {}
         });
     },
-    removeNode: function(index) {
+    removeNode: function(id) {
+        console.log("removeNode invoked.");
         var currentNodes = this.getCurrentNodes();
         for (var i = 0; i < currentNodes.length; ++i) {
-            if (currentNodes[i].node_id === index) {
+            if (currentNodes[i].node_id === id) {
                 currentNodes.splice(i, 1);
-                return ;
             }
         }
+        $("#node-remove-modal" + id).modal('hide');
     },
     updateNodeContent: function(payload) {
         var id = payload.nodeId;
@@ -180,7 +181,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
                 currentNodes[i].node_detail.note = note;
             }
         }
-        $("#node-edit-modal").modal('hide');
+        $("#node-edit-modal" + id).modal('hide');
     },
     emitChange: function() {
         this.emit(CHANGE_EVENT);

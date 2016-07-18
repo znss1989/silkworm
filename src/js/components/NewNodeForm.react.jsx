@@ -31,9 +31,7 @@ var NewNodeForm = React.createClass({
                     <i className="material-icons md-18 p-r-1">add_box</i>
                     Add a node
                 </button>
-
-                
-                
+                    
                 <div className="modal fade" id="new-node-form" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div className="modal-dialog" role="document">
                         <div className="modal-content">

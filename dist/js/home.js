@@ -19913,7 +19913,7 @@ AppDispatcher.register(function(action) {
             break;
         // Respond to APP_DEL_NODE action
         case AppConstants.APP_DEL_NODE:
-            AppStore.removeNode(action.index);
+            AppStore.removeNode(action.id);
             break;
         // Respond to APP_UPDATE_NODE_TEXT action
         case AppConstants.APP_UPDATE_NODE_CONTENT:
@@ -20116,14 +20116,15 @@ var AppStore = assign({}, EventEmitter.prototype, {
             node_detail: {}
         });
     },
-    removeNode: function(index) {
+    removeNode: function(id) {
+        console.log("removeNode invoked.");
         var currentNodes = this.getCurrentNodes();
         for (var i = 0; i < currentNodes.length; ++i) {
-            if (currentNodes[i].node_id === index) {
+            if (currentNodes[i].node_id === id) {
                 currentNodes.splice(i, 1);
-                return ;
             }
         }
+        $("#node-remove-modal" + id).modal('hide');
     },
     updateNodeContent: function(payload) {
         var id = payload.nodeId;
@@ -20140,7 +20141,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
                 currentNodes[i].node_detail.note = note;
             }
         }
-        $("#node-edit-modal").modal('hide');
+        $("#node-edit-modal" + id).modal('hide');
     },
     emitChange: function() {
         this.emit(CHANGE_EVENT);

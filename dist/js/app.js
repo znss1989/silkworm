@@ -19811,7 +19811,7 @@ var AppActions = {
         };
         AppDispatcher.dispatch(action);
     },
-    deletePlan: function(id) {
+    removePlan: function(id) {
         var action = {
             actionType: AppConstants.APP_DEL_PLAN,
             id: id
@@ -19839,10 +19839,11 @@ var AppActions = {
         };
         AppDispatcher.dispatch(action);
     },
-    deleteNode: function(index) {
+    removeNode: function(id) {
+        console.log("removeNode invoked at action.");
         var action = {
             actionType: AppConstants.APP_DEL_NODE,
-            index:index
+            id:id
         };
         AppDispatcher.dispatch(action);
     },
@@ -19857,7 +19858,7 @@ var AppActions = {
 
 module.exports = AppActions;
 
-},{"../constants/AppConstants":181,"../dispatcher/AppDispatcher":183}],166:[function(require,module,exports){
+},{"../constants/AppConstants":182,"../dispatcher/AppDispatcher":184}],166:[function(require,module,exports){
 var HomeDispatcher = require('../dispatcher/AppDispatcher');
 var HomeConstants = require('../constants/AppConstants');
 
@@ -19865,7 +19866,7 @@ var HomeActions = {};
 
 module.exports = HomeActions;
 
-},{"../constants/AppConstants":181,"../dispatcher/AppDispatcher":183}],167:[function(require,module,exports){
+},{"../constants/AppConstants":182,"../dispatcher/AppDispatcher":184}],167:[function(require,module,exports){
 var React = require('react');
 var ReactDOM = require('react-dom');
 var AppAPI = require('./utils/AppAPI.js');
@@ -19877,7 +19878,7 @@ ReactDOM.render(
     document.getElementById('app')
 );
 
-},{"./components/App.react.jsx":168,"./utils/AppAPI.js":187,"react":164,"react-dom":8}],168:[function(require,module,exports){
+},{"./components/App.react.jsx":168,"./utils/AppAPI.js":188,"react":164,"react-dom":8}],168:[function(require,module,exports){
 var React = require('react');
 
 var AppHeader = require('./AppHeader.react.jsx');
@@ -19923,7 +19924,7 @@ var App = React.createClass({displayName: "App",
 
 module.exports = App;
 
-},{"../actions/AppActions":165,"../dispatcher/AppDispatcher":183,"../stores/AppStore":185,"./AppBody.react.jsx":169,"./AppFooter.react.jsx":170,"./AppHeader.react.jsx":171,"react":164}],169:[function(require,module,exports){
+},{"../actions/AppActions":165,"../dispatcher/AppDispatcher":184,"../stores/AppStore":186,"./AppBody.react.jsx":169,"./AppFooter.react.jsx":170,"./AppHeader.react.jsx":171,"react":164}],169:[function(require,module,exports){
 var React = require('react');
 
 var Plans = require('./Plans.react.jsx');
@@ -19951,7 +19952,7 @@ var AppBody = React.createClass({displayName: "AppBody",
 
 module.exports = AppBody;
 
-},{"../actions/AppActions":165,"../stores/AppStore":185,"./Nodes.react.jsx":176,"./Plans.react.jsx":180,"react":164}],170:[function(require,module,exports){
+},{"../actions/AppActions":165,"../stores/AppStore":186,"./Nodes.react.jsx":177,"./Plans.react.jsx":181,"react":164}],170:[function(require,module,exports){
 var React = require('react');
 
 var AppActions = require('../actions/HomeActions');
@@ -19969,7 +19970,7 @@ var AppFooter = React.createClass({displayName: "AppFooter",
 
 module.exports = AppFooter;
 
-},{"../actions/HomeActions":166,"../stores/HomeStore":186,"react":164}],171:[function(require,module,exports){
+},{"../actions/HomeActions":166,"../stores/HomeStore":187,"react":164}],171:[function(require,module,exports){
 var React = require('react');
 
 var AppActions = require('../actions/AppActions');
@@ -20023,7 +20024,7 @@ module.exports = AppHeader;
             //     </div>
             // </nav>
 
-},{"../actions/AppActions":165,"../stores/AppStore":185,"react":164}],172:[function(require,module,exports){
+},{"../actions/AppActions":165,"../stores/AppStore":186,"react":164}],172:[function(require,module,exports){
 var React = require('react');
 
 var AppActions = require('../actions/AppActions');
@@ -20057,9 +20058,7 @@ var NewNodeForm = React.createClass({displayName: "NewNodeForm",
                     React.createElement("i", {className: "material-icons md-18 p-r-1"}, "add_box"), 
                     "Add a node"
                 ), 
-
-                
-                
+                    
                 React.createElement("div", {className: "modal fade", id: "new-node-form", role: "dialog", "aria-labelledby": "myModalLabel", "aria-hidden": "true"}, 
                     React.createElement("div", {className: "modal-dialog", role: "document"}, 
                         React.createElement("div", {className: "modal-content"}, 
@@ -20093,7 +20092,7 @@ var NewNodeForm = React.createClass({displayName: "NewNodeForm",
 
 module.exports = NewNodeForm;
 
-},{"../actions/AppActions":165,"../stores/AppStore":185,"react":164}],173:[function(require,module,exports){
+},{"../actions/AppActions":165,"../stores/AppStore":186,"react":164}],173:[function(require,module,exports){
 var React = require('react');
 
 var AppActions = require('../actions/AppActions');
@@ -20172,19 +20171,17 @@ var NewPlanForm = React.createClass({displayName: "NewPlanForm",
 
 module.exports = NewPlanForm;
 
-},{"../actions/AppActions":165,"../stores/AppStore":185,"react":164}],174:[function(require,module,exports){
+},{"../actions/AppActions":165,"../stores/AppStore":186,"react":164}],174:[function(require,module,exports){
 var React = require('react');
 var classNames = require('classnames');
 
 var NodeEditModal = require('./NodeEditModal.react.jsx');
+var NodeRemoveModal = require('./NodeRemoveModal.react.jsx');
 
 var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
 
 var Node = React.createClass({displayName: "Node",
-    _onClickRemove: function(event) {
-        AppActions.deleteNode(this.props.index);
-    },
     render: function() {
         var item = this.props.item;
         var detail = this.props.detail;
@@ -20193,12 +20190,19 @@ var Node = React.createClass({displayName: "Node",
             React.createElement("div", {className: "timeline-node"}, 
                 React.createElement("div", {className: "timeline-token"}), 
                 React.createElement("div", {className: "timeline-node-content"}, 
-                    React.createElement("h4", null, item), 
+                    React.createElement("div", null, 
+                        React.createElement("h4", null, 
+                            item, 
+                            React.createElement("i", {className: "material-icons md-18 warning-orange pull-xs-right", "data-toggle": "modal", "data-target": "#node-remove-modal" + this.props.node_id}, "delete_forever")
+                        ), 
+
+                        React.createElement(NodeRemoveModal, {node_id: this.props.node_id})
+                    ), 
+                    
 
                     React.createElement(NodeEditModal, {node_id: this.props.node_id, item: this.props.item, note: this.props.detail.note}), 
 
-                    React.createElement("p", {className: "p-t-1"}, detail.note), 
-                    React.createElement("div", {onClick: this._onClickRemove}, "-")
+                    React.createElement("p", {className: "p-t-1"}, detail.note)
                 )
             )
         );
@@ -20207,7 +20211,7 @@ var Node = React.createClass({displayName: "Node",
 
 module.exports = Node;
 
-},{"../actions/AppActions":165,"../stores/AppStore":185,"./NodeEditModal.react.jsx":175,"classnames":3,"react":164}],175:[function(require,module,exports){
+},{"../actions/AppActions":165,"../stores/AppStore":186,"./NodeEditModal.react.jsx":175,"./NodeRemoveModal.react.jsx":176,"classnames":3,"react":164}],175:[function(require,module,exports){
 var React = require('react');
 
 var AppActions = require('../actions/AppActions');
@@ -20288,7 +20292,44 @@ var NodeEditModal = React.createClass({displayName: "NodeEditModal",
 
 module.exports = NodeEditModal;
 
-},{"../actions/AppActions":165,"../stores/AppStore":185,"react":164}],176:[function(require,module,exports){
+},{"../actions/AppActions":165,"../stores/AppStore":186,"react":164}],176:[function(require,module,exports){
+var React = require('react');
+
+var AppActions = require('../actions/AppActions');
+var AppStore = require('../stores/AppStore');
+
+var NodeRemoveModal = React.createClass({displayName: "NodeRemoveModal",
+    _onRemove: function(event) {
+        console.log("_onRemove invoked.");
+        AppActions.removeNode(this.props.node_id);
+    },
+    render: function() {
+        return (
+            React.createElement("div", null, 
+                React.createElement("div", {className: "modal fade", id: "node-remove-modal" + this.props.node_id, role: "dialog", "aria-labelledby": "myModalLabel", "aria-hidden": "true"}, 
+                    React.createElement("div", {className: "modal-dialog", role: "document"}, 
+                        React.createElement("div", {className: "modal-content"}, 
+                            React.createElement("div", {className: "modal-header"}, 
+                                React.createElement("button", {type: "button", className: "close", "data-dismiss": "modal", "aria-label": "Close"}, 
+                                    React.createElement("span", {"aria-hidden": "true"}, "×")
+                                ), 
+                                React.createElement("h4", {className: "modal-title", id: "myModalLabel"}, "Are you sure to remove this node?")
+                            ), 
+                            React.createElement("div", {className: "modal-footer"}, 
+                                React.createElement("button", {className: "btn btn-warning", type: "button", onClick: this._onRemove}, "Remove"), 
+                                React.createElement("button", {type: "button", className: "btn btn-secondary", "data-dismiss": "modal"}, "Close")
+                            )
+                        )
+                    )
+                )
+            )
+        );
+    }    
+});
+
+module.exports = NodeRemoveModal;
+
+},{"../actions/AppActions":165,"../stores/AppStore":186,"react":164}],177:[function(require,module,exports){
 var React = require('react');
 
 var NewNodeForm = require('./NewNodeForm.react.jsx');
@@ -20330,7 +20371,7 @@ var Nodes = React.createClass({displayName: "Nodes",
 
 module.exports = Nodes;
 
-},{"../actions/AppActions":165,"../stores/AppStore":185,"./NewNodeForm.react.jsx":172,"./Node.react.jsx":174,"react":164}],177:[function(require,module,exports){
+},{"../actions/AppActions":165,"../stores/AppStore":186,"./NewNodeForm.react.jsx":172,"./Node.react.jsx":174,"react":164}],178:[function(require,module,exports){
 var React = require('react');
 
 var AppActions = require('../actions/AppActions');
@@ -20354,7 +20395,7 @@ var PlanDeleteModal = React.createClass({displayName: "PlanDeleteModal",
                             )
                         ), 
                         React.createElement("div", {className: "modal-footer"}, 
-                            React.createElement("button", {className: "btn btn-primary", type: "button", onClick: this._onRemove}, "Delete"), 
+                            React.createElement("button", {className: "btn btn-warning", type: "button", onClick: this._onRemove}, "Delete"), 
                             React.createElement("button", {type: "button", className: "btn btn-secondary", "data-dismiss": "modal"}, "Close")
                         )
                     )
@@ -20366,7 +20407,7 @@ var PlanDeleteModal = React.createClass({displayName: "PlanDeleteModal",
 
 module.exports= PlanDeleteModal;
 
-},{"../actions/AppActions":165,"../stores/AppStore":185,"react":164}],178:[function(require,module,exports){
+},{"../actions/AppActions":165,"../stores/AppStore":186,"react":164}],179:[function(require,module,exports){
 var React = require('react');
 
 var AppActions = require('../actions/AppActions');
@@ -20446,7 +20487,7 @@ var PlanEditModal = React.createClass({displayName: "PlanEditModal",
 
 module.exports = PlanEditModal;
 
-},{"../actions/AppActions":165,"../stores/AppStore":185,"react":164}],179:[function(require,module,exports){
+},{"../actions/AppActions":165,"../stores/AppStore":186,"react":164}],180:[function(require,module,exports){
 var React = require('react');
 var classNames = require('classnames');
 
@@ -20495,7 +20536,7 @@ var PlanItem = React.createClass({displayName: "PlanItem",
 });
 
 module.exports = PlanItem;
-},{"../actions/AppActions":165,"../stores/AppStore":185,"./PlanDeleteModal.react.jsx":177,"./PlanEditModal.react.jsx":178,"classnames":3,"react":164}],180:[function(require,module,exports){
+},{"../actions/AppActions":165,"../stores/AppStore":186,"./PlanDeleteModal.react.jsx":178,"./PlanEditModal.react.jsx":179,"classnames":3,"react":164}],181:[function(require,module,exports){
 var React = require('react');
 
 var NewPlanForm = require('./NewPlanForm.react.jsx');
@@ -20532,7 +20573,7 @@ var Plans = React.createClass({displayName: "Plans",
 
 module.exports = Plans;
 
-},{"../actions/AppActions":165,"../stores/AppStore":185,"./NewPlanForm.react.jsx":173,"./PlanItem.react.jsx":179,"react":164}],181:[function(require,module,exports){
+},{"../actions/AppActions":165,"../stores/AppStore":186,"./NewPlanForm.react.jsx":173,"./PlanItem.react.jsx":180,"react":164}],182:[function(require,module,exports){
 module.exports = {
     APP_CREATE_PLAN: "APP_CREATE_PLAN",
     APP_DEL_PLAN: "APP_DEL_PLAN",
@@ -20543,12 +20584,12 @@ module.exports = {
     APP_UPDATE_NODE_CONTENT: "APP_UPDATE_NODE_CONTENT",
 }
 
-},{}],182:[function(require,module,exports){
+},{}],183:[function(require,module,exports){
 module.exports = {
     
 }
 
-},{}],183:[function(require,module,exports){
+},{}],184:[function(require,module,exports){
 var Dispatcher = require('flux').Dispatcher;
 var assign = require('object-assign');
 
@@ -20589,7 +20630,7 @@ AppDispatcher.register(function(action) {
             break;
         // Respond to APP_DEL_NODE action
         case AppConstants.APP_DEL_NODE:
-            AppStore.removeNode(action.index);
+            AppStore.removeNode(action.id);
             break;
         // Respond to APP_UPDATE_NODE_TEXT action
         case AppConstants.APP_UPDATE_NODE_CONTENT:
@@ -20605,7 +20646,7 @@ AppDispatcher.register(function(action) {
 
 module.exports = AppDispatcher;
 
-},{"../constants/AppConstants":181,"../stores/AppStore":185,"flux":4,"object-assign":7}],184:[function(require,module,exports){
+},{"../constants/AppConstants":182,"../stores/AppStore":186,"flux":4,"object-assign":7}],185:[function(require,module,exports){
 var Dispatcher = require('flux').Dispatcher;
 var assign = require('object-assign');
 
@@ -20621,7 +20662,7 @@ var HomeDispatcher = assign(new Dispatcher(), {
 
 module.exports = HomeDispatcher;
 
-},{"flux":4,"object-assign":7}],185:[function(require,module,exports){
+},{"flux":4,"object-assign":7}],186:[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AppConstants = require('../constants/AppConstants');
 var EventEmitter = require('events').EventEmitter;
@@ -20780,14 +20821,15 @@ var AppStore = assign({}, EventEmitter.prototype, {
             node_detail: {}
         });
     },
-    removeNode: function(index) {
+    removeNode: function(id) {
+        console.log("removeNode invoked.");
         var currentNodes = this.getCurrentNodes();
         for (var i = 0; i < currentNodes.length; ++i) {
-            if (currentNodes[i].node_id === index) {
+            if (currentNodes[i].node_id === id) {
                 currentNodes.splice(i, 1);
-                return ;
             }
         }
+        $("#node-remove-modal" + id).modal('hide');
     },
     updateNodeContent: function(payload) {
         var id = payload.nodeId;
@@ -20804,7 +20846,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
                 currentNodes[i].node_detail.note = note;
             }
         }
-        $("#node-edit-modal").modal('hide');
+        $("#node-edit-modal" + id).modal('hide');
     },
     emitChange: function() {
         this.emit(CHANGE_EVENT);
@@ -20819,7 +20861,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
 
 module.exports = AppStore;
 
-},{"../constants/AppConstants":181,"../dispatcher/AppDispatcher":183,"../utils/AppAPI.js":187,"events":1,"object-assign":7}],186:[function(require,module,exports){
+},{"../constants/AppConstants":182,"../dispatcher/AppDispatcher":184,"../utils/AppAPI.js":188,"events":1,"object-assign":7}],187:[function(require,module,exports){
 var HomeDispatcher = require('../dispatcher/HomeDispatcher');
 var AppConstants = require('../constants/HomeConstants');
 var EventEmitter = require('events').EventEmitter;
@@ -20852,6 +20894,6 @@ HomeDispatcher.register(function(payload) {
 
 module.exports = HomeStore;
 
-},{"../constants/HomeConstants":182,"../dispatcher/HomeDispatcher":184,"../utils/AppAPI.js":187,"events":1,"object-assign":7}],187:[function(require,module,exports){
+},{"../constants/HomeConstants":183,"../dispatcher/HomeDispatcher":185,"../utils/AppAPI.js":188,"events":1,"object-assign":7}],188:[function(require,module,exports){
 
 },{}]},{},[167]);

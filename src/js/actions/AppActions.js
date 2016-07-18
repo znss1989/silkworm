@@ -9,7 +9,7 @@ var AppActions = {
         };
         AppDispatcher.dispatch(action);
     },
-    deletePlan: function(id) {
+    removePlan: function(id) {
         var action = {
             actionType: AppConstants.APP_DEL_PLAN,
             id: id
@@ -37,10 +37,11 @@ var AppActions = {
         };
         AppDispatcher.dispatch(action);
     },
-    deleteNode: function(index) {
+    removeNode: function(id) {
+        console.log("removeNode invoked at action.");
         var action = {
             actionType: AppConstants.APP_DEL_NODE,
-            index:index
+            id:id
         };
         AppDispatcher.dispatch(action);
     },
