@@ -13,9 +13,7 @@ var Nodes = React.createClass({
         };
     },
     _onSave: function(payload) {
-        if (payload.nodeItem) {
-            AppActions.createNode(payload);
-        }
+        AppActions.createNode(payload);
     },
     render: function() {
         var nodes = this.props.nodes;

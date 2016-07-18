@@ -1,5 +1,6 @@
 var React = require('react');
 var classNames = require('classnames');
+var Remarkable = require('remarkable');
 
 var NodeEditModal = require('./NodeEditModal.react.jsx');
 var NodeRemoveModal = require('./NodeRemoveModal.react.jsx');
@@ -8,6 +9,11 @@ var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
 
 var Node = React.createClass({
+    rawMarkup: function() {
+        var md = new Remarkable();
+        var rawMarkup = md.render(this.props.detail.note.toString());
+        return { __html: rawMarkup }; // This is a dangerous backdoor, pls cover it at backend.
+    },
     render: function() {
         var item = this.props.item;
         var detail = this.props.detail;
@@ -25,10 +31,9 @@ var Node = React.createClass({
                         <NodeRemoveModal node_id={this.props.node_id} />
                     </div>
                     
-
                     <NodeEditModal node_id={this.props.node_id} item={this.props.item} note={this.props.detail.note} />
 
-                    <p className="p-t-1">{detail.note}</p>
+                    <div className="markdown m-t-2 p-l-1" dangerouslySetInnerHTML={this.rawMarkup()}></div>
                 </div>
             </div>
         );
@@ -36,3 +41,5 @@ var Node = React.createClass({
 });
 
 module.exports = Node;
+
+// <div >{md.render(detail.note.toString())}</div>

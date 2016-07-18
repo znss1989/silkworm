@@ -107,12 +107,16 @@ hr.hr-divider {
     color: #a4a4a4;
 }
 
-.timeline-node-content p {
+.timeline-node-content .markdown {
     font-size: 0.8rem;
     line-height: 1.5em;
     word-spacing: 1px;
     color: #888;
+    background: #e6e6e6;
     clear: both;
+    border-style: solid;
+    border-width: 0 0 0 5px;
+    border-color: #c2f0f0;
 }
 
 .material-icons.md-18 { 

@@ -20090,6 +20090,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
         var description = payload.planDescription;
         if (title === '') {
             console.log("Title cannot be empty!");
+            $("#plan-edit-modal" + id).modal('hide');
             return ;
         }
         _plans[index].title = title;
@@ -20107,14 +20108,23 @@ var AppStore = assign({}, EventEmitter.prototype, {
         }
     },
     addNewNode: function(payload) {
+        if (payload.nodeItem === '') {
+            console.log("Item cannot be empty!");
+            $('#new-node-modal').modal('hide');
+            return ;
+        }
         var id = guid();
         var item = payload.nodeItem;
+        var note = payload.nodeNote;
         var currentNodes = this.getCurrentNodes();
         currentNodes.push({
             node_id: id,
             node_item: item,
-            node_detail: {}
+            node_detail: {
+                note: note
+            }
         });
+        $('#new-node-modal').modal('hide');
     },
     removeNode: function(id) {
         console.log("removeNode invoked.");
