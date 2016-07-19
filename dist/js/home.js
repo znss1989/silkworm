@@ -19865,6 +19865,7 @@ module.exports = {
     APP_CREATE_NODE: "APP_CREATE_NODE",
     APP_DEL_NODE: "APP_DEL_NODE",
     APP_UPDATE_NODE_CONTENT: "APP_UPDATE_NODE_CONTENT",
+    APP_UPDATE_NODE_STATUS: "APP_UPDATE_NODE_STATUS",
 }
 
 },{}],170:[function(require,module,exports){
@@ -19918,6 +19919,10 @@ AppDispatcher.register(function(action) {
         // Respond to APP_UPDATE_NODE_TEXT action
         case AppConstants.APP_UPDATE_NODE_CONTENT:
             AppStore.updateNodeContent(action.payload);
+            break;
+        // Respond to APP_UPDATE_NODE_STATUS action
+        case AppConstants.APP_UPDATE_NODE_STATUS:
+            AppStore.updateNodeStatus(action.payload);
             break;
         
         // Respond to ...
@@ -19984,42 +19989,48 @@ _plans.push({
                 node_id: "7162b3b4-5662-9b04-09c0-786500b907b5",
                 node_item: "Book a flight from Chengdu to Paris",
                 node_detail: {
-                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate."
+                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.",
+                    finish: true
                 }
             },
             {
                 node_id: "80e020a9-88c0-9e0d-6dbe-9832a23ee9e0",
                 node_item: "Departure from airport CTU, Chengdu, land at airport CDG, Paris",
                 node_detail: {
-                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate."
+                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.",
+                    finish: true
                 }
             },
             {
                 node_id: "6fa89feb-b650-429c-454e-73dbc836ebef",
                 node_item: "Board a train at station Gare de Lyon to Versailles",
                 node_detail: {
-                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate."
+                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.",
+                    finish: false
                 }
             },
             {
                 node_id: "4a08c85f-47a1-44d5-d4cb-736ff0b23744",
                 node_item: "Vist Hall of Mirrors & buy some postcards",
                 node_detail: {
-                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate."
+                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.",
+                    finish: false
                 }
             },
             {
                 node_id: "116e7986-6744-52a9-e54b-b6d12fe3fad1",
                 node_item: "Take train back town, and subway to Louvre Museum",
                 node_detail: {
-                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate."
+                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.",
+                    finish: false
                 }
             },
             {
                 node_id: "f0f0f3f2-8694-cafc-e9af-cb87909b5ad3",
                 node_item: "Get back to hotel",
                 node_detail: {
-                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate."
+                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.",
+                    finish: false
                 }
             }
         ]
@@ -20152,6 +20163,16 @@ var AppStore = assign({}, EventEmitter.prototype, {
             }
         }
         $("#node-edit-modal" + id).modal('hide');
+    },
+    updateNodeStatus: function(payload) {
+        var id = payload.nodeId;
+        var status = payload.nodeStatus;
+        var currentNodes = this.getCurrentNodes();
+        for (var i = 0; i < currentNodes.length; ++i) {
+            if (currentNodes[i].node_id === id) {
+                currentNodes[i].node_detail.finish = status;
+            }
+        }
     },
     emitChange: function() {
         this.emit(CHANGE_EVENT);

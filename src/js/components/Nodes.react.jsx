@@ -26,10 +26,11 @@ var Nodes = React.createClass({
             <div className="m-t-3" id="nodes-list">
                 <h3 className="display-5 text-info text-xs-center m-y-1">Current Plan Infomation</h3>
                 <hr className="hr-divider" />
+                <NewNodeForm onSave={this._onSave} />
                 <div className="nodes-container">
-                    <NewNodeForm onSave={this._onSave} />
                     {nodesHtml}
                 </div>
+                <p>End</p>
             </div>
         );
     }

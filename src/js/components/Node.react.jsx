@@ -9,6 +9,26 @@ var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
 
 var Node = React.createClass({
+    getInitialState: function() {
+        return {
+            finish: this.props.detail.finish,
+        }
+    },
+    _onCheck: function(event) {
+        console.log("_onCheck invoked.");
+        var finish = event.target.checked;
+        console.log(finish);
+        this.setState({
+            finish: finish
+        }, () => {
+            console.log(this.state.finish);
+        });
+        var payload = {
+            nodeId: this.props.node_id,
+            nodeFinish: this.state.finish
+        };
+        AppActions.updateNodeStatus(payload);
+    },
     rawMarkup: function() {
         var md = new Remarkable();
         var rawMarkup = md.render(this.props.detail.note.toString());
@@ -23,11 +43,16 @@ var Node = React.createClass({
                 <div className="timeline-token"></div>
                 <div className="timeline-node-content">
                     <div>
-                        <h4>
-                            {item}
-                            <i className="material-icons md-18 warning-orange pull-xs-right" data-toggle="modal" data-target={"#node-remove-modal" + this.props.node_id}>delete_forever</i>
-                        </h4>
-
+                        <h4>{item}</h4>
+ 
+                        <i className="material-icons md-18 warning-orange pull-xs-right" data-toggle="modal" data-target={"#node-remove-modal" + this.props.node_id}>delete_forever</i>
+                        <span className="label label-primary col-xs-2 pull-xs-right m-r-1" data-toggle="modal" data-target={"#node-edit-modal" + this.props.node_id}>
+                            Edit
+                        </span> 
+                        <label className="pull-xs-right m-r-1">    
+                            <input type="checkbox" id={"checkbox" + this.props.node_id} checked={this.props.detail.finish} onChange={this._onCheck} /> 
+                            {this.state.finish ? "Finished" : "Not done"}
+                        </label>               
                         <NodeRemoveModal node_id={this.props.node_id} />
                     </div>
                     

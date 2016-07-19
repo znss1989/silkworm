@@ -29955,7 +29955,6 @@ var AppActions = {
         AppDispatcher.dispatch(action);
     },
     removeNode: function(id) {
-        console.log("removeNode invoked at action.");
         var action = {
             actionType: AppConstants.APP_DEL_NODE,
             id:id
@@ -29965,6 +29964,14 @@ var AppActions = {
     updateNodeContent: function(payload) {
         var action = {
             actionType: AppConstants.APP_UPDATE_NODE_CONTENT,
+            payload: payload
+        };
+        AppDispatcher.dispatch(action);
+    },
+    updateNodeStatus: function(payload) {
+        console.log("updateNodeStatus invoked in action.");
+        var action = {
+            actionType: AppConstants.APP_UPDATE_NODE_STATUS,
             payload: payload
         };
         AppDispatcher.dispatch(action);
@@ -30310,6 +30317,26 @@ var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
 
 var Node = React.createClass({displayName: "Node",
+    getInitialState: function() {
+        return {
+            finish: this.props.detail.finish,
+        }
+    },
+    _onCheck: function(event) {
+        console.log("_onCheck invoked.");
+        var finish = event.target.checked;
+        console.log(finish);
+        this.setState({
+            finish: finish
+        }, () => {
+            console.log(this.state.finish);
+        });
+        var payload = {
+            nodeId: this.props.node_id,
+            nodeFinish: this.state.finish
+        };
+        AppActions.updateNodeStatus(payload);
+    },
     rawMarkup: function() {
         var md = new Remarkable();
         var rawMarkup = md.render(this.props.detail.note.toString());
@@ -30324,11 +30351,16 @@ var Node = React.createClass({displayName: "Node",
                 React.createElement("div", {className: "timeline-token"}), 
                 React.createElement("div", {className: "timeline-node-content"}, 
                     React.createElement("div", null, 
-                        React.createElement("h4", null, 
-                            item, 
-                            React.createElement("i", {className: "material-icons md-18 warning-orange pull-xs-right", "data-toggle": "modal", "data-target": "#node-remove-modal" + this.props.node_id}, "delete_forever")
+                        React.createElement("h4", null, item), 
+ 
+                        React.createElement("i", {className: "material-icons md-18 warning-orange pull-xs-right", "data-toggle": "modal", "data-target": "#node-remove-modal" + this.props.node_id}, "delete_forever"), 
+                        React.createElement("span", {className: "label label-primary col-xs-2 pull-xs-right m-r-1", "data-toggle": "modal", "data-target": "#node-edit-modal" + this.props.node_id}, 
+                            "Edit"
                         ), 
-
+                        React.createElement("label", {className: "pull-xs-right m-r-1"}, 
+                            React.createElement("input", {type: "checkbox", id: "checkbox" + this.props.node_id, checked: this.props.detail.finish, onChange: this._onCheck}), 
+                            this.state.finish ? "Finished" : "Not done"
+                        ), 
                         React.createElement(NodeRemoveModal, {node_id: this.props.node_id})
                     ), 
                     
@@ -30385,10 +30417,6 @@ var NodeEditModal = React.createClass({displayName: "NodeEditModal",
             React.createElement("div", {className: "node-span"}, 
                 React.createElement("span", {className: "node-datetime pull-xs-left"}, "Time / Location"), 
 
-                React.createElement("span", {className: "label label-primary col-xs-2 pull-xs-right", "data-toggle": "modal", "data-target": "#node-edit-modal" + this.props.node_id}, 
-                    "Edit"
-                ), 
-
                 React.createElement("div", {className: "modal fade", id: "node-edit-modal" + this.props.node_id, role: "dialog", "aria-labelledby": "myModalLabel", "aria-hidden": "true"}, 
                     React.createElement("div", {className: "modal-dialog", role: "document"}, 
                         React.createElement("div", {className: "modal-content"}, 
@@ -30407,7 +30435,7 @@ var NodeEditModal = React.createClass({displayName: "NodeEditModal",
                                     ), 
                                     React.createElement("div", {className: "form-group"}, 
                                         React.createElement("label", {htmlFor: "node-note-prompt"}, "Notes related"), 
-                                        React.createElement("textarea", {className: "form-control", id: "node-note-prompt", type: "text", placeholder: this.state.note, value: this.state.note, onChange: this._onNoteChange})
+                                        React.createElement("textarea", {className: "form-control", id: "node-note-prompt", type: "text", rows: "5", placeholder: this.state.note, value: this.state.note, onChange: this._onNoteChange})
                                     )
                                 )
                                                                   
@@ -30492,10 +30520,11 @@ var Nodes = React.createClass({displayName: "Nodes",
             React.createElement("div", {className: "m-t-3", id: "nodes-list"}, 
                 React.createElement("h3", {className: "display-5 text-info text-xs-center m-y-1"}, "Current Plan Infomation"), 
                 React.createElement("hr", {className: "hr-divider"}), 
+                React.createElement(NewNodeForm, {onSave: this._onSave}), 
                 React.createElement("div", {className: "nodes-container"}, 
-                    React.createElement(NewNodeForm, {onSave: this._onSave}), 
                     nodesHtml
-                )
+                ), 
+                React.createElement("p", null, "End")
             )
         );
     }
@@ -30714,6 +30743,7 @@ module.exports = {
     APP_CREATE_NODE: "APP_CREATE_NODE",
     APP_DEL_NODE: "APP_DEL_NODE",
     APP_UPDATE_NODE_CONTENT: "APP_UPDATE_NODE_CONTENT",
+    APP_UPDATE_NODE_STATUS: "APP_UPDATE_NODE_STATUS",
 }
 
 },{}],244:[function(require,module,exports){
@@ -30768,6 +30798,10 @@ AppDispatcher.register(function(action) {
         case AppConstants.APP_UPDATE_NODE_CONTENT:
             AppStore.updateNodeContent(action.payload);
             break;
+        // Respond to APP_UPDATE_NODE_STATUS action
+        case AppConstants.APP_UPDATE_NODE_STATUS:
+            AppStore.updateNodeStatus(action.payload);
+            break;
         
         // Respond to ...
         default:
@@ -30821,42 +30855,48 @@ _plans.push({
                 node_id: "7162b3b4-5662-9b04-09c0-786500b907b5",
                 node_item: "Book a flight from Chengdu to Paris",
                 node_detail: {
-                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate."
+                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.",
+                    finish: true
                 }
             },
             {
                 node_id: "80e020a9-88c0-9e0d-6dbe-9832a23ee9e0",
                 node_item: "Departure from airport CTU, Chengdu, land at airport CDG, Paris",
                 node_detail: {
-                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate."
+                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.",
+                    finish: true
                 }
             },
             {
                 node_id: "6fa89feb-b650-429c-454e-73dbc836ebef",
                 node_item: "Board a train at station Gare de Lyon to Versailles",
                 node_detail: {
-                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate."
+                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.",
+                    finish: false
                 }
             },
             {
                 node_id: "4a08c85f-47a1-44d5-d4cb-736ff0b23744",
                 node_item: "Vist Hall of Mirrors & buy some postcards",
                 node_detail: {
-                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate."
+                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.",
+                    finish: false
                 }
             },
             {
                 node_id: "116e7986-6744-52a9-e54b-b6d12fe3fad1",
                 node_item: "Take train back town, and subway to Louvre Museum",
                 node_detail: {
-                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate."
+                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.",
+                    finish: false
                 }
             },
             {
                 node_id: "f0f0f3f2-8694-cafc-e9af-cb87909b5ad3",
                 node_item: "Get back to hotel",
                 node_detail: {
-                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate."
+                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.",
+                    finish: false
                 }
             }
         ]
@@ -30989,6 +31029,16 @@ var AppStore = assign({}, EventEmitter.prototype, {
             }
         }
         $("#node-edit-modal" + id).modal('hide');
+    },
+    updateNodeStatus: function(payload) {
+        var id = payload.nodeId;
+        var status = payload.nodeStatus;
+        var currentNodes = this.getCurrentNodes();
+        for (var i = 0; i < currentNodes.length; ++i) {
+            if (currentNodes[i].node_id === id) {
+                currentNodes[i].node_detail.finish = status;
+            }
+        }
     },
     emitChange: function() {
         this.emit(CHANGE_EVENT);

@@ -38,7 +38,6 @@ var AppActions = {
         AppDispatcher.dispatch(action);
     },
     removeNode: function(id) {
-        console.log("removeNode invoked at action.");
         var action = {
             actionType: AppConstants.APP_DEL_NODE,
             id:id
@@ -48,6 +47,14 @@ var AppActions = {
     updateNodeContent: function(payload) {
         var action = {
             actionType: AppConstants.APP_UPDATE_NODE_CONTENT,
+            payload: payload
+        };
+        AppDispatcher.dispatch(action);
+    },
+    updateNodeStatus: function(payload) {
+        console.log("updateNodeStatus invoked in action.");
+        var action = {
+            actionType: AppConstants.APP_UPDATE_NODE_STATUS,
             payload: payload
         };
         AppDispatcher.dispatch(action);

@@ -35,11 +35,7 @@ var NodeEditModal = React.createClass({
     render: function() {
         return (
             <div className="node-span">
-                <span className="node-datetime pull-xs-left">Time / Location</span>
-
-                <span className="label label-primary col-xs-2 pull-xs-right" data-toggle="modal" data-target={"#node-edit-modal" + this.props.node_id}>
-                    Edit
-                </span>
+                <span className="node-datetime pull-xs-left">Time / Location</span>         
 
                 <div className="modal fade" id={"node-edit-modal" + this.props.node_id} role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div className="modal-dialog" role="document">
@@ -59,7 +55,7 @@ var NodeEditModal = React.createClass({
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="node-note-prompt">Notes related</label>
-                                        <textarea className="form-control" id="node-note-prompt" type="text" placeholder={this.state.note} value={this.state.note} onChange={this._onNoteChange} ></textarea>
+                                        <textarea className="form-control" id="node-note-prompt" type="text" rows="5" placeholder={this.state.note} value={this.state.note} onChange={this._onNoteChange} ></textarea>
                                     </div>                  
                                 </form>    
                                                                   

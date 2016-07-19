@@ -44,6 +44,10 @@ AppDispatcher.register(function(action) {
         case AppConstants.APP_UPDATE_NODE_CONTENT:
             AppStore.updateNodeContent(action.payload);
             break;
+        // Respond to APP_UPDATE_NODE_STATUS action
+        case AppConstants.APP_UPDATE_NODE_STATUS:
+            AppStore.updateNodeStatus(action.payload);
+            break;
         
         // Respond to ...
         default:
