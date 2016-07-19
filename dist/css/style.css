@@ -79,6 +79,10 @@ hr.hr-divider {
     direction: ltr;
 }
 
+.modal {
+    direction: ltr;
+}
+
 .timeline-token {
    width: 16px;
    height: 16px;
@@ -87,6 +91,24 @@ hr.hr-divider {
    background: #4FC1E9;
    margin-top: 10px;
    z-index: 1000;
+}
+
+.timeline-node.node-top {
+    position: relative;
+    left: 50%;
+    margin-left: -8px;
+    width: 95%;
+}
+
+.timeline-node.node-bottom {
+    position: relative;
+    left: 50%;
+    margin-left: -8px;
+    width: 95%;
+}
+
+.timeline-node.node-bottom p {
+    margin-top: 10px;
 }
 
 .timeline-node-content {
@@ -137,7 +159,7 @@ hr.hr-divider {
         width: 2px;
    }
 
-    .timeline-node {
+    .nodes-container .timeline-node {
         width: 100%;
         margin-bottom: 30px;
    }
@@ -159,4 +181,16 @@ hr.hr-divider {
         float: none;
         direction: ltr;
    }
+
+    .timeline-node.node-top {
+        position: relative;
+        left: 8px;
+        margin-left: -8px;
+    }
+
+    .timeline-node.node-bottom {
+        position: relative;
+        left: 8px;
+        margin-left: -8px;
+    }   
 }

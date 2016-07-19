@@ -30520,11 +30520,24 @@ var Nodes = React.createClass({displayName: "Nodes",
             React.createElement("div", {className: "m-t-3", id: "nodes-list"}, 
                 React.createElement("h3", {className: "display-5 text-info text-xs-center m-y-1"}, "Current Plan Infomation"), 
                 React.createElement("hr", {className: "hr-divider"}), 
-                React.createElement(NewNodeForm, {onSave: this._onSave}), 
+                
+                React.createElement("div", {className: "timeline-node node-top"}, 
+                    React.createElement("div", {className: "timeline-token"}), 
+                    React.createElement("div", {className: "timeline-node-content"}, 
+                        React.createElement(NewNodeForm, {onSave: this._onSave})
+                    )
+                ), 
+
                 React.createElement("div", {className: "nodes-container"}, 
                     nodesHtml
                 ), 
-                React.createElement("p", null, "End")
+
+                React.createElement("div", {className: "timeline-node node-bottom"}, 
+                    React.createElement("div", {className: "timeline-token"}), 
+                    React.createElement("div", {className: "timeline-node-content"}, 
+                        React.createElement("p", null, "End")
+                    )
+                )
             )
         );
     }
@@ -30540,7 +30553,7 @@ var AppStore = require('../stores/AppStore');
 
 var PlanDeleteModal = React.createClass({displayName: "PlanDeleteModal",
     _onRemove: function(event) {
-        AppActions.deletePlan(this.props.plan_id);
+        AppActions.removePlan(this.props.plan_id);
     },
     render: function() {
         return (
@@ -30959,6 +30972,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
                     selectIndex -= 1;
                 }
                 _selectIndex = selectIndex;
+                $('#plan-delete-modal' + id).modal('hide');
                 localStorage.setItem("_plans", JSON.stringify(_plans))
                 return ;
             }

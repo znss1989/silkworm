@@ -128,6 +128,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
                     selectIndex -= 1;
                 }
                 _selectIndex = selectIndex;
+                $('#plan-delete-modal' + id).modal('hide');
                 localStorage.setItem("_plans", JSON.stringify(_plans))
                 return ;
             }

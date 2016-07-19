@@ -5,7 +5,7 @@ var AppStore = require('../stores/AppStore');
 
 var PlanDeleteModal = React.createClass({
     _onRemove: function(event) {
-        AppActions.deletePlan(this.props.plan_id);
+        AppActions.removePlan(this.props.plan_id);
     },
     render: function() {
         return (
