@@ -19973,68 +19973,75 @@ var CHANGE_EVENT = 'change';
 
 var _plans = [];
 
-// Initialize with some demo plans and/or nodes
-_plans.push({
-        plan_id: "4170fd4e-9ef2-3653-c827-97395e848e1e",
-        title: "Set up a new plan",
-        description: "The first step to use Silkworm is to set up a fresh new plan of your own.",
-        nodes: []
-});
-_plans.push({
-        plan_id: "c0ff2cbc-abc8-252f-9899-6a29760a7b45",
-        title: "Travel around Paris",
-        description: "The world is big, why not take a trip around.",
-        nodes: [
-            {
-                node_id: "7162b3b4-5662-9b04-09c0-786500b907b5",
-                node_item: "Book a flight from Chengdu to Paris",
-                node_detail: {
-                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.",
-                    finish: true
+if (localStorage.getItem("_plans")) {
+    // Get data from existing local store
+    _plans = JSON.parse(localStorage.getItem("_plans"));
+} else {
+    // Initialize with some demo plans and/or nodes
+    _plans.push({
+            plan_id: "4170fd4e-9ef2-3653-c827-97395e848e1e",
+            title: "Set up a new plan",
+            description: "The first step to use Silkworm is to set up a fresh new plan of your own.",
+            nodes: []
+    });
+    _plans.push({
+            plan_id: "c0ff2cbc-abc8-252f-9899-6a29760a7b45",
+            title: "Travel around Paris",
+            description: "The world is big, why not take a trip around.",
+            nodes: [
+                {
+                    node_id: "7162b3b4-5662-9b04-09c0-786500b907b5",
+                    node_item: "Book a flight from Chengdu to Paris",
+                    node_detail: {
+                        note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.",
+                        finish: true
+                    }
+                },
+                {
+                    node_id: "80e020a9-88c0-9e0d-6dbe-9832a23ee9e0",
+                    node_item: "Departure from airport CTU, Chengdu, land at airport CDG, Paris",
+                    node_detail: {
+                        note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.",
+                        finish: true
+                    }
+                },
+                {
+                    node_id: "6fa89feb-b650-429c-454e-73dbc836ebef",
+                    node_item: "Board a train at station Gare de Lyon to Versailles",
+                    node_detail: {
+                        note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.",
+                        finish: false
+                    }
+                },
+                {
+                    node_id: "4a08c85f-47a1-44d5-d4cb-736ff0b23744",
+                    node_item: "Vist Hall of Mirrors & buy some postcards",
+                    node_detail: {
+                        note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.",
+                        finish: false
+                    }
+                },
+                {
+                    node_id: "116e7986-6744-52a9-e54b-b6d12fe3fad1",
+                    node_item: "Take train back town, and subway to Louvre Museum",
+                    node_detail: {
+                        note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.",
+                        finish: false
+                    }
+                },
+                {
+                    node_id: "f0f0f3f2-8694-cafc-e9af-cb87909b5ad3",
+                    node_item: "Get back to hotel",
+                    node_detail: {
+                        note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.",
+                        finish: false
+                    }
                 }
-            },
-            {
-                node_id: "80e020a9-88c0-9e0d-6dbe-9832a23ee9e0",
-                node_item: "Departure from airport CTU, Chengdu, land at airport CDG, Paris",
-                node_detail: {
-                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.",
-                    finish: true
-                }
-            },
-            {
-                node_id: "6fa89feb-b650-429c-454e-73dbc836ebef",
-                node_item: "Board a train at station Gare de Lyon to Versailles",
-                node_detail: {
-                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.",
-                    finish: false
-                }
-            },
-            {
-                node_id: "4a08c85f-47a1-44d5-d4cb-736ff0b23744",
-                node_item: "Vist Hall of Mirrors & buy some postcards",
-                node_detail: {
-                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.",
-                    finish: false
-                }
-            },
-            {
-                node_id: "116e7986-6744-52a9-e54b-b6d12fe3fad1",
-                node_item: "Take train back town, and subway to Louvre Museum",
-                node_detail: {
-                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.",
-                    finish: false
-                }
-            },
-            {
-                node_id: "f0f0f3f2-8694-cafc-e9af-cb87909b5ad3",
-                node_item: "Get back to hotel",
-                node_detail: {
-                    note: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.",
-                    finish: false
-                }
-            }
-        ]
-});
+            ]
+    });
+    // Save data to the current local store
+    localStorage.setItem("_plans", JSON.stringify(_plans))
+}
 
 var _selectIndex = _plans.length - 1;
 
@@ -20070,6 +20077,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
             nodes: []
         });
         $('#new-plan-modal').modal('hide');
+        localStorage.setItem("_plans", JSON.stringify(_plans))
     },
     removePlan: function(id) {
         var selectIndex = _selectIndex;
@@ -20085,6 +20093,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
                     selectIndex -= 1;
                 }
                 _selectIndex = selectIndex;
+                localStorage.setItem("_plans", JSON.stringify(_plans))
                 return ;
             }
         }
@@ -20107,6 +20116,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
         _plans[index].title = title;
         _plans[index].description = description;
         $("#plan-edit-modal" + id).modal('hide');
+        localStorage.setItem("_plans", JSON.stringify(_plans))
     },
     changeSelectIndex: function(id) {
         var selectIndex = _selectIndex;
@@ -20136,6 +20146,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
             }
         });
         $('#new-node-modal').modal('hide');
+        localStorage.setItem("_plans", JSON.stringify(_plans))
     },
     removeNode: function(id) {
         console.log("removeNode invoked.");
@@ -20146,6 +20157,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
             }
         }
         $("#node-remove-modal" + id).modal('hide');
+        localStorage.setItem("_plans", JSON.stringify(_plans))
     },
     updateNodeContent: function(payload) {
         var id = payload.nodeId;
@@ -20163,6 +20175,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
             }
         }
         $("#node-edit-modal" + id).modal('hide');
+        localStorage.setItem("_plans", JSON.stringify(_plans))
     },
     updateNodeStatus: function(payload) {
         var id = payload.nodeId;
@@ -20171,6 +20184,8 @@ var AppStore = assign({}, EventEmitter.prototype, {
         for (var i = 0; i < currentNodes.length; ++i) {
             if (currentNodes[i].node_id === id) {
                 currentNodes[i].node_detail.finish = status;
+                localStorage.setItem("_plans", JSON.stringify(_plans))
+                return ;
             }
         }
     },
