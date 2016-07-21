@@ -97,14 +97,14 @@ hr.hr-divider {
     position: relative;
     left: 50%;
     margin-left: -8px;
-    width: 95%;
+    width: 45%;
 }
 
 .timeline-node.node-bottom {
     position: relative;
     left: 50%;
     margin-left: -8px;
-    width: 95%;
+    width: 45%;
 }
 
 .timeline-node.node-bottom p {
