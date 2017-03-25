@@ -6,11 +6,13 @@ import thunkMiddleware from 'redux-thunk'
 import rootReducer from './Reducers/rootReducer'
 import App from './Containers/App'
 
+// state control
 const store = createStore(
     rootReducer,
     applyMiddleware(thunkMiddleware)
 );
 
+// view
 ReactDOM.render(
     <Provider store={store}>
         <App />
