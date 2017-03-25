@@ -4,7 +4,9 @@
   "description": "A light-weight planning web app",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --inline --content-base .",
+    "webpack": "webpack"
   },
   "repository": {
     "type": "git",
@@ -23,5 +25,22 @@
   "bugs": {
     "url": "https://github.com/znss1989/silkworm/issues"
   },
-  "homepage": "https://github.com/znss1989/silkworm#readme"
+  "homepage": "https://github.com/znss1989/silkworm#readme",
+  "dependencies": {
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-redux": "^5.0.3",
+    "react-router": "^4.0.0",
+    "redux": "^3.6.0",
+    "redux-thunk": "^2.2.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.24.0",
+    "babel-loader": "^6.4.1",
+    "babel-preset-es2015": "^6.24.0",
+    "babel-preset-react": "^6.23.0",
+    "http-server": "^0.9.0",
+    "webpack": "^2.3.2",
+    "webpack-dev-server": "^2.4.2"
+  }
 }
