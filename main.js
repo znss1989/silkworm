@@ -5,7 +5,7 @@ import {Provider} from 'react-redux'
 import thunkMiddleware from 'redux-thunk'
 import ActionCreators from './Actions/ActionCreators'
 import rootReducer from './Reducers/rootReducer'
-import App from './Containers/App'
+import App from './Components/App'
 
 // state control
 const store = createStore(
