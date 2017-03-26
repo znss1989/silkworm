@@ -12,6 +12,9 @@ const plans = (state={
             });
         case AppConstants.REMOVE_PLAN:
             delete state[action.planID];
+            if (state.currentPlanID === action.planID) {
+                state.currentPlanID = '';
+            }
             return Object.assign({}, state);
         case AppConstants.SELECT_PLAN:
             return Object.assign({}, state, {

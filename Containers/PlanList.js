@@ -1,5 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import ActionCreators from '../Actions/ActionCreators'
 import PlanListView from '../Components/PlanListView'
 
 const mapStateToProps = (state) => {
@@ -16,7 +17,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-
+    onDelete: (planID) => {
+        console.log("onDelete about to run for: " + planID);
+        dispatch(ActionCreators.removePlan(planID));
+    }
   };
 };
 

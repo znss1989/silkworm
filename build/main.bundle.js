@@ -1218,7 +1218,7 @@ var CallbackQueue = __webpack_require__(65);
 var PooledClass = __webpack_require__(15);
 var ReactFeatureFlags = __webpack_require__(70);
 var ReactReconciler = __webpack_require__(19);
-var Transaction = __webpack_require__(31);
+var Transaction = __webpack_require__(32);
 
 var invariant = __webpack_require__(1);
 
@@ -2504,7 +2504,7 @@ module.exports = reactProdInvariant;
 
 
 var DOMNamespaces = __webpack_require__(39);
-var setInnerHTML = __webpack_require__(33);
+var setInnerHTML = __webpack_require__(34);
 
 var createMicrosoftUnsafeLocalFunction = __webpack_require__(46);
 var setTextContent = __webpack_require__(83);
@@ -2968,7 +2968,7 @@ module.exports = emptyObject;
 
 var _prodInvariant = __webpack_require__(3);
 
-var EventPluginRegistry = __webpack_require__(28);
+var EventPluginRegistry = __webpack_require__(29);
 var EventPluginUtils = __webpack_require__(40);
 var ReactErrorUtils = __webpack_require__(44);
 
@@ -3495,6 +3495,112 @@ module.exports = SyntheticUIEvent;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _AppConstants = __webpack_require__(22);
+
+var _AppConstants2 = _interopRequireDefault(_AppConstants);
+
+var _generateIDUtil = __webpack_require__(99);
+
+var _generateIDUtil2 = _interopRequireDefault(_generateIDUtil);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ActionCreators = {
+    createPlan: function createPlan(title, brief) {
+        return {
+            type: _AppConstants2.default.CREATE_PLAN,
+            planID: (0, _generateIDUtil2.default)(),
+            title: title,
+            brief: brief
+        };
+    },
+    removePlan: function removePlan(planID) {
+        return {
+            type: _AppConstants2.default.REMOVE_PLAN,
+            planID: planID
+        };
+    },
+    selectPlan: function selectPlan(planID) {
+        return {
+            type: _AppConstants2.default.SELECT_PLAN,
+            planID: planID
+        };
+    },
+    // swapPlans: (sourcePlanID, targetPlanID) => {
+    //     return {
+    //         type: AppConstants.SWAP_PLAN,
+    //         sourcePlanID, 
+    //         targetPlanID
+    //     };
+    // },
+    editPlan: function editPlan(planID, title, brief) {
+        return {
+            type: _AppConstants2.default.EDIT_PLAN,
+            planID: planID,
+            title: title,
+            brief: brief
+        };
+    },
+    toggleplan: function toggleplan(planID) {
+        return {
+            type: _AppConstants2.default.TOGGLE_PLAN,
+            planID: planID
+        };
+    },
+    sharePlan: function sharePlan(planID) {
+        return {
+            type: _AppConstants2.default.SHARE_PLAN,
+            planID: planID
+        };
+    },
+    createNode: function createNode(content) {
+        return {
+            type: _AppConstants2.default.CREATE_NODE,
+            nodeID: (0, _generateIDUtil2.default)(),
+            content: content
+        };
+    },
+    removeNode: function removeNode(nodeID) {
+        return {
+            type: _AppConstants2.default.REMOVE_NODE,
+            nodeID: nodeID
+        };
+    },
+    swapNode: function swapNode(sourceNodeID, targetNodeID) {
+        return {
+            type: _AppConstants2.default.SWAP_NODE,
+            sourceNodeID: sourceNodeID,
+            targetNodeID: targetNodeID
+        };
+    },
+    editNode: function editNode(nodeID, content) {
+        return {
+            type: _AppConstants2.default.EDIT_NODE,
+            nodeID: nodeID,
+            content: content
+        };
+    },
+    toggleNOde: function toggleNOde(nodeID) {
+        return {
+            type: _AppConstants2.default.TOGGLE_NODE,
+            nodeID: nodeID
+        };
+    }
+};
+
+exports.default = ActionCreators;
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -3752,7 +3858,7 @@ module.exports = EventPluginRegistry;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3770,7 +3876,7 @@ module.exports = EventPluginRegistry;
 
 var _assign = __webpack_require__(4);
 
-var EventPluginRegistry = __webpack_require__(28);
+var EventPluginRegistry = __webpack_require__(29);
 var ReactEventEmitterMixin = __webpack_require__(175);
 var ViewportMetrics = __webpack_require__(76);
 
@@ -4085,7 +4191,7 @@ var ReactBrowserEventEmitter = _assign({}, ReactEventEmitterMixin, {
 module.exports = ReactBrowserEventEmitter;
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4162,7 +4268,7 @@ SyntheticUIEvent.augmentClass(SyntheticMouseEvent, MouseEventInterface);
 module.exports = SyntheticMouseEvent;
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4393,7 +4499,7 @@ module.exports = TransactionImpl;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4521,7 +4627,7 @@ function escapeTextContentForBrowser(text) {
 module.exports = escapeTextContentForBrowser;
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4622,112 +4728,6 @@ if (ExecutionEnvironment.canUseDOM) {
 }
 
 module.exports = setInnerHTML;
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _AppConstants = __webpack_require__(22);
-
-var _AppConstants2 = _interopRequireDefault(_AppConstants);
-
-var _generateIDUtil = __webpack_require__(99);
-
-var _generateIDUtil2 = _interopRequireDefault(_generateIDUtil);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var ActionCreators = {
-    createPlan: function createPlan(title, brief) {
-        return {
-            type: _AppConstants2.default.CREATE_PLAN,
-            planID: (0, _generateIDUtil2.default)(),
-            title: title,
-            brief: brief
-        };
-    },
-    removePlan: function removePlan(planID) {
-        return {
-            type: _AppConstants2.default.REMOVE_PLAN,
-            planID: planID
-        };
-    },
-    selectPlan: function selectPlan(planID) {
-        return {
-            type: _AppConstants2.default.SELECT_PLAN,
-            planID: planID
-        };
-    },
-    // swapPlans: (sourcePlanID, targetPlanID) => {
-    //     return {
-    //         type: AppConstants.SWAP_PLAN,
-    //         sourcePlanID, 
-    //         targetPlanID
-    //     };
-    // },
-    editPlan: function editPlan(planID, title, brief) {
-        return {
-            type: _AppConstants2.default.EDIT_PLAN,
-            planID: planID,
-            title: title,
-            brief: brief
-        };
-    },
-    toggleplan: function toggleplan(planID) {
-        return {
-            type: _AppConstants2.default.TOGGLE_PLAN,
-            planID: planID
-        };
-    },
-    sharePlan: function sharePlan(planID) {
-        return {
-            type: _AppConstants2.default.SHARE_PLAN,
-            planID: planID
-        };
-    },
-    createNode: function createNode(content) {
-        return {
-            type: _AppConstants2.default.CREATE_NODE,
-            nodeID: (0, _generateIDUtil2.default)(),
-            content: content
-        };
-    },
-    removeNode: function removeNode(nodeID) {
-        return {
-            type: _AppConstants2.default.REMOVE_NODE,
-            nodeID: nodeID
-        };
-    },
-    swapNode: function swapNode(sourceNodeID, targetNodeID) {
-        return {
-            type: _AppConstants2.default.SWAP_NODE,
-            sourceNodeID: sourceNodeID,
-            targetNodeID: targetNodeID
-        };
-    },
-    editNode: function editNode(nodeID, content) {
-        return {
-            type: _AppConstants2.default.EDIT_NODE,
-            nodeID: nodeID,
-            content: content
-        };
-    },
-    toggleNOde: function toggleNOde(nodeID) {
-        return {
-            type: _AppConstants2.default.TOGGLE_NODE,
-            nodeID: nodeID
-        };
-    }
-};
-
-exports.default = ActionCreators;
 
 /***/ }),
 /* 35 */
@@ -4934,7 +4934,7 @@ var ReactDOMComponentTree = __webpack_require__(5);
 var ReactInstrumentation = __webpack_require__(9);
 
 var createMicrosoftUnsafeLocalFunction = __webpack_require__(46);
-var setInnerHTML = __webpack_require__(33);
+var setInnerHTML = __webpack_require__(34);
 var setTextContent = __webpack_require__(83);
 
 function getNodeAfter(parentNode, node) {
@@ -8259,7 +8259,7 @@ var _prodInvariant = __webpack_require__(3);
 var DOMLazyTree = __webpack_require__(18);
 var DOMProperty = __webpack_require__(14);
 var React = __webpack_require__(20);
-var ReactBrowserEventEmitter = __webpack_require__(29);
+var ReactBrowserEventEmitter = __webpack_require__(30);
 var ReactCurrentOwner = __webpack_require__(12);
 var ReactDOMComponentTree = __webpack_require__(5);
 var ReactDOMContainerInfo = __webpack_require__(158);
@@ -8275,7 +8275,7 @@ var ReactUpdates = __webpack_require__(11);
 var emptyObject = __webpack_require__(23);
 var instantiateReactComponent = __webpack_require__(81);
 var invariant = __webpack_require__(1);
-var setInnerHTML = __webpack_require__(33);
+var setInnerHTML = __webpack_require__(34);
 var shouldUpdateReactComponent = __webpack_require__(51);
 var warning = __webpack_require__(2);
 
@@ -9262,8 +9262,8 @@ module.exports = isTextInputElement;
 
 
 var ExecutionEnvironment = __webpack_require__(7);
-var escapeTextContentForBrowser = __webpack_require__(32);
-var setInnerHTML = __webpack_require__(33);
+var escapeTextContentForBrowser = __webpack_require__(33);
+var setInnerHTML = __webpack_require__(34);
 
 /**
  * Set the textContent property of a node, ensuring that whitespace is preserved
@@ -11010,7 +11010,9 @@ var Plan = function Plan(props) {
         ),
         _react2.default.createElement(
             'button',
-            null,
+            { onClick: function onClick() {
+                    return props.onDelete(props.plan.planID);
+                } },
             'Delete'
         )
     );
@@ -11040,12 +11042,11 @@ var _Plan2 = _interopRequireDefault(_Plan);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var PlanListView = function PlanListView(props) {
-    console.log(props.planList);
     return _react2.default.createElement(
         'ul',
         null,
         props.planList.map(function (plan, index) {
-            return _react2.default.createElement(_Plan2.default, { key: plan.planID, plan: plan });
+            return _react2.default.createElement(_Plan2.default, { key: plan.planID, plan: plan, onDelete: props.onDelete });
         })
     );
 };
@@ -11110,7 +11111,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(21);
 
-var _ActionCreators = __webpack_require__(34);
+var _ActionCreators = __webpack_require__(28);
 
 var _ActionCreators2 = _interopRequireDefault(_ActionCreators);
 
@@ -11153,7 +11154,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(21);
 
-var _ActionCreators = __webpack_require__(34);
+var _ActionCreators = __webpack_require__(28);
 
 var _ActionCreators2 = _interopRequireDefault(_ActionCreators);
 
@@ -11300,6 +11301,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var mapStateToProps = function mapStateToProps(state) {
     // convert nodes into array for rendering
     var currentPlanID = state.plans.currentPlanID;
+    if (currentPlanID === '') {
+        return { nodeList: [] };
+    }
     var currentPlan = state.plans[currentPlanID];
     return { nodeList: currentPlan.nodes };
 };
@@ -11329,6 +11333,10 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(21);
 
+var _ActionCreators = __webpack_require__(28);
+
+var _ActionCreators2 = _interopRequireDefault(_ActionCreators);
+
 var _PlanListView = __webpack_require__(108);
 
 var _PlanListView2 = _interopRequireDefault(_PlanListView);
@@ -11348,7 +11356,12 @@ var mapStateToProps = function mapStateToProps(state) {
 };
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-    return {};
+    return {
+        onDelete: function onDelete(planID) {
+            console.log("onDelete about to run for: " + planID);
+            dispatch(_ActionCreators2.default.removePlan(planID));
+        }
+    };
 };
 
 var PlanList = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_PlanListView2.default);
@@ -11576,6 +11589,9 @@ var plans = function plans() {
             }, action.planID, (0, _plan2.default)(undefined, action)));
         case _AppConstants2.default.REMOVE_PLAN:
             delete state[action.planID];
+            if (state.currentPlanID === action.planID) {
+                state.currentPlanID = '';
+            }
             return Object.assign({}, state);
         case _AppConstants2.default.SELECT_PLAN:
             return Object.assign({}, state, {
@@ -11621,7 +11637,7 @@ var _reduxThunk = __webpack_require__(98);
 
 var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
-var _ActionCreators = __webpack_require__(34);
+var _ActionCreators = __webpack_require__(28);
 
 var _ActionCreators2 = _interopRequireDefault(_ActionCreators);
 
@@ -13874,7 +13890,7 @@ module.exports = DefaultEventPluginOrder;
 
 var EventPropagators = __webpack_require__(25);
 var ReactDOMComponentTree = __webpack_require__(5);
-var SyntheticMouseEvent = __webpack_require__(30);
+var SyntheticMouseEvent = __webpack_require__(31);
 
 var eventTypes = {
   mouseEnter: {
@@ -15526,8 +15542,8 @@ var DOMNamespaces = __webpack_require__(39);
 var DOMProperty = __webpack_require__(14);
 var DOMPropertyOperations = __webpack_require__(66);
 var EventPluginHub = __webpack_require__(24);
-var EventPluginRegistry = __webpack_require__(28);
-var ReactBrowserEventEmitter = __webpack_require__(29);
+var EventPluginRegistry = __webpack_require__(29);
+var ReactBrowserEventEmitter = __webpack_require__(30);
 var ReactDOMComponentFlags = __webpack_require__(67);
 var ReactDOMComponentTree = __webpack_require__(5);
 var ReactDOMInput = __webpack_require__(162);
@@ -15539,7 +15555,7 @@ var ReactMultiChild = __webpack_require__(181);
 var ReactServerRenderingTransaction = __webpack_require__(186);
 
 var emptyFunction = __webpack_require__(10);
-var escapeTextContentForBrowser = __webpack_require__(32);
+var escapeTextContentForBrowser = __webpack_require__(33);
 var invariant = __webpack_require__(1);
 var isEventSupported = __webpack_require__(50);
 var shallowEqual = __webpack_require__(36);
@@ -17473,7 +17489,7 @@ var DOMChildrenOperations = __webpack_require__(38);
 var DOMLazyTree = __webpack_require__(18);
 var ReactDOMComponentTree = __webpack_require__(5);
 
-var escapeTextContentForBrowser = __webpack_require__(32);
+var escapeTextContentForBrowser = __webpack_require__(33);
 var invariant = __webpack_require__(1);
 var validateDOMNesting = __webpack_require__(52);
 
@@ -17945,7 +17961,7 @@ module.exports = {
 
 
 var DOMProperty = __webpack_require__(14);
-var EventPluginRegistry = __webpack_require__(28);
+var EventPluginRegistry = __webpack_require__(29);
 var ReactComponentTreeHook = __webpack_require__(8);
 
 var warning = __webpack_require__(2);
@@ -18432,7 +18448,7 @@ module.exports = ReactDebugTool;
 var _assign = __webpack_require__(4);
 
 var ReactUpdates = __webpack_require__(11);
-var Transaction = __webpack_require__(31);
+var Transaction = __webpack_require__(32);
 
 var emptyFunction = __webpack_require__(10);
 
@@ -18860,7 +18876,7 @@ var EventPluginHub = __webpack_require__(24);
 var EventPluginUtils = __webpack_require__(40);
 var ReactComponentEnvironment = __webpack_require__(43);
 var ReactEmptyComponent = __webpack_require__(69);
-var ReactBrowserEventEmitter = __webpack_require__(29);
+var ReactBrowserEventEmitter = __webpack_require__(30);
 var ReactHostComponent = __webpack_require__(71);
 var ReactUpdates = __webpack_require__(11);
 
@@ -19583,10 +19599,10 @@ var _assign = __webpack_require__(4);
 
 var CallbackQueue = __webpack_require__(65);
 var PooledClass = __webpack_require__(15);
-var ReactBrowserEventEmitter = __webpack_require__(29);
+var ReactBrowserEventEmitter = __webpack_require__(30);
 var ReactInputSelection = __webpack_require__(72);
 var ReactInstrumentation = __webpack_require__(9);
-var Transaction = __webpack_require__(31);
+var Transaction = __webpack_require__(32);
 var ReactUpdateQueue = __webpack_require__(45);
 
 /**
@@ -19860,7 +19876,7 @@ module.exports = ReactRef;
 var _assign = __webpack_require__(4);
 
 var PooledClass = __webpack_require__(15);
-var Transaction = __webpack_require__(31);
+var Transaction = __webpack_require__(32);
 var ReactInstrumentation = __webpack_require__(9);
 var ReactServerUpdateQueue = __webpack_require__(187);
 
@@ -20631,7 +20647,7 @@ var SyntheticClipboardEvent = __webpack_require__(193);
 var SyntheticEvent = __webpack_require__(13);
 var SyntheticFocusEvent = __webpack_require__(196);
 var SyntheticKeyboardEvent = __webpack_require__(198);
-var SyntheticMouseEvent = __webpack_require__(30);
+var SyntheticMouseEvent = __webpack_require__(31);
 var SyntheticDragEvent = __webpack_require__(195);
 var SyntheticTouchEvent = __webpack_require__(199);
 var SyntheticTransitionEvent = __webpack_require__(200);
@@ -20982,7 +20998,7 @@ module.exports = SyntheticCompositionEvent;
 
 
 
-var SyntheticMouseEvent = __webpack_require__(30);
+var SyntheticMouseEvent = __webpack_require__(31);
 
 /**
  * @interface DragEvent
@@ -21289,7 +21305,7 @@ module.exports = SyntheticTransitionEvent;
 
 
 
-var SyntheticMouseEvent = __webpack_require__(30);
+var SyntheticMouseEvent = __webpack_require__(31);
 
 /**
  * @interface WheelEvent
@@ -22087,7 +22103,7 @@ module.exports = getVendorPrefixedEventName;
 
 
 
-var escapeTextContentForBrowser = __webpack_require__(32);
+var escapeTextContentForBrowser = __webpack_require__(33);
 
 /**
  * Escapes attribute value to prevent scripting attacks.
