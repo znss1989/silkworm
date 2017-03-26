@@ -22,13 +22,13 @@ const ActionCreators = {
             planID
         };
     },
-    swapPlans: (sourcePlanID, targetPlanID) => {
-        return {
-            type: AppConstants.SWAP_PLAN,
-            sourcePlanID, 
-            targetPlanID
-        };
-    },
+    // swapPlans: (sourcePlanID, targetPlanID) => {
+    //     return {
+    //         type: AppConstants.SWAP_PLAN,
+    //         sourcePlanID, 
+    //         targetPlanID
+    //     };
+    // },
     editPlan: (planID, title, brief) => {
         return {
             type: AppConstants.EDIT_PLAN,

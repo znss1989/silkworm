@@ -11,13 +11,13 @@ const AddNodeView = (props) => {
                     if (!content) {
                         return;
                     }
-                    props.onNodeSubmit(title, brief);
+                    props.onNodeSubmit(content);
                     newNodeForm.elements["node-content"].value = "";
                 }
             }>
                 <label>
                     Content
-                    <input type="text" name="node-title" required />
+                    <input type="text" name="node-content" required />
                 </label>
                 <button type="submit">Add New Node</button>
             </form>

@@ -5,7 +5,7 @@ const PlanListView = (props) => {
     return (
         <ul>
             {props.planList.map((plan, index) => {
-                return (<Plan key={plan.title+index} />);
+                return (<Plan key={plan.planID} plan={plan} />);
             })}
         </ul>
     );

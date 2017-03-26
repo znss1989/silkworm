@@ -2907,14 +2907,14 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 var AppConstants = {
-    CREATE_PLAN: "CREATE_PLAN",
+    CREATE_PLAN: "CREATE_PLAN", // done
     REMOVE_PLAN: "REMOVE_PLAN",
     SELECT_PLAN: "SELECT_PLAN",
-    SWAP_PLAN: "SWAP_PLAN",
+    // SWAP_PLAN: "SWAP_PLAN",
     EDIT_PLAN: "EDIT_PLAN",
     TOGGLE_PLAN: "TOGGLE_PLAN",
     SHARE_PLAN: "SHARE_PLAN",
-    CREATE_NODE: "CREATE_NODE",
+    CREATE_NODE: "CREATE_NODE", // done
     REMOVE_NODE: "REMOVE_NOD",
     SWAP_NODE: "SWAP_NODE",
     EDIT_NODE: "EDIT_NOD",
@@ -4665,13 +4665,13 @@ var ActionCreators = {
             planID: planID
         };
     },
-    swapPlans: function swapPlans(sourcePlanID, targetPlanID) {
-        return {
-            type: _AppConstants2.default.SWAP_PLAN,
-            sourcePlanID: sourcePlanID,
-            targetPlanID: targetPlanID
-        };
-    },
+    // swapPlans: (sourcePlanID, targetPlanID) => {
+    //     return {
+    //         type: AppConstants.SWAP_PLAN,
+    //         sourcePlanID, 
+    //         targetPlanID
+    //     };
+    // },
     editPlan: function editPlan(planID, title, brief) {
         return {
             type: _AppConstants2.default.EDIT_PLAN,
@@ -10690,14 +10690,14 @@ var AddNodeView = function AddNodeView(props) {
                     if (!content) {
                         return;
                     }
-                    props.onNodeSubmit(title, brief);
+                    props.onNodeSubmit(content);
                     newNodeForm.elements["node-content"].value = "";
                 } },
             _react2.default.createElement(
                 'label',
                 null,
                 'Content',
-                _react2.default.createElement('input', { type: 'text', name: 'node-title', required: true })
+                _react2.default.createElement('input', { type: 'text', name: 'node-content', required: true })
             ),
             _react2.default.createElement(
                 'button',
@@ -10888,7 +10888,11 @@ var Node = function Node(props) {
     return _react2.default.createElement(
         'div',
         null,
-        'node-item'
+        _react2.default.createElement(
+            'p',
+            null,
+            props.node.content
+        )
     );
 };
 
@@ -10920,7 +10924,7 @@ var NodeListView = function NodeListView(props) {
         'ul',
         null,
         props.nodeList.map(function (node, index) {
-            return _react2.default.createElement(_Node2.default, { key: node.nodeID });
+            return _react2.default.createElement(_Node2.default, { key: node.nodeID, node: node });
         })
     );
 };
@@ -10989,7 +10993,26 @@ var Plan = function Plan(props) {
     return _react2.default.createElement(
         'div',
         null,
-        'plan-item'
+        _react2.default.createElement(
+            'h3',
+            null,
+            props.plan.title
+        ),
+        _react2.default.createElement(
+            'p',
+            null,
+            props.plan.brief
+        ),
+        _react2.default.createElement(
+            'button',
+            null,
+            'Select'
+        ),
+        _react2.default.createElement(
+            'button',
+            null,
+            'Delete'
+        )
     );
 };
 
@@ -11017,11 +11040,12 @@ var _Plan2 = _interopRequireDefault(_Plan);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var PlanListView = function PlanListView(props) {
+    console.log(props.planList);
     return _react2.default.createElement(
         'ul',
         null,
         props.planList.map(function (plan, index) {
-            return _react2.default.createElement(_Plan2.default, { key: plan.title + index });
+            return _react2.default.createElement(_Plan2.default, { key: plan.planID, plan: plan });
         })
     );
 };
@@ -11275,10 +11299,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var mapStateToProps = function mapStateToProps(state) {
     // convert nodes into array for rendering
-    console.log("In NodeList:");
     var currentPlanID = state.plans.currentPlanID;
     var currentPlan = state.plans[currentPlanID];
-    console.log(currentPlan.nodes);
     return { nodeList: currentPlan.nodes };
 };
 
@@ -11476,6 +11498,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var plan = function plan() {
     var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+        planID: '',
         title: '',
         brief: '',
         nodes: [],
@@ -11487,6 +11510,7 @@ var plan = function plan() {
     switch (action.type) {
         case _AppConstants2.default.CREATE_PLAN:
             return Object.assign({}, state, {
+                planID: action.planID,
                 title: action.title,
                 brief: action.brief
             });
@@ -11618,6 +11642,9 @@ var store = (0, _redux.createStore)(_rootReducer2.default, (0, _redux.applyMiddl
 store.dispatch(_ActionCreators2.default.createPlan('Poke arounn Silkworm', 'This series will brief you on how to use the app of Silkworm planning.'));
 store.dispatch(_ActionCreators2.default.createNode('Add a new plan.'));
 store.dispatch(_ActionCreators2.default.createNode('Within the created plan, create new plan steps of your own.'));
+store.dispatch(_ActionCreators2.default.createPlan('Delete this plan!', 'You can try deleting this plan.'));
+store.dispatch(_ActionCreators2.default.createNode('This plan is messy!'));
+store.dispatch(_ActionCreators2.default.createNode('Delete it!!'));
 console.log(store.getState());
 
 // view

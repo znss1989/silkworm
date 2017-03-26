@@ -3,7 +3,7 @@ import React from 'react'
 const Node = (props) => {
     return (
         <div>
-            node-item
+            <p>{props.node.content}</p>
         </div>
     );
 };
