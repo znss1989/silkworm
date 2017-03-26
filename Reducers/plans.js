@@ -8,7 +8,7 @@ const plans = (state={}, action) => {
                 [action.planID]: plan(undefined, action)
             });
         case AppConstants.REMOVE_PLAN:
-            delete state.[action.planID];
+            delete state[action.planID];
             return Object.assign({}, state);
         case AppConstants.EDIT_PLAN:
         case AppConstants.TOGGLE_PLAN:
