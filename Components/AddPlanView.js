@@ -3,17 +3,18 @@ import React from 'react'
 const AddPlanView = (props) => {
     return (
         <div>
-            <form onSubmit={
+            <form id="new-plan-form" onSubmit={
                 (event) => {
+                    const newPlanForm = document.getElementById('new-plan-form');
                     event.preventDefault();
-                    let title = this.elements["plan-title"].value.trim();
-                    let brief = this.elements["plan-brief"].value;
+                    let title = newPlanForm.elements["plan-title"].value.trim();
+                    let brief = newPlanForm.elements["plan-brief"].value;
                     if (!title) {
                         return;
                     }
                     props.onPlanSubmit(title, brief);
-                    this.elements["plan-title"].value = "";
-                    this.elements["plan-brief"].value = "";
+                    newPlanForm.elements["plan-title"].value = "";
+                    newPlanForm.elements["plan-brief"].value = "";
                 }
             }>
                 <label>

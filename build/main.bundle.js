@@ -10679,37 +10679,38 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var AddPlanView = function AddPlanView(props) {
     return _react2.default.createElement(
-        "div",
+        'div',
         null,
         _react2.default.createElement(
-            "form",
-            { onSubmit: function onSubmit(event) {
+            'form',
+            { id: 'new-plan-form', onSubmit: function onSubmit(event) {
+                    var newPlanForm = document.getElementById('new-plan-form');
                     event.preventDefault();
-                    var title = undefined.elements["plan-title"].value.trim();
-                    var brief = undefined.elements["plan-brief"].value;
+                    var title = newPlanForm.elements["plan-title"].value.trim();
+                    var brief = newPlanForm.elements["plan-brief"].value;
                     if (!title) {
                         return;
                     }
                     props.onPlanSubmit(title, brief);
-                    undefined.elements["plan-title"].value = "";
-                    undefined.elements["plan-brief"].value = "";
+                    newPlanForm.elements["plan-title"].value = "";
+                    newPlanForm.elements["plan-brief"].value = "";
                 } },
             _react2.default.createElement(
-                "label",
+                'label',
                 null,
-                "Title",
-                _react2.default.createElement("input", { type: "text", name: "plan-title", required: true })
+                'Title',
+                _react2.default.createElement('input', { type: 'text', name: 'plan-title', required: true })
             ),
             _react2.default.createElement(
-                "label",
+                'label',
                 null,
-                "Brief (Optional)",
-                _react2.default.createElement("input", { type: "text", name: "plan-brief", placeholder: "Generally talk about this plan..." })
+                'Brief (Optional)',
+                _react2.default.createElement('input', { type: 'text', name: 'plan-brief', placeholder: 'Generally talk about this plan...' })
             ),
             _react2.default.createElement(
-                "button",
-                { type: "submit" },
-                "Add New Plan"
+                'button',
+                { type: 'submit' },
+                'Add New Plan'
             )
         )
     );
@@ -10899,8 +10900,8 @@ var PlanListView = function PlanListView(props) {
     return _react2.default.createElement(
         'ul',
         null,
-        props.planList.map(function (plan) {
-            return _react2.default.createElement(_Plan2.default, null);
+        props.planList.map(function (plan, index) {
+            return _react2.default.createElement(_Plan2.default, { key: plan.title + index });
         })
     );
 };
