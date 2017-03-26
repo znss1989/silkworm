@@ -5,7 +5,7 @@ const NodeListView = (props) => {
     return (
         <ul>
             {props.nodeList.map((node, index) => {
-                return (<Node key={node.nodeID} node={node} />);
+                return (<Node key={node.nodeID} node={node} onDelete={props.onDelete} />);
             })}
         </ul>
     );

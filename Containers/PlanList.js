@@ -18,7 +18,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onDelete: (planID) => {
-        console.log("onDelete about to run for: " + planID);
         dispatch(ActionCreators.removePlan(planID));
     }
   };

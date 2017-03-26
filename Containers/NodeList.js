@@ -1,5 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import ActionCreators from '../Actions/ActionCreators'
 import NodeListView from '../Components/NodeListView'
 
 const mapStateToProps = (state) => {
@@ -14,7 +15,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-
+        onDelete: (nodeID) => {
+            console.log("onDelete about to run for: " + nodeID);
+            dispatch(ActionCreators.removeNode(nodeID));
+        }
     };
 };
 

@@ -14,12 +14,13 @@ const store = createStore(
 );
 
 // initiate
-store.dispatch(ActionCreators.createPlan('Poke arounn Silkworm', 'This series will brief you on how to use the app of Silkworm planning.'));
+store.dispatch(ActionCreators.createPlan('Poke around Silkworm', 'This series will brief you on how to use the app of Silkworm planning.'));
 store.dispatch(ActionCreators.createNode('Add a new plan.'));
 store.dispatch(ActionCreators.createNode('Within the created plan, create new plan steps of your own.'));
 store.dispatch(ActionCreators.createPlan('Delete this plan!', 'You can try deleting this plan.'));
 store.dispatch(ActionCreators.createNode('This plan is messy!'));
-store.dispatch(ActionCreators.createNode('Delete it!!'));
+store.dispatch(ActionCreators.createNode('Delete the last step node.'));
+store.dispatch(ActionCreators.createNode('Still messy, delete the whole plan!'));
 console.log(store.getState());
 
 // view
