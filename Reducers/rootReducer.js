@@ -1,7 +1,9 @@
 import {combineReducers} from 'redux'
+import plans from './plans'
+import currentPlanIndex from './currentPlanIndex'
 
-const rootReducer = (state={}, action) => {
-    return state;
-};
+const rootReducer = combineReducers({
+    plans, currentPlanIndex
+});
 
 export default rootReducer;

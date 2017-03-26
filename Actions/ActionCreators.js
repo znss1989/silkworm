@@ -1,9 +1,11 @@
 import AppConstants from './AppConstants'
+import generateIDUtil from './generateIDUtil'
 
 const ActionCreators = {
     createPlan: (title, brief) => {
         return {
             type: AppConstants.CREATE_PLAN,
+            planID: generateIDUtil(),
             title,
             brief
         };
@@ -50,6 +52,7 @@ const ActionCreators = {
     createNode: (content) => {
         return {
             type: AppConstants.CREATE_NODE,
+            nodeID: generateIDUtil(),
             content
         };
     },
