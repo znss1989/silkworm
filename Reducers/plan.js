@@ -2,7 +2,6 @@ import AppConstants from '../Actions/AppConstants'
 import nodes from './nodes'
 
 const plan = (state={
-    planID: '',
     title: '',
     brief: '',
     nodes: [],
@@ -12,22 +11,15 @@ const plan = (state={
     switch (action.type) {
         case AppConstants.CREATE_PLAN:
             return Object.assign({}, state, {
-                planID: action.planID,
                 title: action.title,
                 brief: action.brief,
             });
         case AppConstants.EDIT_PLAN:
-            if (state.planID !== action.planID) {
-                return state;
-            }
             return Object.assign({}, state, {
                 title: action.title,
                 brief: action.brief
             });
         case AppConstants.TOGGLE_PLAN:
-            if (state.planID !== action.planID) {
-                return state;
-            }
             return Object.assign({}, state, {
                 status: !state.status
             });
