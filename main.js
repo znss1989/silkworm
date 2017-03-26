@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import {createStore, applyMiddleware} from 'redux'
 import {Provider} from 'react-redux'
 import thunkMiddleware from 'redux-thunk'
-import AppConstants from './Actions/AppConstants'
+import ActionCreators from './Actions/ActionCreators'
 import rootReducer from './Reducers/rootReducer'
 import App from './Containers/App'
 
@@ -13,7 +13,11 @@ const store = createStore(
     applyMiddleware(thunkMiddleware)
 );
 
-store.dispatch(AppConstants.CREATE_PLAN('Poke arounn Silkworm', 'This series will brief you on how to use the app of Silkworm planning.'));
+// initiate
+store.dispatch(ActionCreators.createPlan('Poke arounn Silkworm', 'This series will brief you on how to use the app of Silkworm planning.'));
+store.dispatch(ActionCreators.createNode('Add a new plan.'));
+store.dispatch(ActionCreators.createNode('Within the created plan, create new plan steps of your own.'));
+console.log(store.getState());
 
 // view
 ReactDOM.render(
