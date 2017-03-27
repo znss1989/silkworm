@@ -2927,14 +2927,14 @@ var ActionCreators = {
     //         targetPlanID
     //     };
     // },
-    // editPlan: (planID, title, brief) => {
-    //     return {
-    //         type: AppConstants.EDIT_PLAN,
-    //         planID,
-    //         title,
-    //         brief
-    //     };
-    // },
+    editPlan: function editPlan(planID, title, brief) {
+        return {
+            type: _AppConstants2.default.EDIT_PLAN,
+            planID: planID,
+            title: title,
+            brief: brief
+        };
+    },
     toggleplan: function toggleplan(planID) {
         return {
             type: _AppConstants2.default.TOGGLE_PLAN,
@@ -11000,49 +11000,146 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = __webpack_require__(6);
 
 var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Plan = function Plan(props) {
-    return _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(
-            'h3',
-            { style: { textDecoration: props.plan.status ? 'line-through' : 'none' } },
-            props.plan.title
-        ),
-        _react2.default.createElement(
-            'p',
-            null,
-            props.plan.brief
-        ),
-        _react2.default.createElement(
-            'button',
-            { onClick: function onClick() {
-                    return props.onSelect(props.plan.planID);
-                } },
-            'Select'
-        ),
-        _react2.default.createElement(
-            'button',
-            { onClick: function onClick() {
-                    return props.onToggleStatus(props.plan.planID);
-                } },
-            'Toggle'
-        ),
-        _react2.default.createElement(
-            'button',
-            { onClick: function onClick() {
-                    return props.onDelete(props.plan.planID);
-                } },
-            'Delete'
-        )
-    );
-};
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Plan = function (_React$Component) {
+    _inherits(Plan, _React$Component);
+
+    function Plan(props) {
+        _classCallCheck(this, Plan);
+
+        var _this = _possibleConstructorReturn(this, (Plan.__proto__ || Object.getPrototypeOf(Plan)).call(this, props));
+
+        _this.state = {
+            isEditing: false
+        };
+
+        return _this;
+    }
+
+    _createClass(Plan, [{
+        key: 'onEnableEditPlan',
+        value: function onEnableEditPlan() {
+            this.setState({
+                isEditing: true
+            });
+        }
+    }, {
+        key: 'onCancelEditPlan',
+        value: function onCancelEditPlan() {
+            // const editPlanForm = document.getElementById(this.props.plan.planID+"-edit");
+            // editPlanForm.elements["plan-title"].value = this.props.plan.title;
+            // editPlanForm.elements["plan-brief"].value = this.props.plan.brief;
+            this.setState({
+                isEditing: false
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'h3',
+                    { style: { textDecoration: this.props.plan.status ? 'line-through' : 'none' } },
+                    this.props.plan.title
+                ),
+                _react2.default.createElement(
+                    'p',
+                    null,
+                    this.props.plan.brief
+                ),
+                _react2.default.createElement(
+                    'button',
+                    { onClick: function onClick() {
+                            return _this2.onEnableEditPlan();
+                        } },
+                    'Edit'
+                ),
+                this.state.isEditing && _react2.default.createElement(
+                    'form',
+                    { id: this.props.plan.planID + "-edit", onSubmit: function onSubmit(event) {
+                            event.preventDefault();
+                            var editPlanForm = document.getElementById(_this2.props.plan.planID + "-edit");
+                            var title = editPlanForm.elements["plan-title"].value.trim();
+                            var brief = editPlanForm.elements["plan-brief"].value;
+                            if (!title) {
+                                return;
+                            }
+                            _this2.props.onEditPlan(_this2.props.plan.planID, title, brief);
+                            editPlanForm.elements["plan-title"].value = "";
+                            editPlanForm.elements["plan-brief"].value = "";
+                            _this2.setState({
+                                isEditing: false
+                            });
+                        } },
+                    _react2.default.createElement(
+                        'label',
+                        null,
+                        'Title',
+                        _react2.default.createElement('input', { type: 'text', name: 'plan-title' })
+                    ),
+                    _react2.default.createElement(
+                        'label',
+                        null,
+                        'Brief (Optional)',
+                        _react2.default.createElement('input', { type: 'text', name: 'plan-brief', placeholder: 'Generally talk about this plan...' })
+                    ),
+                    _react2.default.createElement(
+                        'button',
+                        { type: 'submit' },
+                        'Edit plan'
+                    ),
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: function onClick() {
+                                return _this2.onCancelEditPlan();
+                            } },
+                        'Cancel'
+                    )
+                ),
+                _react2.default.createElement(
+                    'button',
+                    { onClick: function onClick() {
+                            return _this2.props.onSelect(_this2.props.plan.planID);
+                        } },
+                    'Select'
+                ),
+                _react2.default.createElement(
+                    'button',
+                    { onClick: function onClick() {
+                            return _this2.props.onToggleStatus(_this2.props.plan.planID);
+                        } },
+                    'Toggle'
+                ),
+                _react2.default.createElement(
+                    'button',
+                    { onClick: function onClick() {
+                            return _this2.props.onDelete(_this2.props.plan.planID);
+                        } },
+                    'Delete'
+                )
+            );
+        }
+    }]);
+
+    return Plan;
+}(_react2.default.Component);
 
 exports.default = Plan;
 
@@ -11072,7 +11169,7 @@ var PlanListView = function PlanListView(props) {
         'ul',
         null,
         props.planList.map(function (plan, index) {
-            return _react2.default.createElement(_Plan2.default, { key: plan.planID, plan: plan, onSelect: props.onSelect, onToggleStatus: props.onToggleStatus, onDelete: props.onDelete });
+            return _react2.default.createElement(_Plan2.default, { key: plan.planID, plan: plan, onEditPlan: props.onEditPlan, onSelect: props.onSelect, onToggleStatus: props.onToggleStatus, onDelete: props.onDelete });
         })
     );
 };
@@ -11397,11 +11494,14 @@ var mapStateToProps = function mapStateToProps(state) {
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     return {
-        onToggleStatus: function onToggleStatus(planID) {
-            dispatch(_ActionCreators2.default.toggleplan(planID));
+        onEditPlan: function onEditPlan(planID, title, brief) {
+            dispatch(_ActionCreators2.default.editPlan(planID, title, brief));
         },
         onSelect: function onSelect(planID) {
             dispatch(_ActionCreators2.default.selectPlan(planID));
+        },
+        onToggleStatus: function onToggleStatus(planID) {
+            dispatch(_ActionCreators2.default.toggleplan(planID));
         },
         onDelete: function onDelete(planID) {
             dispatch(_ActionCreators2.default.removePlan(planID));

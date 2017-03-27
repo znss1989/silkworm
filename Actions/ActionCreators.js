@@ -29,14 +29,14 @@ const ActionCreators = {
     //         targetPlanID
     //     };
     // },
-    // editPlan: (planID, title, brief) => {
-    //     return {
-    //         type: AppConstants.EDIT_PLAN,
-    //         planID,
-    //         title,
-    //         brief
-    //     };
-    // },
+    editPlan: (planID, title, brief) => {
+        return {
+            type: AppConstants.EDIT_PLAN,
+            planID,
+            title,
+            brief
+        };
+    },
     toggleplan: (planID) => {
         return {
             type: AppConstants.TOGGLE_PLAN,

@@ -17,11 +17,14 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      onToggleStatus: (planID) => {
-          dispatch(ActionCreators.toggleplan(planID));
+      onEditPlan: (planID, title, brief) => {
+          dispatch(ActionCreators.editPlan(planID, title, brief));
       },
       onSelect: (planID) => {
           dispatch(ActionCreators.selectPlan(planID));
+      },
+      onToggleStatus: (planID) => {
+          dispatch(ActionCreators.toggleplan(planID));
       },
       onDelete: (planID) => {
           dispatch(ActionCreators.removePlan(planID));
