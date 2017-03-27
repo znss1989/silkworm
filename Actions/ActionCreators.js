@@ -29,14 +29,14 @@ const ActionCreators = {
     //         targetPlanID
     //     };
     // },
-    editPlan: (planID, title, brief) => {
-        return {
-            type: AppConstants.EDIT_PLAN,
-            planID,
-            title,
-            brief
-        };
-    },
+    // editPlan: (planID, title, brief) => {
+    //     return {
+    //         type: AppConstants.EDIT_PLAN,
+    //         planID,
+    //         title,
+    //         brief
+    //     };
+    // },
     toggleplan: (planID) => {
         return {
             type: AppConstants.TOGGLE_PLAN,
@@ -69,14 +69,14 @@ const ActionCreators = {
             targetNodeID
         };
     },
-    editNode: (nodeID, content) => {
-        return {
-            type: AppConstants.EDIT_NODE,
-            nodeID,
-            content
-        };
-    },
-    toggleNOde: (nodeID) => {
+    // editNode: (nodeID, content) => {
+    //     return {
+    //         type: AppConstants.EDIT_NODE,
+    //         nodeID,
+    //         content
+    //     };
+    // },
+    toggleNode: (nodeID) => {
         return {
             type: AppConstants.TOGGLE_NODE,
             nodeID

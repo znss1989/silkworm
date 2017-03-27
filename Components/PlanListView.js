@@ -5,7 +5,7 @@ const PlanListView = (props) => {
     return (
         <ul>
             {props.planList.map((plan, index) => {
-                return (<Plan key={plan.planID} plan={plan} onDelete={props.onDelete}/>);
+                return (<Plan key={plan.planID+index} plan={plan} onSelect={props.onSelect} onToggleStatus={props.onToggleStatus} onDelete={props.onDelete}/>);
             })}
         </ul>
     );

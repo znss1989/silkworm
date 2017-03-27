@@ -5,7 +5,12 @@ const NodeListView = (props) => {
     return (
         <ul>
             {props.nodeList.map((node, index) => {
-                return (<Node key={node.nodeID} node={node} onDelete={props.onDelete} />);
+                return (
+                    <Node key={node.nodeID}
+                     node={node}
+                     onToggleStatus={props.onToggleStatus} 
+                     onDelete={props.onDelete} />
+                );
             })}
         </ul>
     );

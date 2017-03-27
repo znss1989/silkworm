@@ -22,6 +22,9 @@ const plan = (state={
                 brief: action.brief
             });
         case AppConstants.TOGGLE_PLAN:
+            // console.log("In reducer plan");
+            // console.log(state);
+            // console.log(state.status);
             return Object.assign({}, state, {
                 status: !state.status
             });

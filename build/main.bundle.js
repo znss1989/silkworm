@@ -2927,14 +2927,14 @@ var ActionCreators = {
     //         targetPlanID
     //     };
     // },
-    editPlan: function editPlan(planID, title, brief) {
-        return {
-            type: _AppConstants2.default.EDIT_PLAN,
-            planID: planID,
-            title: title,
-            brief: brief
-        };
-    },
+    // editPlan: (planID, title, brief) => {
+    //     return {
+    //         type: AppConstants.EDIT_PLAN,
+    //         planID,
+    //         title,
+    //         brief
+    //     };
+    // },
     toggleplan: function toggleplan(planID) {
         return {
             type: _AppConstants2.default.TOGGLE_PLAN,
@@ -2967,14 +2967,14 @@ var ActionCreators = {
             targetNodeID: targetNodeID
         };
     },
-    editNode: function editNode(nodeID, content) {
-        return {
-            type: _AppConstants2.default.EDIT_NODE,
-            nodeID: nodeID,
-            content: content
-        };
-    },
-    toggleNOde: function toggleNOde(nodeID) {
+    // editNode: (nodeID, content) => {
+    //     return {
+    //         type: AppConstants.EDIT_NODE,
+    //         nodeID,
+    //         content
+    //     };
+    // },
+    toggleNode: function toggleNode(nodeID) {
         return {
             type: _AppConstants2.default.TOGGLE_NODE,
             nodeID: nodeID
@@ -3015,15 +3015,15 @@ Object.defineProperty(exports, "__esModule", {
 var AppConstants = {
     CREATE_PLAN: "CREATE_PLAN", // done
     REMOVE_PLAN: "REMOVE_PLAN", // done
-    SELECT_PLAN: "SELECT_PLAN",
-    // SWAP_PLAN: "SWAP_PLAN",
+    SELECT_PLAN: "SELECT_PLAN", // done
+    // SWAP_PLANS: "SWAP_PLANS",
     EDIT_PLAN: "EDIT_PLAN",
     TOGGLE_PLAN: "TOGGLE_PLAN",
     SHARE_PLAN: "SHARE_PLAN",
     CREATE_NODE: "CREATE_NODE", // done
-    REMOVE_NODE: "REMOVE_NOD",
-    SWAP_NODE: "SWAP_NODE",
-    EDIT_NODE: "EDIT_NOD",
+    REMOVE_NODE: "REMOVE_NODE", // done
+    SWAP_NODES: "SWAP_NODES",
+    // EDIT_NODE: "EDIT_NODE",
     TOGGLE_NODE: "TOGGLE_NODE"
 };
 
@@ -10896,6 +10896,13 @@ var Node = function Node(props) {
         _react2.default.createElement(
             'button',
             { onClick: function onClick() {
+                    return props.onToggleStatus(props.node.nodeID);
+                } },
+            'Toggle'
+        ),
+        _react2.default.createElement(
+            'button',
+            { onClick: function onClick() {
                     return props.onDelete(props.node.nodeID);
                 } },
             'Remove'
@@ -10931,7 +10938,10 @@ var NodeListView = function NodeListView(props) {
         'ul',
         null,
         props.nodeList.map(function (node, index) {
-            return _react2.default.createElement(_Node2.default, { key: node.nodeID, node: node, onDelete: props.onDelete });
+            return _react2.default.createElement(_Node2.default, { key: node.nodeID,
+                node: node,
+                onToggleStatus: props.onToggleStatus,
+                onDelete: props.onDelete });
         })
     );
 };
@@ -11002,7 +11012,7 @@ var Plan = function Plan(props) {
         null,
         _react2.default.createElement(
             'h3',
-            null,
+            { style: { textDecoration: props.plan.status ? 'line-through' : 'none' } },
             props.plan.title
         ),
         _react2.default.createElement(
@@ -11012,8 +11022,17 @@ var Plan = function Plan(props) {
         ),
         _react2.default.createElement(
             'button',
-            null,
+            { onClick: function onClick() {
+                    return props.onSelect(props.plan.planID);
+                } },
             'Select'
+        ),
+        _react2.default.createElement(
+            'button',
+            { onClick: function onClick() {
+                    return props.onToggleStatus(props.plan.planID);
+                } },
+            'Toggle'
         ),
         _react2.default.createElement(
             'button',
@@ -11053,7 +11072,7 @@ var PlanListView = function PlanListView(props) {
         'ul',
         null,
         props.planList.map(function (plan, index) {
-            return _react2.default.createElement(_Plan2.default, { key: plan.planID, plan: plan, onDelete: props.onDelete });
+            return _react2.default.createElement(_Plan2.default, { key: plan.planID + index, plan: plan, onSelect: props.onSelect, onToggleStatus: props.onToggleStatus, onDelete: props.onDelete });
         })
     );
 };
@@ -11321,8 +11340,13 @@ var mapStateToProps = function mapStateToProps(state) {
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     return {
+        // onNodeEdit: (nodeID, content) => {
+        //     dispatch(ActionCreators.editNode(nodeID, content));
+        // },
+        // onToggleStatus: (nodeID) => {
+        //     dispatch(ActionCreators.toggleNode(nodeID));
+        // },
         onDelete: function onDelete(nodeID) {
-            console.log("onDelete about to run for: " + nodeID);
             dispatch(_ActionCreators2.default.removeNode(nodeID));
         }
     };
@@ -11373,6 +11397,12 @@ var mapStateToProps = function mapStateToProps(state) {
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     return {
+        onToggleStatus: function onToggleStatus(planID) {
+            dispatch(_ActionCreators2.default.toggleplan(planID));
+        },
+        onSelect: function onSelect(planID) {
+            dispatch(_ActionCreators2.default.selectPlan(planID));
+        },
         onDelete: function onDelete(planID) {
             dispatch(_ActionCreators2.default.removePlan(planID));
         }
@@ -11464,14 +11494,14 @@ var nodes = function nodes() {
 
     switch (action.type) {
         case _AppConstants2.default.CREATE_NODE:
-            return [].concat(_toConsumableArray(state), [(0, _node2.default)(undefined, action)]);
+            return [].concat(_toConsumableArray(state), [(0, _node2.default)(undefined, action)]); // notice that this also return a new array instance
         case _AppConstants2.default.REMOVE_NODE:
             for (var i = 0; i < state.length; ++i) {
                 if (state[i].nodeID === action.nodeID) {
                     state.splice(i, 1);
                 }
             }
-            return state.concat();
+            return state.concat(); // return a new array instance to update
         case _AppConstants2.default.SWAP_NODE:
             var sourceIndex = void 0,
                 targetIndex = void 0;
@@ -11548,6 +11578,9 @@ var plan = function plan() {
                 brief: action.brief
             });
         case _AppConstants2.default.TOGGLE_PLAN:
+            // console.log("In reducer plan");
+            // console.log(state);
+            // console.log(state.status);
             return Object.assign({}, state, {
                 status: !state.status
             });
@@ -11615,7 +11648,11 @@ var plans = function plans() {
         case _AppConstants2.default.EDIT_PLAN:
         case _AppConstants2.default.TOGGLE_PLAN:
         case _AppConstants2.default.SHARE_PLAN:
-            return Object.assign({}, state, _defineProperty({}, action.planId, (0, _plan2.default)(state.planID, action)));
+            // console.log("In reducer plans:");
+            // console.log(state);
+            // console.log(action);
+            // console.log(state[action.planID]);
+            return Object.assign({}, state, _defineProperty({}, action.planId, (0, _plan2.default)(state[action.planID], action)));
         case _AppConstants2.default.CREATE_NODE:
         case _AppConstants2.default.REMOVE_NODE:
         case _AppConstants2.default.SWAP_NODE:
@@ -11666,8 +11703,38 @@ var _App2 = _interopRequireDefault(_App);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var logger = function logger(store) {
+  return function (next) {
+    return function (action) {
+      console.log('dispatching', action);
+      var result = next(action);
+      console.log('next state', store.getState());
+      return result;
+    };
+  };
+};
+
+var crashReporter = function crashReporter(store) {
+  return function (next) {
+    return function (action) {
+      try {
+        return next(action);
+      } catch (err) {
+        console.error('Caught an exception!', err);
+        Raven.captureException(err, {
+          extra: {
+            action: action,
+            state: store.getState()
+          }
+        });
+        throw err;
+      }
+    };
+  };
+};
+
 // state control
-var store = (0, _redux.createStore)(_rootReducer2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default));
+var store = (0, _redux.createStore)(_rootReducer2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default, logger, crashReporter));
 
 // initiate
 store.dispatch(_ActionCreators2.default.createPlan('Poke around Silkworm', 'This series will brief you on how to use the app of Silkworm planning.'));
@@ -11681,9 +11748,9 @@ console.log(store.getState());
 
 // view
 _reactDom2.default.render(_react2.default.createElement(
-    _reactRedux.Provider,
-    { store: store },
-    _react2.default.createElement(_App2.default, null)
+  _reactRedux.Provider,
+  { store: store },
+  _react2.default.createElement(_App2.default, null)
 ), document.getElementById('app'));
 
 /***/ }),

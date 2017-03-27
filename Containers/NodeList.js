@@ -15,8 +15,13 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        // onNodeEdit: (nodeID, content) => {
+        //     dispatch(ActionCreators.editNode(nodeID, content));
+        // },
+        // onToggleStatus: (nodeID) => {
+        //     dispatch(ActionCreators.toggleNode(nodeID));
+        // },
         onDelete: (nodeID) => {
-            console.log("onDelete about to run for: " + nodeID);
             dispatch(ActionCreators.removeNode(nodeID));
         }
     };

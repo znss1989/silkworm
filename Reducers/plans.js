@@ -23,8 +23,12 @@ const plans = (state={
         case AppConstants.EDIT_PLAN:
         case AppConstants.TOGGLE_PLAN:
         case AppConstants.SHARE_PLAN:
+            // console.log("In reducer plans:");
+            // console.log(state);
+            // console.log(action);
+            // console.log(state[action.planID]);
             return Object.assign({}, state, {
-                [action.planId]: plan(state.planID, action)
+                [action.planId]: plan(state[action.planID], action)
             });  
         case AppConstants.CREATE_NODE:
         case AppConstants.REMOVE_NODE:
