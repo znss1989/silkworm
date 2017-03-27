@@ -14,9 +14,6 @@ class Plan extends React.Component {
         });
     }
     onCancelEditPlan() {
-        // const editPlanForm = document.getElementById(this.props.plan.planID+"-edit");
-        // editPlanForm.elements["plan-title"].value = this.props.plan.title;
-        // editPlanForm.elements["plan-brief"].value = this.props.plan.brief;
         this.setState({
             isEditing: false
         });

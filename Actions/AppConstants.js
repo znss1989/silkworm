@@ -3,7 +3,7 @@ const AppConstants = {
     REMOVE_PLAN: "REMOVE_PLAN", // done
     SELECT_PLAN: "SELECT_PLAN", // done
     // SWAP_PLANS: "SWAP_PLANS",
-    EDIT_PLAN: "EDIT_PLAN",
+    EDIT_PLAN: "EDIT_PLAN", // done
     TOGGLE_PLAN: "TOGGLE_PLAN", // done
     SHARE_PLAN: "SHARE_PLAN",
     CREATE_NODE: "CREATE_NODE", // done
