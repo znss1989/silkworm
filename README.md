@@ -1,4 +1,4 @@
-# Silkworm Planning
+# Silkworm Plan
 This is a light-weight planning web app for setting up, organizing and even simple sharing of plans/workflows.
 
 (This branch of refactoring upon the original **Silkworm Plan** is still under development, to be merged to branch `master` later. But all basic features and internal state management is already available, please follow the instructions below to spot.)
