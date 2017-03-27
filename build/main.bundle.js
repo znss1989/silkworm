@@ -3018,13 +3018,13 @@ var AppConstants = {
     SELECT_PLAN: "SELECT_PLAN", // done
     // SWAP_PLANS: "SWAP_PLANS",
     EDIT_PLAN: "EDIT_PLAN",
-    TOGGLE_PLAN: "TOGGLE_PLAN",
+    TOGGLE_PLAN: "TOGGLE_PLAN", // done
     SHARE_PLAN: "SHARE_PLAN",
     CREATE_NODE: "CREATE_NODE", // done
     REMOVE_NODE: "REMOVE_NODE", // done
     SWAP_NODES: "SWAP_NODES",
     // EDIT_NODE: "EDIT_NODE",
-    TOGGLE_NODE: "TOGGLE_NODE"
+    TOGGLE_NODE: "TOGGLE_NODE" // done
 };
 
 exports.default = AppConstants;
@@ -10890,7 +10890,7 @@ var Node = function Node(props) {
         null,
         _react2.default.createElement(
             'p',
-            null,
+            { style: { textDecoration: props.node.status ? 'line-through' : 'none' } },
             props.node.content
         ),
         _react2.default.createElement(
@@ -11072,7 +11072,7 @@ var PlanListView = function PlanListView(props) {
         'ul',
         null,
         props.planList.map(function (plan, index) {
-            return _react2.default.createElement(_Plan2.default, { key: plan.planID + index, plan: plan, onSelect: props.onSelect, onToggleStatus: props.onToggleStatus, onDelete: props.onDelete });
+            return _react2.default.createElement(_Plan2.default, { key: plan.planID, plan: plan, onSelect: props.onSelect, onToggleStatus: props.onToggleStatus, onDelete: props.onDelete });
         })
     );
 };
@@ -11343,9 +11343,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
         // onNodeEdit: (nodeID, content) => {
         //     dispatch(ActionCreators.editNode(nodeID, content));
         // },
-        // onToggleStatus: (nodeID) => {
-        //     dispatch(ActionCreators.toggleNode(nodeID));
-        // },
+        onToggleStatus: function onToggleStatus(nodeID) {
+            dispatch(_ActionCreators2.default.toggleNode(nodeID));
+        },
         onDelete: function onDelete(nodeID) {
             dispatch(_ActionCreators2.default.removeNode(nodeID));
         }
@@ -11442,7 +11442,8 @@ var node = function node() {
         case _AppConstants2.default.CREATE_NODE:
             return {
                 nodeID: action.nodeID,
-                content: action.content
+                content: action.content,
+                status: false
             };
         case _AppConstants2.default.EDIT_NODE:
             if (state.nodeID !== action.nodeID) {
@@ -11453,11 +11454,15 @@ var node = function node() {
             });
         case _AppConstants2.default.TOGGLE_NODE:
             if (state.nodeID !== action.nodeID) {
+                console.log("node remains...");
                 return state;
             }
-            return Object.assign({}, state, {
+            console.log("node status changes...");
+            var result = Object.assign({}, state, {
                 status: !state.status
             });
+            console.log(result);
+            return result;
         default:
             return state;
     }
@@ -11523,9 +11528,14 @@ var nodes = function nodes() {
                 (0, _node2.default)(nodeState, action);
             });
         case _AppConstants2.default.TOGGLE_NODE:
-            return state.map(function (nodeState) {
-                (0, _node2.default)(nodeState, action);
+            console.log("In reducer nodes, before toggle-node, state: ");
+            console.log(state);
+            var result = state.map(function (nodeState, index) {
+                return (0, _node2.default)(nodeState, action);
             });
+            console.log("In reducer nodes, after toggle-node, state: ");
+            console.log(result);
+            return result;
         default:
             return state;
     }
@@ -11648,11 +11658,7 @@ var plans = function plans() {
         case _AppConstants2.default.EDIT_PLAN:
         case _AppConstants2.default.TOGGLE_PLAN:
         case _AppConstants2.default.SHARE_PLAN:
-            // console.log("In reducer plans:");
-            // console.log(state);
-            // console.log(action);
-            // console.log(state[action.planID]);
-            return Object.assign({}, state, _defineProperty({}, action.planId, (0, _plan2.default)(state[action.planID], action)));
+            return Object.assign({}, state, _defineProperty({}, action.planID, (0, _plan2.default)(state[action.planID], action)));
         case _AppConstants2.default.CREATE_NODE:
         case _AppConstants2.default.REMOVE_NODE:
         case _AppConstants2.default.SWAP_NODE:

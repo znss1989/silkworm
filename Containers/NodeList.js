@@ -18,9 +18,9 @@ const mapDispatchToProps = (dispatch) => {
         // onNodeEdit: (nodeID, content) => {
         //     dispatch(ActionCreators.editNode(nodeID, content));
         // },
-        // onToggleStatus: (nodeID) => {
-        //     dispatch(ActionCreators.toggleNode(nodeID));
-        // },
+        onToggleStatus: (nodeID) => {
+            dispatch(ActionCreators.toggleNode(nodeID));
+        },
         onDelete: (nodeID) => {
             dispatch(ActionCreators.removeNode(nodeID));
         }

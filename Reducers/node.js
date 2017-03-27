@@ -10,6 +10,7 @@ const node = (state={
             return {
                 nodeID: action.nodeID,
                 content: action.content,
+                status: false
             };
         case AppConstants.EDIT_NODE:
             if (state.nodeID !== action.nodeID) {
@@ -20,11 +21,15 @@ const node = (state={
             });
         case AppConstants.TOGGLE_NODE:
             if (state.nodeID !== action.nodeID) {
+                console.log("node remains...");
                 return state;
             }
-            return Object.assign({}, state, {
+            console.log("node status changes...");
+            let result = Object.assign({}, state, {
                 status: !state.status
             });
+            console.log(result);
+            return result;
         default:
             return state;
     }

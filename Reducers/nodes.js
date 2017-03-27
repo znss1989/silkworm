@@ -32,9 +32,14 @@ const nodes = (state=[], action) => {
                 node(nodeState, action);
             });
         case AppConstants.TOGGLE_NODE:
-            return state.map((nodeState) => {
-                node(nodeState, action);
+            console.log("In reducer nodes, before toggle-node, state: ");
+            console.log(state);
+            let result = state.map((nodeState, index) => {
+                return node(nodeState, action);
             });
+            console.log("In reducer nodes, after toggle-node, state: ");
+            console.log(result);
+            return result;
         default:
             return state;
     }
